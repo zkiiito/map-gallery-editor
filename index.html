@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Hello World!</title>
+  </head>
+  <body>
+    <h1>Hello World!</h1>
+    <!-- All of the Node.js APIs are available in this renderer process. -->
+    We are using Node.js <script>document.write(process.versions.node)</script>,
+    Chromium <script>document.write(process.versions.chrome)</script>,
+    and Electron <script>document.write(process.versions.electron)</script>.
+
+    <input type="file" id="input" multiple>
+    <div id="images"></div>
+    <script>
+var inputElement = document.getElementById("input");
+inputElement.addEventListener("change", handleFiles, false);
+var list = document.createElement("ul");
+document.getElementById('images').appendChild(list);
+
+//const nativeImage = require('electron').nativeImage
+const fs = require('fs')
+const sharp = require('sharp')
+const exifReader = require('exif-reader')
+
+
+function addThumb(files) {
+  let img = document.createElement("img");
+  let canvas = document.createElement("canvas");
+  canvas.width = 100;
+  let curfile = files.shift();
+  
+  img.onload = function () {
+      	let li = document.createElement("li");
+      	list.appendChild(li);
+
+  	    // set size proportional to image
+	    canvas.height = canvas.width * (img.height / img.width);
+	    let ctx = canvas.getContext('2d');
+
+	    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+	    li.appendChild(canvas);
+
+	    if (files.length) {
+	    	addThumb(files);
+	    } else {
+	    	console.log(Date.now())
+	    }
+  }
+
+  img.src = curfile.path;	
+}
+
+function addThumbNative(files) {
+  	let li = document.createElement("li");
+  	list.appendChild(li);
+
+  	let file = files.shift();
+
+  	let img = document.createElement("img");
+
+  	img.onload = function () {
+  		li.appendChild(img);
+
+	    if (files.length) {
+	    	addThumbNative(files);
+	    } else {
+	    	console.log(Date.now())
+	    }
+  	}
+
+  	let thumbname = __dirname + '/thumbs/thumb_' + file.name
+
+  	if (0 && fs.existsSync(thumbname)) {
+  		img.src = thumbname
+  	} else {
+  		/*
+  	 let buf = nativeImage.createFromPath(file.path).resize({
+  		width: 100,
+  		quality: "good"
+  	}).toJPEG(70);
+
+  	 fs.writeFileSync(thumbname, buf)
+  	 */
+
+  	 let simg = sharp(file.path)
+
+  	 simg
+  	 .metadata()
+  	 .then(metadata => {
+  	 	let res = exifReader(metadata.exif);
+  	 	console.log(res, res.exif.DateTimeOriginal);
+  	 	return simg
+ 	    .resize(100)
+   		.toBuffer()
+  	 })
+  	 .then(data => {
+  	 	fs.writeFileSync(thumbname, data)
+  	 	img.src = thumbname
+  	 })
+
+  	}
+
+}
+
+
+function handleFiles() {
+	var files = Array.from(this.files);
+	console.log(files);
+
+	console.log(Date.now())
+
+	addThumbNative(files);
+	//addThumb(files);
+}
+    </script>
+
+
+
+
+
+    <script>
+      // You can also require other files to run in this process
+      require('./renderer.js')
+    </script>
+  </body>
+</html>

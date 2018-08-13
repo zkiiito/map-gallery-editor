@@ -1,0 +1,24 @@
+{
+  "name": "map-gallery-editor",
+  "version": "1.0.0",
+  "description": "A minimal Electron application",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "repository": "https://github.com/electron/electron-quick-start",
+  "keywords": [
+    "MapGallery",
+    "Editor"
+  ],
+  "author": "zooli",
+  "license": "CC0-1.0",
+  "devDependencies": {
+    "electron": "^2.0.0",
+    "electron-rebuild": "^1.8.2"
+  },
+  "dependencies": {
+    "exif-reader": "^1.0.2",
+    "sharp": "^0.20.5"
+  }
+}
