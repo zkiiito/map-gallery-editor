@@ -64,6 +64,13 @@
             modified_at: new Date('2016-01-01 01:11:23'),
             visible: true
         },
+        {
+            id: 4,
+            from: 'Budapest',
+            to: 'Pusztamagyaród',
+            mode: 'DRIVING',
+            speed: 500
+        }
     ];
 </script>
 
@@ -72,11 +79,18 @@ Vue.use(Vuex);
 
 const store = new Vuex.Store({
     state: {
-        slides: []
+        slides: [],
+        currentSlide: null
     },
     mutations: {
         setSlides (state, slides) {
             state.slides = slides;
+            state.currentSlide = slides[0];
+        },
+        updateSlide (state, slide) {
+            for (let i in slide) {
+                state.currentSlide[i] = slide[i];
+            }
         },
         setExifDate (state, {id, exif_date}) {
             state.slides.find(el => el.id === id).exif_date = new Date(exif_date);
@@ -98,28 +112,24 @@ const store = new Vuex.Store({
 const SlideSmall = Vue.component('slidesmall', {
     props: ['slide'],
     template: `
-        <div class="slide-small">{{ slide.exif_date }} - {{ exif_date2 }}</div>
+        <div class="slide-small" v-on:click="setCurrent">{{ slide.exif_date }} - {{ slide.from }}</div>
     `,
     computed: {
         exif_date2() {
             return this.$store.state.slides.find(el => el.id === this.$vnode.key).exif_date
         }
+    },
+    methods: {
+        setCurrent: function () {
+            this.$store.state.currentSlide = this.slide;
+        }
     }
 });
 
 const MapForm = Vue.component('mapform', {
-    props: ['currentSlide'],
-    data: function () {
-        return {
-            routeFrom: 'Budapest',
-            routeTo: 'Pusztamagyaród',
-            routeMode: 'DRIVING',
-            speed: 500
-        }
-    },
     computed: {
         // https://stackoverflow.com/questions/846221/logarithmic-slider
-        routeSpeed: {
+        speed: {
             get() {
                 // position will be between 0 and 100
                 const minp = 1;
@@ -131,7 +141,7 @@ const MapForm = Vue.component('mapform', {
 
                 // calculate adjustment factor
                 const scale = (maxv-minv) / (maxp-minp);
-                const position = parseInt(this.speed);
+                const position = parseInt(this.routeSpeed);
                 return (Math.log(position)-minv) / scale + minp;
             },
             set(value) {
@@ -146,7 +156,39 @@ const MapForm = Vue.component('mapform', {
                 // calculate adjustment factor
                 const scale = (maxv-minv) / (maxp-minp);
                 var position = parseInt(value);
-                this.speed = Math.exp(minv + scale*(position-minp));
+                this.routeSpeed = Math.exp(minv + scale*(position-minp));
+            }
+        },
+        routeFrom: {
+            get() {
+                return this.$store.state.currentSlide.from;
+            },
+            set(value) {
+                return this.$store.state.currentSlide.from = value;
+            }
+        },
+        routeTo: {
+            get() {
+                return this.$store.state.currentSlide.to;
+            },
+            set(value) {
+                return this.$store.state.currentSlide.to = value;
+            }
+        },
+        routeSpeed: {
+            get() {
+                return this.$store.state.currentSlide.speed;
+            },
+            set(value) {
+                return this.$store.state.currentSlide.speed = value;
+            }
+        },
+        routeMode: {
+            get() {
+                return this.$store.state.currentSlide.mode;
+            },
+            set(value) {
+                return this.$store.state.currentSlide.mode = value;
             }
         }
     },
@@ -155,7 +197,7 @@ const MapForm = Vue.component('mapform', {
             MapAnimator.showRoute({
                 from: this.routeFrom,
                 to: this.routeTo,
-                speed: this.speed,
+                speed: this.routeSpeed,
                 mode: this.routeMode,
             }, function (err) {
                 alert(err);
@@ -163,10 +205,10 @@ const MapForm = Vue.component('mapform', {
         }
     },
     template: `
-    <form>
+    <form v-if="this.$store.state.currentSlide !== null && this.$store.state.currentSlide.from">
         <label>from: <input v-model="routeFrom" type="text"></label><br>
         <label>to: <input v-model="routeTo" type="text"></label><br>
-        <label>speed: <input v-model="routeSpeed" type="range" min="1" max="100"></label><br>
+        <label>speed: <input v-model="speed" type="range" min="1" max="100"></label><br>
         <label>mode: <select v-model="routeMode">
             <option value="DRIVING" selected>driving</option>
             <option value="FLYING">flying</option>
@@ -177,7 +219,7 @@ const MapForm = Vue.component('mapform', {
     </form>
     `,
 });
-
+/*
 const Map = Vue.component('gmap', {
     template: `
     <div :id="id" class="map"></div>
@@ -197,15 +239,15 @@ const Map = Vue.component('gmap', {
         })
     }
 });
-
+*/
 const app = new Vue({
     el: '#app',
     store,
     template: `
         <div class="app">
-            <div id="map" class="map"></div>
+            <div id="map" class="map" v-show="this.$store.state.currentSlide !== null && this.$store.state.currentSlide.from"></div>
             <!--gmap></gmap-->
-            <mapform v-model="currentSlide"></mapform>
+            <mapform></mapform>
             <draggable :options="{group: 'slides'}" v-model="slides">
                 <slidesmall v-for="slide in slides" :key="slide.id" v-bind:slide="slide"></slidesmall>
             </draggable>
@@ -221,13 +263,12 @@ const app = new Vue({
             }
         },
     },
-    data: {
-        currentSlide: null
-    },
     mounted: function () {
-        MapAnimator.mapdiv = 'map';
-        MapAnimator.animationTriggerEvent = 'center_changed';
-        MapAnimator.initialize();
+        this.$nextTick(function () {
+            MapAnimator.mapdiv = 'map';
+            MapAnimator.animationTriggerEvent = 'center_changed';
+            MapAnimator.initialize();
+        })
     }
 
 });
