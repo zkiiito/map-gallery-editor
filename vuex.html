@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <title>MapGalleryEditor vuex</title>
-
     <style>
         html, body {
             height: 100%;
@@ -11,20 +10,28 @@
             padding: 0;
         }
 
+        body,
+        button,
+        input,
+        select,
+        textarea {
+            font-family: BlinkMacSystemFont, -apple-system, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+        }
+
         .slide-small {
-            width: 200px;
-            height: 100px;
+            width: 145px;
+            min-height: 100px;
             background-color: chartreuse;
             margin: 10px;
             float: left;
             cursor: grab;
         }
 
-        .map {
-            height: 500px;
-            width: 500px;
+        #app {
+            display: flex;
         }
     </style>
+
 </head>
 <body>
 <script src="https://unpkg.com/vue@2.5.17/dist/vue.js"></script>
@@ -38,41 +45,7 @@
 
 <div id="app"></div>
 
-<script>
-    const data = [
-        {
-            id: 1,
-            filename: 'lol.jpg',
-            path: 'file://data/lol.jpg',
-            exif_date: new Date('2018-01-01 01:11:23'),
-            modified_at: new Date('2018-01-01 01:11:23'),
-            visible: true
-        },
-        {
-            id: 2,
-            filename: 'lol.jpg',
-            path: 'file://data/lol.jpg',
-            exif_date: new Date('2017-01-01 01:11:23'),
-            modified_at: new Date('2017-01-01 01:11:23'),
-            visible: true
-        },
-        {
-            id: 3,
-            filename: 'lol.jpg',
-            path: 'file://data/lol.jpg',
-            exif_date: new Date('2016-01-01 01:11:23'),
-            modified_at: new Date('2016-01-01 01:11:23'),
-            visible: true
-        },
-        {
-            id: 4,
-            from: 'Budapest',
-            to: 'Pusztamagyaród',
-            mode: 'DRIVING',
-            speed: 500
-        }
-    ];
-</script>
+<script src="data.js"></script>
 
 <script>
 Vue.use(Vuex);
@@ -85,7 +58,9 @@ const store = new Vuex.Store({
     mutations: {
         setSlides (state, slides) {
             state.slides = slides;
-            state.currentSlide = slides[0];
+        },
+        setCurrentSlide (state, slide) {
+            state.currentSlide = slide;
         },
         updateSlide (state, slide) {
             for (let i in slide) {
@@ -121,7 +96,7 @@ const SlideSmall = Vue.component('slidesmall', {
     },
     methods: {
         setCurrent: function () {
-            this.$store.state.currentSlide = this.slide;
+            this.$store.commit('setCurrentSlide', this.slide);
         }
     }
 });
@@ -164,7 +139,7 @@ const MapForm = Vue.component('mapform', {
                 return this.$store.state.currentSlide.from;
             },
             set(value) {
-                return this.$store.state.currentSlide.from = value;
+                this.$store.state.currentSlide.from = value;
             }
         },
         routeTo: {
@@ -172,7 +147,7 @@ const MapForm = Vue.component('mapform', {
                 return this.$store.state.currentSlide.to;
             },
             set(value) {
-                return this.$store.state.currentSlide.to = value;
+                this.$store.state.currentSlide.to = value;
             }
         },
         routeSpeed: {
@@ -180,7 +155,7 @@ const MapForm = Vue.component('mapform', {
                 return this.$store.state.currentSlide.speed;
             },
             set(value) {
-                return this.$store.state.currentSlide.speed = value;
+                this.$store.state.currentSlide.speed = value;
             }
         },
         routeMode: {
@@ -188,7 +163,7 @@ const MapForm = Vue.component('mapform', {
                 return this.$store.state.currentSlide.mode;
             },
             set(value) {
-                return this.$store.state.currentSlide.mode = value;
+                this.$store.state.currentSlide.mode = value;
             }
         }
     },
@@ -205,52 +180,95 @@ const MapForm = Vue.component('mapform', {
         }
     },
     template: `
-    <form v-if="this.$store.state.currentSlide !== null && this.$store.state.currentSlide.from">
-        <label>from: <input v-model="routeFrom" type="text"></label><br>
-        <label>to: <input v-model="routeTo" type="text"></label><br>
-        <label>speed: <input v-model="speed" type="range" min="1" max="100"></label><br>
-        <label>mode: <select v-model="routeMode">
-            <option value="DRIVING" selected>driving</option>
-            <option value="FLYING">flying</option>
-            <option value="WALKING">walking</option>
-        </select></label>
+    <form v-if="this.$store.state.currentSlide && this.$store.state.currentSlide.hasOwnProperty('from')">
+        <div class="field">
+            <label class="label">From</label>
+            <div class="control">
+                <input class="input" type="text" placeholder="Start location" v-model="routeFrom">
+            </div>
+        </div>
+        <div class="field">
+            <label class="label">To</label>
+            <div class="control">
+                <input class="input" type="text" placeholder="End location" v-model="routeTo">
+            </div>
+        </div>
+        <div class="field">
+            <label class="label">Speed</label>
+            <div class="control">
+                <input class="input" type="range" min="1" max="100" v-model="speed">
+            </div>
+        </div>
+        <div class="field">
+            <label class="label">Travel mode</label>
+            <div class="select">
+                <select v-model="routeMode">
+                    <option value="DRIVING" selected>driving</option>
+                    <option value="FLYING">flying</option>
+                    <option value="WALKING">walking</option>
+                </select>
+            </div>
+        </div>
 
-        <button type="button" v-on:click="start">TEST</button>
+        <div class="control">
+            <button class="button is-link" type="button" v-on:click="start">test</button>
+        </div>
     </form>
     `,
 });
-/*
-const Map = Vue.component('gmap', {
+
+const GoogleMap = Vue.component('googleMap', {
     template: `
-    <div :id="id" class="map"></div>
+    <div :id="id"></div>
     `,
     data: function () {
         return {
             id: null
         }
     },
+    computed: {
+        currentSlide: {
+            get: function () {
+                return this.$store.state.currentSlide;
+            }
+        }
+    },
     mounted: function () {
-        var that = this;
+        let that = this;
+        that.id = that._uid;
         this.$nextTick(function () {
-            that.id = that._uid;
             MapAnimator.mapdiv = that._uid;
             MapAnimator.animationTriggerEvent = 'center_changed';
             MapAnimator.initialize();
         })
+    },
+    watch: {
+        currentSlide: function (newSlide, oldSlide) {
+            if (!oldSlide || newSlide.id !== oldSlide.id) {
+                MapAnimator.stopAnimation();
+                console.log(newSlide.from)
+                if (newSlide.from) {
+                    MapAnimator.showRoute(newSlide, function(err){console.log(err)});
+                }
+            }
+        }
     }
 });
-*/
+
 const app = new Vue({
     el: '#app',
     store,
     template: `
-        <div class="app">
-            <div id="map" class="map" v-show="this.$store.state.currentSlide !== null && this.$store.state.currentSlide.from"></div>
-            <!--gmap></gmap-->
-            <mapform></mapform>
-            <draggable :options="{group: 'slides'}" v-model="slides">
-                <slidesmall v-for="slide in slides" :key="slide.id" v-bind:slide="slide"></slidesmall>
-            </draggable>
+        <div class="app" style="display: flex; flex-direction: column; height: 100%">
+            <div id="editor" style="flex-grow: 1; display: flex" v-show="{ hasCurrentSlide }">
+                <googleMap style="flex-grow: 1"></googleMap>
+                <mapform></mapform>
+            </div>
+            <div id="slides" style="overflow-x: scroll">
+                <draggable :options="{group: 'slides'}" v-model="slides" id="slideholder" v-bind:style="{ width: (hasCurrentSlide ? '900000px' : '100%') }">
+                    <slidesmall v-for="slide in slides" :key="slide.id" v-bind:slide="slide"></slidesmall>
+                </draggable>
+            </div>
         </div>
     `,
     computed: {
@@ -262,15 +280,10 @@ const app = new Vue({
                 this.$store.commit('updateOrder', value.map(el => el.id));
             }
         },
+        hasCurrentSlide() {
+            return this.$store.state.currentSlide !== null && this.$store.state.currentSlide.hasOwnProperty('from');
+        }
     },
-    mounted: function () {
-        this.$nextTick(function () {
-            MapAnimator.mapdiv = 'map';
-            MapAnimator.animationTriggerEvent = 'center_changed';
-            MapAnimator.initialize();
-        })
-    }
-
 });
 
 </script>
