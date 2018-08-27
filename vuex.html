@@ -3,39 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>MapGalleryEditor vuex</title>
-    <style>
-        html, body {
-            height: 100%;
-            margin: 0;
-            padding: 0;
-        }
-
-        body,
-        button,
-        input,
-        select,
-        textarea {
-            font-family: BlinkMacSystemFont, -apple-system, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
-        }
-
-        .slide-small {
-            width: 150px;
-            height: 120px;
-            margin: 10px;
-            float: left;
-            cursor: grab;
-        }
-
-        .slide-small img {
-            max-height: 120px;
-            box-shadow: 0 2px 5px 0 rgba(0,0,0,0.75);
-        }
-
-        #app {
-            display: flex;
-        }
-    </style>
-
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <script src="https://unpkg.com/vue@2.5.17/dist/vue.js"></script>
@@ -118,7 +86,7 @@ const SlideSmall = Vue.component('slidesmall', {
                 {{ slide.from }} - {{ slide.to }}
             </template>
             <template v-else>
-                <div class="imgholder" style="display: flex; align-items: center; justify-content: center; height: 100%">
+                <div class="imgholder">
                     <img :src="slide.thumbnail" :title="slide.filename">
                 </div>
             </template>
@@ -259,7 +227,7 @@ const MapForm = Vue.component('mapForm', {
 
 const GoogleMap = Vue.component('googleMap', {
     template: `
-    <div :id="id"></div>
+    <div :id="id" class="googleMap"></div>
     `,
     data: function () {
         return {
@@ -306,7 +274,7 @@ const GoogleMap = Vue.component('googleMap', {
 });
 
 const ImageView = Vue.component('imageView', {
-    template: `<div v-bind:style="styleObject"></div>`,
+    template: `<div class="imageview" v-bind:style="styleObject"></div>`,
     computed: {
         src: function () {
             //todo teszt linuxon
@@ -314,10 +282,6 @@ const ImageView = Vue.component('imageView', {
         },
         styleObject: function () {
             return {
-                'flex-grow': 1,
-                'background-size': 'contain',
-                'background-repeat': 'no-repeat',
-                'background-position': 'center',
                 'background-image': "url('" + this.src + "')"
             }
         }
@@ -328,16 +292,16 @@ const app = new Vue({
     el: '#app',
     store,
     template: `
-        <div class="app" style="display: flex; flex-direction: column; height: 100%">
-            <div id="editor" style="flex-grow: 1; display: flex" v-show="$store.getters.currentSlideType === 'map'">
-                <googleMap style="flex-grow: 1"></googleMap>
+        <div id="app">
+            <div id="editor" v-show="$store.getters.currentSlideType === 'map'">
+                <googleMap></googleMap>
                 <mapForm></mapForm>
             </div>
-            <div id="imageviewer" style="display: flex; flex-grow: 1"  v-show="$store.getters.currentSlideType === 'image'">
+            <div id="imageviewer" v-show="$store.getters.currentSlideType === 'image'">
                 <imageView/>
             </div>
-            <div id="slides" style="overflow-x: scroll">
-                <draggable :options="{group: 'slides'}" v-model="slides" id="slideholder" v-bind:style="{ width: ($store.getters.currentSlideType !== null ? '900000px' : '100%') }">
+            <div id="slides">
+                <draggable :options="{group: 'slides'}" v-model="slides" id="slideholder" v-bind:class="$store.getters.currentSlideType !== null ? 'small' : 'big'">
                     <slidesmall v-for="slide in slides" :key="slide.id" v-bind:slide="slide"></slidesmall>
                 </draggable>
             </div>
