@@ -398,7 +398,7 @@ const data0 = [
         from: 'Budapest',
         to: 'Pusztamagyaród',
         mode: 'DRIVING',
-        speed: 500
+        speed: 5000
     },
 ];
 data = [...data0, ...data];

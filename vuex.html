@@ -123,39 +123,51 @@ const SlideSmall = Vue.component('slidesmall', {
     }
 });
 
-const MapForm = Vue.component('mapform', {
+const LogSlider = Vue.component('logslider', {
+    // https://stackoverflow.com/questions/846221/logarithmic-slider
+    props: {
+        value: {
+            type: Number
+        },
+        minpos: {
+            default: 1,
+            type: Number
+        },
+        maxpos: {
+            default: 100,
+            type: Number
+        },
+        minval: {
+            default: Math.log(1000),
+            type: Number
+        },
+        maxval: {
+            default: Math.log(10000000),
+            type: Number
+        },
+    },
+    template: `<input class="input" type="range" :min="minpos" :max="maxpos" v-model="realValue">`,
     computed: {
-        // https://stackoverflow.com/questions/846221/logarithmic-slider
-        speed: {
+        scale: function () {
+            // calculate adjustment factor
+            return (this.maxval - this.minval) / (this.maxpos - this.minpos);
+        },
+        realValue: {
             get() {
-                // position will be between 0 and 100
-                const minp = 1;
-                const maxp = 100;
-
-                // The result should be between 100 an 10000000
-                const minv = Math.log(1000);
-                const maxv = Math.log(10000000);
-
-                // calculate adjustment factor
-                const scale = (maxv-minv) / (maxp-minp);
-                const position = parseInt(this.routeSpeed);
-                return (Math.log(position)-minv) / scale + minp;
+                const position = parseInt(this.value);
+                return (Math.log(position) - this.minval) / this.scale + this.minpos;
             },
             set(value) {
-                // position will be between 0 and 100
-                const minp = 1;
-                const maxp = 100;
-
-                // The result should be between 100 an 10000000
-                const minv = Math.log(1000);
-                const maxv = Math.log(10000000);
-
-                // calculate adjustment factor
-                const scale = (maxv-minv) / (maxp-minp);
                 var position = parseInt(value);
-                this.routeSpeed = Math.exp(minv + scale*(position-minp));
+                let v = Math.exp(this.minval + this.scale * (position - this.minpos));
+                this.$emit('input', v);
             }
-        },
+        }
+    }
+});
+
+const MapForm = Vue.component('mapform', {
+    computed: {
         routeFrom: {
             get() {
                 return this.$store.state.currentSlide.from;
@@ -211,7 +223,7 @@ const MapForm = Vue.component('mapform', {
         <div class="field">
             <label class="label">Speed</label>
             <div class="control">
-                <input class="input" type="range" min="1" max="100" v-model="speed">
+                <logslider v-model="routeSpeed"/>
             </div>
         </div>
         <div class="field">
