@@ -54,6 +54,15 @@
 <script>
 Vue.use(Vuex);
 
+const EventBus = new Vue();
+Object.defineProperties(Vue.prototype, {
+    $bus: {
+        get: function () {
+            return EventBus
+        }
+    }
+});
+
 const store = new Vuex.Store({
     state: {
         slides: [],
@@ -97,7 +106,7 @@ const SlideSmall = Vue.component('slidesmall', {
             </template>
             <template v-else>
                 <div class="imgholder" style="display: flex; align-items: center; justify-content: center; height: 100%">
-                    <img :src="slide.thumbnail">
+                    <img :src="slide.thumbnail" :title="slide.filename">
                 </div>
             </template>
         </div>
@@ -181,15 +190,8 @@ const MapForm = Vue.component('mapform', {
         }
     },
     methods: {
-        start() {
-            MapAnimator.showRoute({
-                from: this.routeFrom,
-                to: this.routeTo,
-                speed: this.routeSpeed,
-                mode: this.routeMode,
-            }, function (err) {
-                alert(err);
-            });
+        showRoute() {
+            this.$bus.$emit('map-showroute');
         }
     },
     template: `
@@ -224,7 +226,7 @@ const MapForm = Vue.component('mapform', {
         </div>
 
         <div class="control">
-            <button class="button is-link" type="button" v-on:click="start">test</button>
+            <button class="button is-link" type="button" v-on:click="showRoute">test</button>
         </div>
     </form>
     `,
@@ -253,6 +255,17 @@ const GoogleMap = Vue.component('googleMap', {
             MapAnimator.mapdiv = that._uid;
             MapAnimator.animationTriggerEvent = 'center_changed';
             MapAnimator.initialize();
+        })
+
+        this.$bus.$on('map-showroute', (event) => {
+            MapAnimator.showRoute({
+                from: this.currentSlide.from,
+                to: this.currentSlide.to,
+                speed: this.currentSlide.speed,
+                mode: this.currentSlide.mode,
+            }, function (err) {
+                alert(err);
+            });
         })
     },
     watch: {
