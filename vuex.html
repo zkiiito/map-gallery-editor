@@ -94,6 +94,19 @@ const store = new Vuex.Store({
         loadSlides ({commit}, data) {
             commit('setSlides', data);
         }
+    },
+    getters: {
+        currentSlideType: (state) => {
+            if (state.currentSlide === null) {
+                return null;
+            }
+
+            if (state.currentSlide.hasOwnProperty('from')) {
+                return 'map';
+            }
+
+            return 'image';
+        }
     }
 });
 
@@ -166,7 +179,7 @@ const LogSlider = Vue.component('logslider', {
     }
 });
 
-const MapForm = Vue.component('mapform', {
+const MapForm = Vue.component('mapForm', {
     computed: {
         routeFrom: {
             get() {
@@ -207,7 +220,7 @@ const MapForm = Vue.component('mapform', {
         }
     },
     template: `
-    <form v-if="this.$store.state.currentSlide && this.$store.state.currentSlide.hasOwnProperty('from')">
+    <form v-if="this.$store.getters.currentSlideType === 'map'">
         <div class="field">
             <label class="label">From</label>
             <div class="control">
@@ -282,11 +295,30 @@ const GoogleMap = Vue.component('googleMap', {
     },
     watch: {
         currentSlide: function (newSlide, oldSlide) {
-            if (!oldSlide || newSlide.id !== oldSlide.id) {
+            if (!oldSlide || !newSlide || newSlide.id !== oldSlide.id) {
                 MapAnimator.stopAnimation();
                 if (newSlide.from) {
                     MapAnimator.showRoute(newSlide, function(err){console.log(err)});
                 }
+            }
+        }
+    }
+});
+
+const ImageView = Vue.component('imageView', {
+    template: `<div v-bind:style="styleObject"></div>`,
+    computed: {
+        src: function () {
+            //todo teszt linuxon
+            return this.$store.getters.currentSlideType === 'image' ? this.$store.state.currentSlide.path.replace(/\\+/g, '/') : '';
+        },
+        styleObject: function () {
+            return {
+                'flex-grow': 1,
+                'background-size': 'contain',
+                'background-repeat': 'no-repeat',
+                'background-position': 'center',
+                'background-image': "url('" + this.src + "')"
             }
         }
     }
@@ -297,12 +329,15 @@ const app = new Vue({
     store,
     template: `
         <div class="app" style="display: flex; flex-direction: column; height: 100%">
-            <div id="editor" style="flex-grow: 1; display: flex" v-show="{ hasCurrentSlide }">
+            <div id="editor" style="flex-grow: 1; display: flex" v-show="$store.getters.currentSlideType === 'map'">
                 <googleMap style="flex-grow: 1"></googleMap>
-                <mapform></mapform>
+                <mapForm></mapForm>
+            </div>
+            <div id="imageviewer" style="display: flex; flex-grow: 1"  v-show="$store.getters.currentSlideType === 'image'">
+                <imageView/>
             </div>
             <div id="slides" style="overflow-x: scroll">
-                <draggable :options="{group: 'slides'}" v-model="slides" id="slideholder" v-bind:style="{ width: (hasCurrentSlide ? '900000px' : '100%') }">
+                <draggable :options="{group: 'slides'}" v-model="slides" id="slideholder" v-bind:style="{ width: ($store.getters.currentSlideType !== null ? '900000px' : '100%') }">
                     <slidesmall v-for="slide in slides" :key="slide.id" v-bind:slide="slide"></slidesmall>
                 </draggable>
             </div>
@@ -316,9 +351,6 @@ const app = new Vue({
             set(value) {
                 this.$store.commit('updateOrder', value.map(el => el.id));
             }
-        },
-        hasCurrentSlide() {
-            return this.$store.state.currentSlide !== null && this.$store.state.currentSlide.hasOwnProperty('from');
         }
     },
 });
