@@ -19,12 +19,16 @@
         }
 
         .slide-small {
-            width: 145px;
-            min-height: 100px;
-            background-color: chartreuse;
+            width: 150px;
+            height: 120px;
             margin: 10px;
             float: left;
             cursor: grab;
+        }
+
+        .slide-small img {
+            max-height: 120px;
+            box-shadow: 0 2px 5px 0 rgba(0,0,0,0.75);
         }
 
         #app {
@@ -78,7 +82,7 @@ const store = new Vuex.Store({
         }
     },
     actions: {
-        loadSlides ({commit}) {
+        loadSlides ({commit}, data) {
             commit('setSlides', data);
         }
     }
@@ -87,7 +91,16 @@ const store = new Vuex.Store({
 const SlideSmall = Vue.component('slidesmall', {
     props: ['slide'],
     template: `
-        <div class="slide-small" v-on:click="setCurrent">{{ slide.exif_date }} - {{ slide.from }}</div>
+        <div class="slide-small" v-on:click="setCurrent">
+            <template v-if="slide.from">
+                {{ slide.from }} - {{ slide.to }}
+            </template>
+            <template v-else>
+                <div class="imgholder" style="display: flex; align-items: center; justify-content: center; height: 100%">
+                    <img :src="slide.thumbnail">
+                </div>
+            </template>
+        </div>
     `,
     computed: {
         exif_date2() {
@@ -246,7 +259,6 @@ const GoogleMap = Vue.component('googleMap', {
         currentSlide: function (newSlide, oldSlide) {
             if (!oldSlide || newSlide.id !== oldSlide.id) {
                 MapAnimator.stopAnimation();
-                console.log(newSlide.from)
                 if (newSlide.from) {
                     MapAnimator.showRoute(newSlide, function(err){console.log(err)});
                 }
@@ -289,7 +301,7 @@ const app = new Vue({
 </script>
 
 <script>
-    store.dispatch("loadSlides");
+    store.dispatch("loadSlides", data);
 </script>
 
 </body>

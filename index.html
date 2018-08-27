@@ -14,6 +14,17 @@
     const sharp = require('sharp')
     const exifReader = require('exif-reader')
 
+    const dataTemplate =     {
+        filename: 'lol.jpg',
+        path: 'file://data/lol.jpg',
+        exif_date: new Date('2016-01-01 01:11:23'),
+        modified_at: new Date('2016-01-01 01:11:23'),
+        visible: true
+    };
+
+    let slides = [];
+
+
     var inputElement = document.getElementById("input");
     inputElement.addEventListener("change", handleFiles, false);
 
@@ -35,6 +46,7 @@
                 addThumbNative(files);
             } else {
                 console.log(Date.now())
+                console.log(JSON.stringify(slides));
             }
         }
 
@@ -49,9 +61,20 @@
                 .metadata()
                 .then(metadata => {
                     let res = exifReader(metadata.exif);
-                    console.log(res, res.exif.DateTimeOriginal);
+                    //console.log(res, res.exif.DateTimeOriginal);
+
+                    var stats = fs.statSync(file.path);
+                    slides.push({ ...dataTemplate, ...{
+                            filename: file.name,
+                            thumbnail: thumbname,
+                            path: file.path,
+                            exif_date: res.exif.DateTimeOriginal,
+                            modified_at: stats.mtime
+                        }});
+
                     return simg
-                        .resize(100)
+                        .resize(150, 150)
+                        .max()
                         .toBuffer()
                 })
                 .then(data => {
