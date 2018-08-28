@@ -3,6 +3,8 @@
 </template>
 
 <script>
+/* global MapAnimator */
+
 export default {
     name: 'GoogleMap',
     data() {
@@ -11,29 +13,26 @@ export default {
         };
     },
     computed: {
-        currentSlide: {
-            get() {
-                return this.$store.state.currentSlide;
-            },
+        currentSlide() {
+            return this.$store.state.currentSlide;
         },
     },
     mounted() {
-        const that = this;
-        that.id = that._uid;
+        this.id = this._uid;
         this.$nextTick(() => {
-            MapAnimator.mapdiv = that._uid;
+            MapAnimator.mapdiv = this.id;
             MapAnimator.animationTriggerEvent = 'center_changed';
             MapAnimator.initialize();
         });
 
-        this.$bus.$on('map-showroute', (event) => {
+        this.$bus.$on('map-showroute', () => {
             MapAnimator.showRoute({
                 from: this.currentSlide.from,
                 to: this.currentSlide.to,
                 speed: this.currentSlide.speed,
                 mode: this.currentSlide.mode,
             }, (err) => {
-                alert(err);
+                this.$bus.$emit('map-error', err);
             });
         });
     },
@@ -42,7 +41,9 @@ export default {
             if (!oldSlide || !newSlide || newSlide.id !== oldSlide.id) {
                 MapAnimator.stopAnimation();
                 if (newSlide.from) {
-                    MapAnimator.showRoute(newSlide, (err) => { console.log(err); });
+                    MapAnimator.showRoute(newSlide, (err) => {
+                        this.$bus.$emit('map-error', err);
+                    });
                 }
             }
         },

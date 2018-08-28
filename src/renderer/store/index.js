@@ -15,14 +15,6 @@ export default new Vuex.Store({
         setCurrentSlide(state, slide) {
             state.currentSlide = slide;
         },
-        updateSlide(state, slide) {
-            for (const i in slide) {
-                state.currentSlide[i] = slide[i];
-            }
-        },
-        setExifDate(state, { id, exif_date }) {
-            state.slides.find(el => el.id === id).exif_date = new Date(exif_date);
-        },
         updateOrder(state, ids) {
             state.slides = ids.reduce((newSlides, id) => {
                 newSlides.push(state.slides.find(el => el.id === id));
@@ -47,7 +39,7 @@ export default new Vuex.Store({
                 return null;
             }
 
-            if (state.currentSlide.hasOwnProperty('from')) {
+            if (Object.prototype.hasOwnProperty.call(state.currentSlide, 'from')) {
                 return 'map';
             }
 

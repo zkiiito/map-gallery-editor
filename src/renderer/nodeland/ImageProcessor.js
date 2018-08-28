@@ -10,17 +10,6 @@ const imageSlideTemplate = {
     visible: true,
 };
 
-function processNewImages(files) {
-    return new Promise((resolve, reject) => {
-        const promises = files.map(generateSlideData);
-
-        Promise.all(promises).then((results) => {
-            console.log(Date.now());
-            return resolve(results);
-        });
-    });
-}
-
 function generateSlideData(file) {
     return new Promise(async (resolve, reject) => {
         const thumbname = `${__dirname}/thumbs/thumb_${file.name}`;
@@ -54,6 +43,11 @@ function generateSlideData(file) {
 
         return resolve(res);
     });
+}
+
+function processNewImages(files) {
+    const promises = files.map(generateSlideData);
+    return Promise.all(promises);
 }
 
 export default {
