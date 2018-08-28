@@ -406,3 +406,8 @@ let id = 1;
 data.forEach(el => {
     el.id = id++;
 })
+
+var userAgent = navigator.userAgent.toLowerCase();
+if (userAgent.indexOf(' electron/') < 0) {
+    store.dispatch("loadSlides", data);
+}

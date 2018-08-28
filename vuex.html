@@ -17,7 +17,7 @@
 
 <div id="app"></div>
 
-<script src="data.js"></script>
+<script src="ImageProcessor.js"></script>
 
 <script>
 Vue.use(Vuex);
@@ -59,6 +59,9 @@ const store = new Vuex.Store({
         },
         addSlide (state, slide) {
             state.slides.push(slide);
+        },
+        addSlides (state, slides) {
+            state.slides = state.slides.concat(slides);
         }
     },
     actions: {
@@ -306,8 +309,11 @@ const app = new Vue({
             <div id="slides">
                 <draggable :options="{group: 'slides', draggable: '.draggable'}" v-model="slides" id="slideholder" v-bind:class="$store.getters.currentSlideType !== null ? 'small' : 'big'">
                     <slidesmall v-for="slide in slides" :key="slide.id" v-bind:slide="slide" class="draggable"></slidesmall>
-                    <div class="slide-small" v-on:click="addMapSlide" id="addMapSlide">
+                    <div class="slide-small" v-on:click="addMapSlide">
                         Add map slide
+                    </div>
+                    <div class="slide-small">
+                        <label>Add images<input type="file" multiple id="addImages" style="display: none" v-on:change="addImages" accept="image/*"></label>
                     </div>
                 </draggable>
             </div>
@@ -332,15 +338,19 @@ const app = new Vue({
                 speed: 5000,
                 mode: 'DRIVING'
             })
+        },
+        addImages: function (event) {
+            const files = Array.from(event.target.files);
+            processNewImages(files).then((slides) => {
+                this.$store.commit('addSlides', slides);
+            });
         }
     }
 });
 
 </script>
 
-<script>
-    store.dispatch("loadSlides", data);
-</script>
+<script src="data.js"></script>
 
 </body>
 </html>

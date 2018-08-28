@@ -6,89 +6,18 @@
 </head>
 <body>
 <h1>Hello World!</h1>
-<input type="file" id="input" multiple>
-<div id="images"></div>
+<input type="file" id="input" multiple accept="image/*">
 
+<script src="ImageProcessor.js"></script>
 <script>
-    const fs = require('fs')
-    const sharp = require('sharp')
-    const exifReader = require('exif-reader')
-
-    const dataTemplate =     {
-        filename: 'lol.jpg',
-        path: 'file://data/lol.jpg',
-        exif_date: new Date('2016-01-01 01:11:23'),
-        modified_at: new Date('2016-01-01 01:11:23'),
-        visible: true
-    };
-
-    let slides = [];
-
-
     var inputElement = document.getElementById("input");
     inputElement.addEventListener("change", handleFiles, false);
 
-    var list = document.createElement("ul");
-    document.getElementById('images').appendChild(list);
-
-    function addThumbNative(files) {
-        let li = document.createElement("li");
-        list.appendChild(li);
-
-        let file = files.shift();
-
-        let img = document.createElement("img");
-
-        img.onload = function () {
-            li.appendChild(img);
-
-            if (files.length) {
-                addThumbNative(files);
-            } else {
-                console.log(Date.now())
-                console.log(JSON.stringify(slides));
-            }
-        }
-
-        let thumbname = __dirname + '/thumbs/thumb_' + file.name
-
-        if (0 && fs.existsSync(thumbname)) {
-            img.src = thumbname
-        } else {
-            let simg = sharp(file.path)
-
-            simg
-                .metadata()
-                .then(metadata => {
-                    let res = exifReader(metadata.exif);
-                    //console.log(res, res.exif.DateTimeOriginal);
-
-                    var stats = fs.statSync(file.path);
-                    slides.push({ ...dataTemplate, ...{
-                            filename: file.name,
-                            thumbnail: thumbname,
-                            path: file.path,
-                            exif_date: res.exif.DateTimeOriginal,
-                            modified_at: stats.mtime
-                        }});
-
-                    return simg
-                        .resize(150, 150)
-                        .max()
-                        .toBuffer()
-                })
-                .then(data => {
-                    fs.writeFileSync(thumbname, data)
-                    img.src = thumbname
-                })
-        }
-    }
-
     function handleFiles() {
         var files = Array.from(this.files);
-        console.log(files);
-        console.log(Date.now())
-        addThumbNative(files);
+        //console.log(files);
+        console.log(Date.now());
+        processNewImages(files);
     }
 </script>
 </body>
