@@ -13,18 +13,18 @@
 
 <script>
 export default {
-  name: 'SlidePreview',
-  props: ['slide'],
-  computed: {
-    exif_date2() {
-      return this.$store.state.slides.find(el => el.id === this.$vnode.key).exif_date;
+    name: 'SlidePreview',
+    props: ['slide'],
+    computed: {
+        exif_date2() {
+            return this.$store.state.slides.find(el => el.id === this.$vnode.key).exif_date;
+        },
     },
-  },
-  methods: {
-    setCurrent: function () {
-      this.$store.commit('setCurrentSlide', this.slide);
+    methods: {
+        setCurrent() {
+            this.$store.commit('setCurrentSlide', this.slide);
+        },
     },
-  },
 };
 </script>
 

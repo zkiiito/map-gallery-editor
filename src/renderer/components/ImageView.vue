@@ -4,18 +4,18 @@
 
 <script>
 export default {
-  name: 'ImageView',
-  computed: {
-    src() {
-      // todo teszt linuxon
-      return this.$store.getters.currentSlideType === 'image' ? this.$store.state.currentSlide.path.replace(/\\+/g, '/') : '';
+    name: 'ImageView',
+    computed: {
+        src() {
+            // todo teszt linuxon
+            return this.$store.getters.currentSlideType === 'image' ? this.$store.state.currentSlide.path.replace(/\\+/g, '/') : '';
+        },
+        styleObject() {
+            return {
+                'background-image': `url('${this.src}')`,
+            };
+        },
     },
-    styleObject() {
-      return {
-        'background-image': `url('${this.src}')`,
-      };
-    },
-  },
 };
 </script>
 

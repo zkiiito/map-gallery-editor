@@ -39,47 +39,47 @@
 import LogarithmicSlider from './LogarithmicSlider.vue';
 
 export default {
-  name: 'GoogleMapForm',
-  components: { LogarithmicSlider },
-  computed: {
-    routeFrom: {
-      get() {
-        return this.$store.state.currentSlide.from;
-      },
-      set(value) {
-        this.$store.state.currentSlide.from = value;
-      },
+    name: 'GoogleMapForm',
+    components: { LogarithmicSlider },
+    computed: {
+        routeFrom: {
+            get() {
+                return this.$store.state.currentSlide.from;
+            },
+            set(value) {
+                this.$store.state.currentSlide.from = value;
+            },
+        },
+        routeTo: {
+            get() {
+                return this.$store.state.currentSlide.to;
+            },
+            set(value) {
+                this.$store.state.currentSlide.to = value;
+            },
+        },
+        routeSpeed: {
+            get() {
+                return this.$store.state.currentSlide.speed;
+            },
+            set(value) {
+                this.$store.state.currentSlide.speed = value;
+            },
+        },
+        routeMode: {
+            get() {
+                return this.$store.state.currentSlide.mode;
+            },
+            set(value) {
+                this.$store.state.currentSlide.mode = value;
+            },
+        },
     },
-    routeTo: {
-      get() {
-        return this.$store.state.currentSlide.to;
-      },
-      set(value) {
-        this.$store.state.currentSlide.to = value;
-      },
+    methods: {
+        showRoute() {
+            this.$bus.$emit('map-showroute');
+        },
     },
-    routeSpeed: {
-      get() {
-        return this.$store.state.currentSlide.speed;
-      },
-      set(value) {
-        this.$store.state.currentSlide.speed = value;
-      },
-    },
-    routeMode: {
-      get() {
-        return this.$store.state.currentSlide.mode;
-      },
-      set(value) {
-        this.$store.state.currentSlide.mode = value;
-      },
-    },
-  },
-  methods: {
-    showRoute() {
-      this.$bus.$emit('map-showroute');
-    },
-  },
 };
 </script>
 

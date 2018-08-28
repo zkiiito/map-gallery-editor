@@ -34,38 +34,38 @@ import SlidePreview from './components/SlidePreview.vue';
 import ImageProcessor from './nodeland/ImageProcessor.js';
 
 export default {
-  name: 'app',
-  components: {
-    GoogleMap, GoogleMapForm, ImageView, SlidePreview, draggable,
-  },
-  computed: {
-    slides: {
-      get() {
-        return this.$store.state.slides;
-      },
-      set(value) {
-        this.$store.commit('updateOrder', value.map(el => el.id));
-      },
+    name: 'app',
+    components: {
+        GoogleMap, GoogleMapForm, ImageView, SlidePreview, draggable,
     },
-  },
-  methods: {
-    addMapSlide: function () {
-      this.$store.commit('addSlide', {
-        id: Math.random(),
-        from: 'Budapest',
-        to: 'Vienna',
-        speed: 5000,
-        mode: 'DRIVING',
-      });
+    computed: {
+        slides: {
+            get() {
+                return this.$store.state.slides;
+            },
+            set(value) {
+                this.$store.commit('updateOrder', value.map(el => el.id));
+            },
+        },
     },
-    addImages: function () {
-      const files = Array.from(event.target.files);
+    methods: {
+        addMapSlide() {
+            this.$store.commit('addSlide', {
+                id: Math.random(),
+                from: 'Budapest',
+                to: 'Vienna',
+                speed: 5000,
+                mode: 'DRIVING',
+            });
+        },
+        addImages() {
+            const files = Array.from(event.target.files);
 
-      ImageProcessor.processNewImages(files).then((slides) => {
-        this.$store.commit('addSlides', slides);
-      });
+            ImageProcessor.processNewImages(files).then((slides) => {
+                this.$store.commit('addSlides', slides);
+            });
+        },
     },
-  },
 };
 </script>
 

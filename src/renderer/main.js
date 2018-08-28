@@ -11,15 +11,15 @@ Vue.config.productionTip = false;
 const EventBus = new Vue();
 Object.defineProperties(Vue.prototype, {
     $bus: {
-        get: function () {
-            return EventBus
-        }
-    }
+        get() {
+            return EventBus;
+        },
+    },
 });
 
 /* eslint-disable no-new */
 new Vue({
-  components: { App },
-  store,
-  template: '<App/>',
+    components: { App },
+    store,
+    template: '<App/>',
 }).$mount('#app');
