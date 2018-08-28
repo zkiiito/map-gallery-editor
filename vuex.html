@@ -56,6 +56,9 @@ const store = new Vuex.Store({
                 newSlides.push(state.slides.find(el => el.id === id))
                 return newSlides;
             }, []);
+        },
+        addSlide (state, slide) {
+            state.slides.push(slide);
         }
     },
     actions: {
@@ -301,8 +304,11 @@ const app = new Vue({
                 <imageView/>
             </div>
             <div id="slides">
-                <draggable :options="{group: 'slides'}" v-model="slides" id="slideholder" v-bind:class="$store.getters.currentSlideType !== null ? 'small' : 'big'">
-                    <slidesmall v-for="slide in slides" :key="slide.id" v-bind:slide="slide"></slidesmall>
+                <draggable :options="{group: 'slides', draggable: '.draggable'}" v-model="slides" id="slideholder" v-bind:class="$store.getters.currentSlideType !== null ? 'small' : 'big'">
+                    <slidesmall v-for="slide in slides" :key="slide.id" v-bind:slide="slide" class="draggable"></slidesmall>
+                    <div class="slide-small" v-on:click="addMapSlide" id="addMapSlide">
+                        Add map slide
+                    </div>
                 </draggable>
             </div>
         </div>
@@ -317,6 +323,17 @@ const app = new Vue({
             }
         }
     },
+    methods: {
+        addMapSlide: function () {
+            this.$store.commit('addSlide', {
+                id: Math.random(),
+                from: 'Budapest',
+                to: 'Vienna',
+                speed: 5000,
+                mode: 'DRIVING'
+            })
+        }
+    }
 });
 
 </script>
