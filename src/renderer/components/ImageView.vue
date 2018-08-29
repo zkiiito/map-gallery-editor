@@ -8,8 +8,8 @@ export default {
     computed: {
         src() {
             // todo teszt linuxon
-            return this.$store.getters.currentSlideType === 'image' ?
-                this.$store.state.currentSlide.path.replace(/\\+/g, '/') : '';
+            return this.$store.getters.currentSlideType === 'image'
+                ? this.$store.state.currentSlide.path.replace(/\\+/g, '/') : '';
         },
         styleObject() {
             return {

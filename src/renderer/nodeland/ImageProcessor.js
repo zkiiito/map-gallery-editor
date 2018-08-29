@@ -12,13 +12,15 @@ const imageSlideTemplate = {
 
 function generateSlideData(file) {
     return new Promise(async (resolve, reject) => {
-        const thumbname = `${__dirname}/thumbs/thumb_${file.name}`;
+        // const thumbname = `${__dirname}/thumbs/thumb_${file.name}`;
+        const thumbname = `C:/thumbs/thumb_${file.name}`;
         const simg = sharp(file.path);
 
         const metadata = await simg.metadata();
         const exifdate = metadata.exif ? exifReader(metadata.exif).exif.DateTimeOriginal : file.lastModifiedDate;
 
-        const res = { ...imageSlideTemplate,
+        const res = {
+            ...imageSlideTemplate,
             ...{
                 id: Math.random(9999999),
                 filename: file.name,
@@ -26,7 +28,8 @@ function generateSlideData(file) {
                 path: file.path,
                 exif_date: exifdate,
                 modified_at: file.lastModifiedDate,
-            } };
+            },
+        };
 
         if (!fs.existsSync(thumbname) || fs.statSync(thumbname).mtime < file.lastModifiedDate) {
             const thumbData = await simg
