@@ -28,6 +28,28 @@ export default new Vuex.Store({
         addSlides(state, slides) {
             state.slides = state.slides.concat(slides);
         },
+        moveSlide(state, diff) {
+            const slideCount = state.slides.length;
+
+            if (slideCount > 0) {
+                if (state.currentSlide === null) {
+                    state.currentSlide = state.slides[slideCount - 1];
+                } else {
+                    let idx = state.slides.indexOf(state.currentSlide);
+                    idx += diff;
+
+                    while (idx < 0) {
+                        idx += slideCount;
+                    }
+
+                    while (idx >= slideCount) {
+                        idx -= slideCount;
+                    }
+
+                    state.currentSlide = state.slides[idx];
+                }
+            }
+        },
     },
     actions: {
         loadSlides({ commit }, data) {

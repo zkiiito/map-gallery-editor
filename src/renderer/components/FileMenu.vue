@@ -4,7 +4,10 @@
         <button v-on:click="openProject">Open</button>
         <button v-on:click="saveProject">Save</button>
         <button v-on:click="saveProjectAs">SaveAs</button>
-        <input type="text" v-bind:value="fileName" readonly size="100"/>
+        <input type="text" v-bind:value="fileName" readonly size="50"/>
+        <button v-on:click="prevSlide">&lt;</button>
+        <button v-on:click="nextSlide">&gt;</button>
+        <button v-on:click="closeSlide" v-show="this.$store.state.currentSlide">X</button>
     </div>
 </template>
 
@@ -51,6 +54,15 @@
                         this.saveProject();
                     }
                 });
+            },
+            prevSlide() {
+                this.$store.commit('moveSlide', -1);
+            },
+            nextSlide() {
+                this.$store.commit('moveSlide', 1);
+            },
+            closeSlide() {
+                this.$store.commit('setCurrentSlide', null);
             },
         },
     };
