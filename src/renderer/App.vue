@@ -2,11 +2,11 @@
   <div id="app">
     <FileMenu/>
     <div id="editor" v-show="$store.getters.currentSlideType === 'map'">
-      <GoogleMap></GoogleMap>
-      <GoogleMapForm></GoogleMapForm>
+      <GoogleMap class="flexgrow"/>
+      <GoogleMapForm/>
     </div>
     <div id="imageviewer" v-show="$store.getters.currentSlideType === 'image'">
-      <imageView/>
+      <ImageView class="flexgrow"/>
     </div>
     <div id="slides">
       <draggable :options="{group: 'slides', draggable: '.draggable'}" v-model="slides" id="slideholder"
@@ -38,7 +38,7 @@ import ImageProcessor from './nodeland/ImageProcessor.js';
 export default {
     name: 'app',
     components: {
-        GoogleMap, GoogleMapForm, ImageView, SlidePreview, draggable, FileMenu
+        GoogleMap, GoogleMapForm, ImageView, SlidePreview, draggable, FileMenu,
     },
     computed: {
         slides: {
@@ -109,14 +109,7 @@ export default {
     width: 900000px;
   }
 
-  .imageview {
-    flex-grow: 1;
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-  }
-
-  .googleMap {
+  .flexgrow {
     flex-grow: 1;
   }
 </style>

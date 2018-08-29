@@ -17,7 +17,7 @@
 
     export default {
         name: 'FileMenu',
-        data: function () {
+        data() {
             return {
                 fileName: '',
             };

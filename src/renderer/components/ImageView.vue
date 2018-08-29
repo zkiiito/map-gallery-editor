@@ -21,5 +21,9 @@ export default {
 </script>
 
 <style scoped>
-
+    .imageview {
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+    }
 </style>
