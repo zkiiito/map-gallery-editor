@@ -68,6 +68,13 @@ export default {
             });
         },
     },
+    mounted() {
+        document.getElementById('slides').addEventListener('wheel', function (evt) {
+            if (this.className.indexOf('small')) {
+                this.scrollLeft += evt.deltaY;
+            }
+        });
+    },
 };
 </script>
 
