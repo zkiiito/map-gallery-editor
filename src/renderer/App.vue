@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <FileMenu/>
     <div id="editor" v-show="$store.getters.currentSlideType === 'map'">
       <GoogleMap></GoogleMap>
       <GoogleMapForm></GoogleMapForm>
@@ -30,13 +31,14 @@ import GoogleMap from './components/GoogleMap.vue';
 import GoogleMapForm from './components/GoogleMapForm.vue';
 import ImageView from './components/ImageView.vue';
 import SlidePreview from './components/SlidePreview.vue';
+import FileMenu from './components/FileMenu.vue';
 
 import ImageProcessor from './nodeland/ImageProcessor.js';
 
 export default {
     name: 'app',
     components: {
-        GoogleMap, GoogleMapForm, ImageView, SlidePreview, draggable,
+        GoogleMap, GoogleMapForm, ImageView, SlidePreview, draggable, FileMenu
     },
     computed: {
         slides: {
@@ -58,7 +60,7 @@ export default {
                 mode: 'DRIVING',
             });
         },
-        addImages() {
+        addImages(event) {
             const files = Array.from(event.target.files);
 
             ImageProcessor.processNewImages(files).then((slides) => {
@@ -116,7 +118,7 @@ export default {
   }
 
   #slides {
-    overflow-x: scroll;
+    overflow-x: auto;
   }
 
   #slideholder.big {

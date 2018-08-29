@@ -11,6 +11,7 @@ export default new Vuex.Store({
     mutations: {
         setSlides(state, slides) {
             state.slides = slides;
+            state.currentSlide = null;
         },
         setCurrentSlide(state, slide) {
             state.currentSlide = slide;
@@ -45,5 +46,6 @@ export default new Vuex.Store({
 
             return 'image';
         },
+        fileData: state => JSON.stringify(state.slides),
     },
 });

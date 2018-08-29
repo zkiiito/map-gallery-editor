@@ -40,7 +40,7 @@ export default {
         currentSlide(newSlide, oldSlide) {
             if (!oldSlide || !newSlide || newSlide.id !== oldSlide.id) {
                 MapAnimator.stopAnimation();
-                if (newSlide.from) {
+                if (newSlide && newSlide.from) {
                     MapAnimator.showRoute(newSlide, (err) => {
                         this.$bus.$emit('map-error', err);
                     });
