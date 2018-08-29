@@ -86,26 +86,6 @@ export default {
     font-family: BlinkMacSystemFont, -apple-system, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
   }
 
-  .slide-small {
-    width: 150px;
-    height: 120px;
-    margin: 10px;
-    float: left;
-    cursor: grab;
-  }
-
-  .slide-small .imgholder {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-  }
-
-  .slide-small img {
-    max-height: 120px;
-    box-shadow: 0 2px 5px 0 rgba(0,0,0,0.75);
-  }
-
   #app {
     display: flex;
     flex-direction: column;
