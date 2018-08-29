@@ -22,7 +22,7 @@ function createWindow() {
         useContentSize: true,
         width: 1000,
         webPreferences: {
-            webSecurity: false,
+            webSecurity: process.env.NODE_ENV !== 'development',
         },
     });
 
