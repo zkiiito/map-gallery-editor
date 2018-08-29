@@ -33,7 +33,7 @@ export default new Vuex.Store({
 
             if (slideCount > 0) {
                 if (state.currentSlide === null) {
-                    state.currentSlide = state.slides[slideCount - 1];
+                    state.currentSlide = state.slides[0];
                 } else {
                     let idx = state.slides.indexOf(state.currentSlide);
                     idx += diff;
@@ -49,6 +49,19 @@ export default new Vuex.Store({
                     state.currentSlide = state.slides[idx];
                 }
             }
+        },
+        orderByExif(state) {
+            state.slides.sort((a, b) => {
+                if (a.exif_date && b.exif_date) {
+                    return a.exif_date.getTime() - b.exif_date.getTime();
+                }
+
+                if (a.exif_date) {
+                    return 1;
+                }
+
+                return -1;
+            });
         },
     },
     actions: {

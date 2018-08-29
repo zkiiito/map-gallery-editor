@@ -5,6 +5,7 @@
         <button v-on:click="saveProject">Save</button>
         <button v-on:click="saveProjectAs">SaveAs</button>
         <input type="text" v-bind:value="fileName" readonly size="50"/>
+        <button v-on:click="orderExif">EXIF</button>
         <button v-on:click="prevSlide">&lt;</button>
         <button v-on:click="nextSlide">&gt;</button>
         <button v-on:click="closeSlide" v-show="this.$store.state.currentSlide">X</button>
@@ -31,8 +32,21 @@
                 dialog.showOpenDialog({ properties: ['openFile'] }, (filename) => {
                     this.fileName = filename.toString();
                     fs.readFile(this.fileName, 'utf-8', (err, data) => {
-                        const parsedData = JSON.parse(data);
+                        let parsedData = JSON.parse(data);
+
                         // todo: verify, update thumbnails
+                        parsedData = parsedData.map((slide) => {
+                            if (slide.exif_date) {
+                                slide.exif_date = new Date(slide.exif_date);
+                            }
+
+                            if (slide.modified_at) {
+                                slide.modified_at = new Date(slide.modified_at);
+                            }
+
+                            return slide;
+                        });
+
                         this.$store.dispatch('loadSlides', parsedData);
                     });
                 });
@@ -63,6 +77,9 @@
             },
             closeSlide() {
                 this.$store.commit('setCurrentSlide', null);
+            },
+            orderExif() {
+                this.$store.commit('orderByExif');
             },
         },
     };
