@@ -12,10 +12,10 @@
       <draggable :options="{group: 'slides', draggable: '.draggable'}" v-model="slides" id="slideholder"
                  v-bind:class="$store.getters.currentSlideType !== null ? 'small' : 'big'">
         <SlidePreview v-for="slide in slides" :key="slide.id" v-bind:slide="slide" class="draggable"/>
-        <div class="slide-small" v-on:click="addMapSlide">
+        <div style="float: left; width: 150px" v-on:click="addMapSlide">
           Add map slide
         </div>
-        <div class="slide-small">
+        <div style="float: left; width: 150px">
           <label>Add images
             <input type="file" multiple id="addImages" style="display: none" v-on:change="addImages" accept="image/*">
           </label>
