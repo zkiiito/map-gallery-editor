@@ -1,6 +1,7 @@
 const fs = require('fs');
 const sharp = require('sharp');
 const exifReader = require('exif-reader');
+const uuidv4 = require('uuid/v4');
 
 const imageSlideTemplate = {
     filename: 'lol.jpg',
@@ -22,7 +23,7 @@ function generateSlideData(file) {
         const res = {
             ...imageSlideTemplate,
             ...{
-                id: Math.random(9999999),
+                id: uuidv4(),
                 filename: file.name,
                 thumbnail: thumbname,
                 path: file.path,

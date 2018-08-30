@@ -34,6 +34,7 @@ import SlidePreview from './components/SlidePreview.vue';
 import FileMenu from './components/FileMenu.vue';
 
 import ImageProcessor from './nodeland/ImageProcessor.js';
+const uuidv4 = require('uuid/v4');
 
 export default {
     name: 'app',
@@ -53,7 +54,7 @@ export default {
     methods: {
         addMapSlide() {
             this.$store.commit('addSlide', {
-                id: Math.random(),
+                id: uuidv4(),
                 from: 'Budapest',
                 to: 'Vienna',
                 speed: 5000,

@@ -6,12 +6,13 @@
 /* global MapAnimator */
 const loadGoogleMapsApi = require('load-google-maps-api');
 const LoadJS = require('load-js');
+const uuidv4 = require('uuid/v4');
 
 export default {
     name: 'GoogleMap',
     data() {
         return {
-            id: null,
+            id: uuidv4(),
         };
     },
     computed: {
@@ -23,7 +24,6 @@ export default {
         loadGoogleMapsApi({ key: 'AIzaSyBxibPU_2mMsI8c5o0wVeG6uBnxps0c6wE' })
             .then(() => LoadJS(['static/MapGallery/scripts/v3_epoly.js', 'static/MapGallery/scripts/MapAnimator.js']))
             .then(() => {
-                this.id = this._uid;
                 this.$nextTick(() => {
                     MapAnimator.mapdiv = this.id;
                     MapAnimator.animationTriggerEvent = 'center_changed';
