@@ -13,7 +13,7 @@ export default {
         },
         styleObject() {
             return {
-                'background-image': `url('${this.src}')`,
+                'background-image': `url('file:${this.src}')`,
             };
         },
     },

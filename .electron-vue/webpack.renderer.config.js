@@ -10,6 +10,7 @@ const BabiliWebpackPlugin = require('babili-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const WriteFilePlugin = require('write-file-webpack-plugin');
 
 /**
  * List of node_modules to include in webpack bundle
@@ -125,7 +126,22 @@ let rendererConfig = {
         : false
     }),
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoEmitOnErrorsPlugin()
+    new webpack.NoEmitOnErrorsPlugin(),
+    new WriteFilePlugin(), //needed for CopyWebpackPlugin in webpack-dev-server
+    new CopyWebpackPlugin([
+        {
+            from: path.join(__dirname, '../node_modules/MapGallery/css'),
+            to: path.join(__dirname, '../static/MapGallery/css'),
+        },
+        {
+            from: path.join(__dirname, '../node_modules/MapGallery/scripts'),
+            to: path.join(__dirname, '../static/MapGallery/scripts'),
+        },
+        {
+            from: path.join(__dirname, '../node_modules/MapGallery/index.html'),
+            to: path.join(__dirname, '../static/MapGallery/index.html'),
+        },
+    ]),
   ],
   output: {
     filename: '[name].js',

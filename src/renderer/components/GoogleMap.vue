@@ -4,6 +4,8 @@
 
 <script>
 /* global MapAnimator */
+const loadGoogleMapsApi = require('load-google-maps-api');
+const LoadJS = require('load-js');
 
 export default {
     name: 'GoogleMap',
@@ -18,23 +20,27 @@ export default {
         },
     },
     mounted() {
-        this.id = this._uid;
-        this.$nextTick(() => {
-            MapAnimator.mapdiv = this.id;
-            MapAnimator.animationTriggerEvent = 'center_changed';
-            MapAnimator.initialize();
-        });
+        loadGoogleMapsApi({ key: 'AIzaSyBxibPU_2mMsI8c5o0wVeG6uBnxps0c6wE' })
+            .then(() => LoadJS(['static/MapGallery/scripts/v3_epoly.js', 'static/MapGallery/scripts/MapAnimator.js']))
+            .then(() => {
+                this.id = this._uid;
+                this.$nextTick(() => {
+                    MapAnimator.mapdiv = this.id;
+                    MapAnimator.animationTriggerEvent = 'center_changed';
+                    MapAnimator.initialize();
+                });
 
-        this.$bus.$on('map-showroute', () => {
-            MapAnimator.showRoute({
-                from: this.currentSlide.from,
-                to: this.currentSlide.to,
-                speed: this.currentSlide.speed,
-                mode: this.currentSlide.mode,
-            }, (err) => {
-                this.$bus.$emit('map-error', err);
+                this.$bus.$on('map-showroute', () => {
+                    MapAnimator.showRoute({
+                        from: this.currentSlide.from,
+                        to: this.currentSlide.to,
+                        speed: this.currentSlide.speed,
+                        mode: this.currentSlide.mode,
+                    }, (err) => {
+                        this.$bus.$emit('map-error', err);
+                    });
+                });
             });
-        });
     },
     watch: {
         currentSlide(newSlide, oldSlide) {

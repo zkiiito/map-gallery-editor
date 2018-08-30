@@ -12,8 +12,8 @@ const imageSlideTemplate = {
 
 function generateSlideData(file) {
     return new Promise(async (resolve, reject) => {
-        // const thumbname = `${__dirname}/thumbs/thumb_${file.name}`;
-        const thumbname = `C:/thumbs/thumb_${file.name}`;
+        const thumbname = `${__dirname}/thumbs/thumb_${file.name}`;
+        // const thumbname = `C:/thumbs/thumb_${file.name}`;
         const simg = sharp(file.path);
 
         const metadata = await simg.metadata();
