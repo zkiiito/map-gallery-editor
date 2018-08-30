@@ -58,6 +58,7 @@
     "MapGallery": "git+https://github.com/zkiiito/MapGallery.git#develop",
     "axios": "^0.18.0",
     "exif-reader": "^1.0.2",
+    "file-url": "^2.0.2",
     "load-google-maps-api": "^1.3.2",
     "load-js": "^3.0.2",
     "sharp": "^0.20.7",

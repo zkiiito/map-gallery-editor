@@ -3,17 +3,17 @@
 </template>
 
 <script>
+const fileUrl = require('file-url');
+
 export default {
     name: 'ImageView',
     computed: {
         src() {
-            // todo teszt linuxon
-            return this.$store.getters.currentSlideType === 'image'
-                ? this.$store.state.currentSlide.path.replace(/\\+/g, '/') : '';
+            return this.$store.getters.currentSlideType === 'image' ? fileUrl(this.$store.state.currentSlide.path) : '';
         },
         styleObject() {
             return {
-                'background-image': `url('file:${this.src}')`,
+                'background-image': `url('${this.src}')`,
             };
         },
     },
