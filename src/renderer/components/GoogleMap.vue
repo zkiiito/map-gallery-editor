@@ -1,5 +1,7 @@
 <template>
-    <div :id="id" class="googleMap"></div>
+    <div :id="id" class="googleMap">
+        <webview src="static/webview.html" id="webv"></webview>
+    </div>
 </template>
 
 <script>
@@ -21,29 +23,32 @@ export default {
         },
     },
     mounted() {
-        loadGoogleMapsApi({ key: 'AIzaSyBxibPU_2mMsI8c5o0wVeG6uBnxps0c6wE' })
-            .then(() => LoadJS(['static/MapGallery/scripts/v3_epoly.js', 'static/MapGallery/scripts/MapAnimator.js']))
-            .then(() => {
-                this.$nextTick(() => {
-                    MapAnimator.mapdiv = this.id;
-                    MapAnimator.animationTriggerEvent = 'center_changed';
-                    MapAnimator.initialize();
-                });
+        const webview = document.getElementById('webv');
 
-                this.$bus.$on('map-showroute', () => {
-                    MapAnimator.showRoute({
-                        from: this.currentSlide.from,
-                        to: this.currentSlide.to,
-                        speed: this.currentSlide.speed,
-                        mode: this.currentSlide.mode,
-                    }, (err) => {
-                        this.$bus.$emit('map-error', err);
-                    });
-                });
+        webview.addEventListener('did-stop-loading', () => {
+            this.$nextTick(() => {
+                // MapAnimator.mapdiv = this.id;
+                const webview = document.getElementById('webv');
+                webview.executeJavaScript(`MapAnimator.animationTriggerEvent = 'center_changed'`);
+                webview.executeJavaScript(`MapAnimator.initialize()`);
             });
+
+            this.$bus.$on('map-showroute', () => {
+                const data = {
+                    from: this.currentSlide.from,
+                    to: this.currentSlide.to,
+                    speed: this.currentSlide.speed,
+                    mode: this.currentSlide.mode,
+                };
+
+                webview.executeJavaScript(`MapAnimator.showRoute(` + JSON.stringify(data) + `, (err) => {
+                    console.log('map-error', err);
+                });`);
+            });
+        });
     },
     watch: {
-        currentSlide(newSlide, oldSlide) {
+        cdurrentSlide(newSlide, oldSlide) {
             if (!oldSlide || !newSlide || newSlide.id !== oldSlide.id) {
                 MapAnimator.stopAnimation();
                 if (newSlide && newSlide.from) {
