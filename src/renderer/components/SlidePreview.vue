@@ -26,10 +26,20 @@ export default {
 
             return classes;
         },
+        currentSlide() {
+            return this.$store.state.currentSlide;
+        },
     },
     methods: {
         setCurrent() {
             this.$store.commit('setCurrentSlide', this.slide);
+        },
+    },
+    watch: {
+        currentSlide(newSlide, oldSlide) {
+            if (newSlide === this.slide) {
+                console.log('todo: scrollto');
+            }
         },
     },
 };
