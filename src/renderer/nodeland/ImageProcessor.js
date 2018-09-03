@@ -14,6 +14,7 @@ const imageSlideTemplate = {
 function generateSlideData(file) {
     return new Promise(async (resolve, reject) => {
         const thumbname = `${__dirname}/thumbs/thumb_${file.name}`;
+        //TODO: build dep
         // const thumbname = `C:/thumbs/thumb_${file.name}`;
         const simg = sharp(file.path);
 
