@@ -1,7 +1,9 @@
 const fs = require('fs');
+const fse = require('fs-extra');
 const sharp = require('sharp');
 const exifReader = require('exif-reader');
 const uuidv4 = require('uuid/v4');
+const path = require('path');
 
 const imageSlideTemplate = {
     filename: 'lol.jpg',
@@ -14,7 +16,7 @@ const imageSlideTemplate = {
 function generateSlideData(file) {
     return new Promise(async (resolve, reject) => {
         const thumbname = `${__dirname}/thumbs/thumb_${file.name}`;
-        //TODO: build dep
+        // TODO: build dep
         // const thumbname = `C:/thumbs/thumb_${file.name}`;
         const simg = sharp(file.path);
 
@@ -40,7 +42,7 @@ function generateSlideData(file) {
                 .toBuffer();
 
             try {
-                fs.writeFileSync(thumbname, thumbData);
+                fse.outputFileSync(thumbname, thumbData);
             } catch (err) {
                 return reject(err);
             }
@@ -50,11 +52,56 @@ function generateSlideData(file) {
     });
 }
 
+function generateExport(slide, dir) {
+    return new Promise(async (resolve, reject) => {
+        if (slide.path === undefined) {
+            return resolve();
+        }
+
+        const simg = sharp(slide.path);
+
+        try {
+            const imageData = await simg
+                .resize(1920, 1080)
+                .max()
+                .toBuffer();
+
+            fse.outputFileSync(path.join(dir, 'images', `export_${slide.id}_${slide.filename}`), imageData);
+        } catch (err) {
+            return reject(err);
+        }
+
+        return resolve();
+    });
+}
+
+function reportProgress(percent) {
+    console.log(`${percent}%`);
+}
+
+function allProgress(promises) {
+    let done = 0;
+    reportProgress(0);
+    promises.forEach((promise) => {
+        promise.then(() => {
+            done += 1;
+            reportProgress((done * 100) / promises.length);
+        });
+    });
+    return Promise.all(promises);
+}
+
 function processNewImages(files) {
     const promises = files.map(generateSlideData);
-    return Promise.all(promises);
+    return allProgress(promises);
+}
+
+function exportSlides(slides, dir) {
+    const promises = slides.map(slide => generateExport(slide, dir));
+    return allProgress(promises);
 }
 
 export default {
     processNewImages,
+    exportSlides,
 };

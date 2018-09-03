@@ -5,6 +5,7 @@
         <button v-on:click="saveProject">Save</button>
         <button v-on:click="saveProjectAs">SaveAs</button>
         <input type="text" v-bind:value="fileName" readonly size="50"/>
+        <button v-on:click="exportProject">Export</button>
         <button v-on:click="orderExif">EXIF</button>
         <button v-on:click="prevSlide">&lt;</button>
         <button v-on:click="nextSlide">&gt;</button>
@@ -13,8 +14,11 @@
 </template>
 
 <script>
+    import ImageProcessor from '../nodeland/ImageProcessor.js';
     const { Menu, MenuItem, dialog } = require('electron').remote;
     const fs = require('fs');
+    const fse = require('fs-extra');
+    const path = require('path');
 
     export default {
         name: 'FileMenu',
@@ -29,7 +33,10 @@
                 this.fileName = '';
             },
             openProject() {
-                dialog.showOpenDialog({ properties: ['openFile'] }, (filename) => {
+                dialog.showOpenDialog({
+                    properties: ['openFile'],
+                    // filters: [{ name: 'Images', extensions: ['jpg', 'jpeg', 'png', 'gif'] }],
+                }, (filename) => {
                     this.fileName = filename.toString();
                     fs.readFile(this.fileName, 'utf-8', (err, data) => {
                         let parsedData = JSON.parse(data);
@@ -80,6 +87,26 @@
             },
             orderExif() {
                 this.$store.commit('orderByExif');
+            },
+            exportProject() {
+                dialog.showOpenDialog({ properties: ['openDirectory', 'createDirectory'] }, (dir) => {
+                    if (dir) {
+                        ImageProcessor.exportSlides(this.$store.state.slides, dir.toString())
+                            .then(() => fse.copy(path.join(__dirname, '../../../static/MapGallery'), dir.toString()))
+                            .then(() => {
+                                const data = this.$store.state.slides.map((slide) => {
+                                    if (slide.from) {
+                                        return slide;
+                                    }
+                                    return `export_${slide.id}_${slide.filename}`;
+                                });
+
+                                return fse.outputFile(path.join(dir.toString(), 'scripts', 'demo.js'), `MapGallery.initialize(${JSON.stringify(data)});`);
+                            }).catch((err) => {
+                                console.error(err);
+                            });
+                    }
+                });
             },
         },
     };
