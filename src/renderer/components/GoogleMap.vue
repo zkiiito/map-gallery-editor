@@ -32,7 +32,7 @@ export default {
         });
     },
     watch: {
-        dcurrentSlide(newSlide, oldSlide) {
+        currentSlide(newSlide, oldSlide) {
             if (!oldSlide || !newSlide || newSlide.id !== oldSlide.id) {
                 this.$refs.webview.executeJavaScript(`MapAnimator.stopAnimation();`);
                 if (newSlide && newSlide.from) {

@@ -16,14 +16,23 @@
     </style>
 </head>
 <body>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBxibPU_2mMsI8c5o0wVeG6uBnxps0c6wE"></script>
-<script src="./MapGallery/scripts/v3_epoly.js"></script>
-<script src="./MapGallery/scripts/MapAnimator.js"></script>
 <div id="map_canvas"></div>
+<!--script src="./MapGallery/scripts/MapAnimator.js"></script-->
 <script>
-    /* global MapAnimator */
-    MapAnimator.animationTriggerEvent = 'center_changed';
-    MapAnimator.initialize();
+    /* global loadGoogleMapsApi, googleMapsApiKey, loadJS, sendError, MapAnimator */
+    const loader = loadJS.create();
+
+    loadGoogleMapsApi({
+        key: googleMapsApiKey,
+    }).then(() => {
+        return loader(['./MapGallery/scripts/v3_epoly.js', './MapGallery/scripts/MapAnimator.js']);
+    }).then(() => {
+        console.log('epoly loaded');
+        MapAnimator.animationTriggerEvent = 'center_changed';
+        MapAnimator.initialize();
+    }).catch((err) => {
+        sendError(err);
+    });
 </script>
 </body>
 </html>
