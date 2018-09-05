@@ -15,7 +15,7 @@
 
 <script>
     import ImageProcessor from '../nodeland/ImageProcessor.js';
-    const { Menu, MenuItem, dialog } = require('electron').remote;
+    const { Menu, MenuItem, dialog } = require('electron').remote; // eslint-disable-line
     const fs = require('fs');
     const fse = require('fs-extra');
     const path = require('path');
@@ -39,7 +39,17 @@
                 }, (filename) => {
                     this.fileName = filename.toString();
                     fs.readFile(this.fileName, 'utf-8', (err, data) => {
-                        let parsedData = JSON.parse(data);
+                        if (err) {
+                            return this.$bus.$emit('error', err);
+                        }
+
+                        let parsedData = '';
+
+                        try {
+                            parsedData = JSON.parse(data);
+                        } catch (err) {
+                            return this.$bus.$emit('error', err);
+                        }
 
                         // todo: verify, update thumbnails
                         parsedData = parsedData.map((slide) => {
@@ -103,7 +113,7 @@
 
                                 return fse.outputFile(path.join(dir.toString(), 'scripts', 'demo.js'), `MapGallery.initialize(${JSON.stringify(data)});`);
                             }).catch((err) => {
-                                console.error(err);
+                                this.$bus.$emit('error', err);
                             });
                     }
                 });

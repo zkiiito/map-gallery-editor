@@ -36,9 +36,9 @@ export default {
         },
     },
     watch: {
-        currentSlide(newSlide, oldSlide) {
+        currentSlide(newSlide) {
             if (newSlide === this.slide) {
-                console.log('todo: scrollto');
+                // TODO: scrollTo
             }
         },
     },
