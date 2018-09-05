@@ -10,6 +10,7 @@
         <button v-on:click="prevSlide">&lt;</button>
         <button v-on:click="nextSlide">&gt;</button>
         <button v-on:click="closeSlide" v-show="this.$store.state.currentSlide">X</button>
+        <input type="text" v-model="googleMapsApiKey" placeholder="google maps api key"/>
     </div>
 </template>
 
@@ -19,6 +20,8 @@
     const fs = require('fs');
     const fse = require('fs-extra');
     const path = require('path');
+    const SettingsStore = require('electron-store');
+    const settingsStore = new SettingsStore();
 
     export default {
         name: 'FileMenu',
@@ -26,6 +29,16 @@
             return {
                 fileName: '',
             };
+        },
+        computed: {
+            googleMapsApiKey: {
+                get() {
+                    return settingsStore.get('googleMapsApiKey');
+                },
+                set(value) {
+                    settingsStore.set('googleMapsApiKey', value);
+                },
+            },
         },
         methods: {
             newProject() {

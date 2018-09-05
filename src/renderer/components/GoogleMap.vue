@@ -7,6 +7,8 @@
 const loadGoogleMapsApi = require('load-google-maps-api');
 const LoadJS = require('load-js');
 const uuidv4 = require('uuid/v4');
+const SettingsStore = require('electron-store');
+const settingsStore = new SettingsStore();
 
 export default {
     name: 'GoogleMap',
@@ -21,7 +23,12 @@ export default {
         },
     },
     mounted() {
-        loadGoogleMapsApi({ key: 'AIzaSyBxibPU_2mMsI8c5o0wVeG6uBnxps0c6wE' })
+        const mapsOptions = {};
+        if (settingsStore.has('googleMapsApiKey')) {
+            mapsOptions.key = settingsStore.get('googleMapsApiKey');
+        }
+
+        loadGoogleMapsApi(mapsOptions)
             .then(() => LoadJS(['static/MapGallery/scripts/v3_epoly.js', 'static/MapGallery/scripts/MapAnimator.js']))
             .then(() => {
                 this.$nextTick(() => {
