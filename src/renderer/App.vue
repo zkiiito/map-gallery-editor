@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <ErrorBar/>
     <FileMenu/>
     <div id="editor" v-show="$store.getters.currentSlideType === 'map'">
       <GoogleMap class="flexgrow"/>
@@ -32,6 +33,7 @@ import GoogleMapForm from './components/GoogleMapForm.vue';
 import ImageView from './components/ImageView.vue';
 import SlidePreview from './components/SlidePreview.vue';
 import FileMenu from './components/FileMenu.vue';
+import ErrorBar from './components/ErrorBar';
 
 import ImageProcessor from './nodeland/ImageProcessor.js';
 const uuidv4 = require('uuid/v4');
@@ -39,7 +41,7 @@ const uuidv4 = require('uuid/v4');
 export default {
     name: 'app',
     components: {
-        GoogleMap, GoogleMapForm, ImageView, SlidePreview, draggable, FileMenu,
+        GoogleMap, GoogleMapForm, ImageView, SlidePreview, draggable, FileMenu, ErrorBar,
     },
     computed: {
         slides: {
@@ -66,6 +68,8 @@ export default {
 
             ImageProcessor.processNewImages(files).then((slides) => {
                 this.$store.commit('addSlides', slides);
+            }).catch((err) => {
+                this.$bus.$emit('error', err);
             });
         },
     },

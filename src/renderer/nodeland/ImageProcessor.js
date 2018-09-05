@@ -1,3 +1,4 @@
+import EventBus from '../EventBus';
 const fs = require('fs');
 const fse = require('fs-extra');
 const sharp = require('sharp');
@@ -75,7 +76,7 @@ function generateExport(slide, dir) {
 }
 
 function reportProgress(percent) {
-    console.log(`${percent}%`);
+    EventBus.$emit('progress', percent);
 }
 
 function allProgress(promises) {
