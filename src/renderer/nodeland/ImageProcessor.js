@@ -4,6 +4,7 @@ const sharp = require('sharp');
 const exifReader = require('exif-reader');
 const uuidv4 = require('uuid/v4');
 const path = require('path');
+const { app } = require('electron').remote; // eslint-disable-line
 
 const imageSlideTemplate = {
     filename: 'lol.jpg',
@@ -15,40 +16,38 @@ const imageSlideTemplate = {
 
 function generateSlideData(file) {
     return new Promise(async (resolve, reject) => {
-        const thumbname = `${__dirname}/thumbs/thumb_${file.name}`;
-        // TODO: build dep
-        // const thumbname = `C:/thumbs/thumb_${file.name}`;
-        const simg = sharp(file.path);
+        try {
+            const thumbname = path.join(app.getPath('temp'), `/thumbs/thumb_${file.name}`);
+            const simg = sharp(file.path);
 
-        const metadata = await simg.metadata();
-        const exifdate = metadata.exif ? exifReader(metadata.exif).exif.DateTimeOriginal : file.lastModifiedDate;
+            const metadata = await simg.metadata();
+            const exifdate = metadata.exif ? exifReader(metadata.exif).exif.DateTimeOriginal : file.lastModifiedDate;
 
-        const res = {
-            ...imageSlideTemplate,
-            ...{
-                id: uuidv4(),
-                filename: file.name,
-                thumbnail: thumbname,
-                path: file.path,
-                exif_date: exifdate,
-                modified_at: file.lastModifiedDate,
-            },
-        };
+            const res = {
+                ...imageSlideTemplate,
+                ...{
+                    id: uuidv4(),
+                    filename: file.name,
+                    thumbnail: thumbname,
+                    path: file.path,
+                    exif_date: exifdate,
+                    modified_at: file.lastModifiedDate,
+                },
+            };
 
-        if (!fs.existsSync(thumbname) || fs.statSync(thumbname).mtime < file.lastModifiedDate) {
-            const thumbData = await simg
-                .resize(150, 150)
-                .max()
-                .toBuffer();
+            if (!fs.existsSync(thumbname) || fs.statSync(thumbname).mtime < file.lastModifiedDate) {
+                const thumbData = await simg
+                    .resize(150, 150)
+                    .max()
+                    .toBuffer();
 
-            try {
-                fse.outputFileSync(thumbname, thumbData);
-            } catch (err) {
-                return reject(err);
+                await fse.outputFile(thumbname, thumbData);
             }
-        }
 
-        return resolve(res);
+            return resolve(res);
+        } catch (err) {
+            return reject(err);
+        }
     });
 }
 
@@ -58,20 +57,20 @@ function generateExport(slide, dir) {
             return resolve();
         }
 
-        const simg = sharp(slide.path);
-
         try {
+            const simg = sharp(slide.path);
+
             const imageData = await simg
                 .resize(1920, 1080)
                 .max()
                 .toBuffer();
 
-            fse.outputFileSync(path.join(dir, 'images', `export_${slide.id}_${slide.filename}`), imageData);
+            await fse.outputFile(path.join(dir, 'images', `export_${slide.id}_${slide.filename}`), imageData);
+
+            return resolve();
         } catch (err) {
             return reject(err);
         }
-
-        return resolve();
     });
 }
 
@@ -86,7 +85,7 @@ function allProgress(promises) {
         promise.then(() => {
             done += 1;
             reportProgress((done * 100) / promises.length);
-        });
+        }).catch(() => {});
     });
     return Promise.all(promises);
 }
