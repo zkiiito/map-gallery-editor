@@ -5,13 +5,15 @@
         </template>
         <template v-else>
             <div class="imgholder">
-                <img :src="slide.thumbnail" :title="slide.filename">
+                <img :src="thumbnailUrl" :title="slide.filename">
             </div>
         </template>
     </div>
 </template>
 
 <script>
+const fileUrl = require('file-url');
+
 export default {
     name: 'SlidePreview',
     props: ['slide'],
@@ -28,6 +30,9 @@ export default {
         },
         currentSlide() {
             return this.$store.state.currentSlide;
+        },
+        thumbnailUrl() {
+            return fileUrl(this.slide.thumbnail);
         },
     },
     methods: {
