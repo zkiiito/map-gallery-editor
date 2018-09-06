@@ -22,9 +22,12 @@
     /* global loadGoogleMapsApi, googleMapsApiKey, loadJS, sendError, MapAnimator */
     const loader = loadJS.create();
 
-    loadGoogleMapsApi({
-        key: googleMapsApiKey,
-    }).then(() => {
+    const mapsOptions = {};
+    if (googleMapsApiKey) {
+        mapsOptions.key = googleMapsApiKey;
+    }
+
+    loadGoogleMapsApi(mapsOptions).then(() => {
         return loader(['./MapGallery/scripts/v3_epoly.js', './MapGallery/scripts/MapAnimator.js']);
     }).then(() => {
         console.log('epoly loaded');
