@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>GoogleMap</title>
+    <style>
+        html, body {
+            padding: 0;
+            margin: 0;
+            height: 100%;
+        }
+
+        #map_canvas {
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+<div id="map_canvas"></div>
+<!--script src="./MapGallery/scripts/MapAnimator.js"></script-->
+<script>
+    /* global loadGoogleMapsApi, googleMapsApiKey, loadJS, sendError, MapAnimator */
+    const loader = loadJS.create();
+
+    loadGoogleMapsApi({
+        key: googleMapsApiKey,
+    }).then(() => {
+        return loader(['./MapGallery/scripts/v3_epoly.js', './MapGallery/scripts/MapAnimator.js']);
+    }).then(() => {
+        console.log('epoly loaded');
+        MapAnimator.animationTriggerEvent = 'center_changed';
+        MapAnimator.initialize();
+    }).catch((err) => {
+        sendError(err);
+    });
+</script>
+</body>
+</html>
