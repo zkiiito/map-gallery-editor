@@ -21,7 +21,7 @@ export default {
         this.$refs.webview.addEventListener('did-stop-loading', function webviewLoaded() {
             that.$refs.webview.removeEventListener('did-stop-loading', webviewLoaded);
             that.$bus.$on('map-showroute', () => {
-                that.$refs.webview.executeJavaScript(`MapAnimator.showRoute(` + JSON.stringify(that.currentSlide) + `, (err) => {
+                that.$refs.webview.executeJavaScript(`MapAnimator.showRoute(${JSON.stringify(that.currentSlide)}, (err) => {
                     sendError(err);
                 });`);
             });
@@ -34,9 +34,9 @@ export default {
     watch: {
         currentSlide(newSlide, oldSlide) {
             if (!oldSlide || !newSlide || newSlide.id !== oldSlide.id) {
-                this.$refs.webview.executeJavaScript(`MapAnimator.stopAnimation();`);
+                this.$refs.webview.executeJavaScript('MapAnimator.stopAnimation();');
                 if (newSlide && newSlide.from) {
-                    this.$refs.webview.executeJavaScript(`MapAnimator.showRoute(` + JSON.stringify(newSlide) + `, (err) => {
+                    this.$refs.webview.executeJavaScript(`MapAnimator.showRoute(${JSON.stringify(newSlide)}, (err) => {
                         sendError(err);
                     });`);
                 }
