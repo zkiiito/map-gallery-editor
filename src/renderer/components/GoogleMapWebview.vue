@@ -16,7 +16,7 @@ export default {
     },
     mounted() {
         const that = this;
-        this.$refs.webview.setAttribute('preload', fileUrl('static/webview-preload.js'));
+        this.$refs.webview.setAttribute('preload', `file://${__static}/webview-preload.js`);
 
         this.$refs.webview.addEventListener('did-stop-loading', function webviewLoaded() {
             that.$refs.webview.removeEventListener('did-stop-loading', webviewLoaded);

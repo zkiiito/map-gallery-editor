@@ -28,7 +28,7 @@
 
 <script>
 import draggable from 'vuedraggable';
-import GoogleMap from './components/GoogleMap.vue';
+import GoogleMap from './components/GoogleMapWebview.vue';
 import GoogleMapForm from './components/GoogleMapForm.vue';
 import ImageView from './components/ImageView.vue';
 import SlidePreview from './components/SlidePreview.vue';

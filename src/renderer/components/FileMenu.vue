@@ -115,7 +115,7 @@
                 dialog.showOpenDialog({ properties: ['openDirectory', 'createDirectory'] }, (dir) => {
                     if (dir) {
                         ImageProcessor.exportSlides(this.$store.state.slides, dir.toString())
-                            .then(() => fse.copy(path.join(__dirname, '../../../static/MapGallery'), dir.toString()))
+                            .then(() => fse.copy(path.join(__static, 'MapGallery'), dir.toString()))
                             .then(() => {
                                 const data = this.$store.state.slides.map((slide) => {
                                     if (slide.from) {
