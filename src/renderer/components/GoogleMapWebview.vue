@@ -5,8 +5,6 @@
 </template>
 
 <script>
-const fileUrl = require('file-url');
-
 export default {
     name: 'GoogleMap',
     computed: {

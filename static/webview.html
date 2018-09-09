@@ -17,7 +17,6 @@
 </head>
 <body>
 <div id="map_canvas"></div>
-<!--script src="./MapGallery/scripts/MapAnimator.js"></script-->
 <script>
     /* global loadGoogleMapsApi, googleMapsApiKey, loadJS, sendError, MapAnimator */
     const loader = loadJS.create();
@@ -31,6 +30,8 @@
         return loader(['./MapGallery/scripts/v3_epoly.js', './MapGallery/scripts/MapAnimator.js']);
     }).then(() => {
         console.log('epoly loaded');
+        MapAnimator.tick = 40;
+        MapAnimator.step = 1200;
         MapAnimator.animationTriggerEvent = 'center_changed';
         MapAnimator.initialize();
     }).catch((err) => {
