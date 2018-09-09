@@ -9,7 +9,8 @@
         <button v-on:click="orderExif">EXIF</button>
         <button v-on:click="prevSlide">&lt;</button>
         <button v-on:click="nextSlide">&gt;</button>
-        <button v-on:click="closeSlide" v-show="this.$store.state.currentSlide">X</button>
+        <button v-on:click="closeSlide" v-show="this.$store.state.currentSlide">close</button>
+        <button v-on:click="deleteSlide" v-show="this.$store.state.currentSlide">delete</button>
         <input type="text" v-model="googleMapsApiKey" placeholder="google maps api key"/>
     </div>
 </template>
@@ -107,6 +108,9 @@
             },
             closeSlide() {
                 this.$store.commit('setCurrentSlide', null);
+            },
+            deleteSlide() {
+                this.$store.commit('deleteCurrentSlide');
             },
             orderExif() {
                 this.$store.commit('orderByExif');
