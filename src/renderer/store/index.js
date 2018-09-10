@@ -1,10 +1,16 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
+const Ajv = require('ajv');
+const ajv = new Ajv();
+const schema = require('./schema');
+const validate = ajv.compile(schema);
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
     state: {
+        title: '',
+        description: '',
         slides: [],
         currentSlide: null,
     },
@@ -77,10 +83,40 @@ export default new Vuex.Store({
                 return -1;
             });
         },
+        setTitle(state, title) {
+            state.title = title;
+        },
+        setDescription(state, description) {
+            state.description = description;
+        },
     },
     actions: {
         loadSlides({ commit }, data) {
             commit('setSlides', data);
+        },
+        loadFileData({ commit }, data) {
+            // todo: update thumbnails
+
+            const valid = validate(data);
+            if (!valid) {
+                throw new Error('invalid file');
+            }
+
+            const slides = data.slides.map((slide) => {
+                if (slide.exif_date) {
+                    slide.exif_date = new Date(slide.exif_date);
+                }
+
+                if (slide.modified_at) {
+                    slide.modified_at = new Date(slide.modified_at);
+                }
+
+                return slide;
+            });
+
+            commit('setTitle', data.title);
+            commit('setDescription', data.description);
+            commit('setSlides', slides);
         },
     },
     getters: {
@@ -95,6 +131,10 @@ export default new Vuex.Store({
 
             return 'image';
         },
-        fileData: state => JSON.stringify(state.slides),
+        fileData: state => JSON.stringify({
+            title: state.title,
+            description: state.description,
+            slides: state.slides,
+        }),
     },
 });

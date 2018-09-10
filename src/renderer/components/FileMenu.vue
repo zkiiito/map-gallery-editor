@@ -62,25 +62,10 @@
 
                         try {
                             parsedData = JSON.parse(data);
+                            this.$store.dispatch('loadFileData', parsedData);
                         } catch (err) {
                             this.$bus.$emit('error', err);
-                            return;
                         }
-
-                        // todo: verify, update thumbnails
-                        parsedData = parsedData.map((slide) => {
-                            if (slide.exif_date) {
-                                slide.exif_date = new Date(slide.exif_date);
-                            }
-
-                            if (slide.modified_at) {
-                                slide.modified_at = new Date(slide.modified_at);
-                            }
-
-                            return slide;
-                        });
-
-                        this.$store.dispatch('loadSlides', parsedData);
                     });
                 });
             },

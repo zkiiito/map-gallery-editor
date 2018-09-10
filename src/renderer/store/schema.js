@@ -1,4 +1,4 @@
-module.export = {
+module.exports = {
     definitions: {
         mapslide: {
             type: 'object',
@@ -11,13 +11,14 @@ module.export = {
             ],
             properties: {
                 id: {
-                    $id: '#/items/properties/id',
-                    type: 'number',
+                    $id: '#/properties/slides/items/properties/id',
+                    type: 'string',
                     title: 'The Id Schema',
-                    default: 0.0,
+                    default: '',
                     examples: [
-                        0.9750322262441138,
+                        '7bdcf94e-42cf-4155-b7f8-924f5346c8b2',
                     ],
+                    pattern: '^(.*)$',
                 },
                 from: {
                     $id: '#/items/properties/from',
@@ -73,13 +74,14 @@ module.export = {
             ],
             properties: {
                 id: {
-                    $id: '#/items/properties/id',
-                    type: 'number',
+                    $id: '#/properties/slides/items/properties/id',
+                    type: 'string',
                     title: 'The Id Schema',
-                    default: 0.0,
+                    default: '',
                     examples: [
-                        0.053127102644075386,
+                        '7bdcf94e-42cf-4155-b7f8-924f5346c8b2',
                     ],
+                    pattern: '^(.*)$',
                 },
                 filename: {
                     $id: '#/items/properties/filename',
@@ -145,19 +147,27 @@ module.export = {
     },
     $schema: 'http://json-schema.org/draft-07/schema#',
     $id: 'http://example.com/root.json',
-    type: 'array',
+    type: 'object',
     title: 'The Root Schema',
-    items: {
-        $id: '#/items',
-        type: 'object',
-        title: 'The Items Schema',
-        oneOf: [
-            {
-                $ref: '#/definitions/mapslide',
+    required: [
+        'slides',
+    ],
+    properties: {
+        slides: {
+            type: 'array',
+            items: {
+                $id: '#/items',
+                type: 'object',
+                title: 'The Items Schema',
+                oneOf: [
+                    {
+                        $ref: '#/definitions/mapslide',
+                    },
+                    {
+                        $ref: '#/definitions/imageslide',
+                    },
+                ],
             },
-            {
-                $ref: '#/definitions/imageslide',
-            },
-        ],
+        },
     },
 };
