@@ -4,7 +4,7 @@ const sharp = require('sharp');
 const exifReader = require('exif-reader');
 const uuidv4 = require('uuid/v4');
 const path = require('path');
-const { app } = require('electron').remote; // eslint-disable-line
+const { remote } = require('electron'); // eslint-disable-line
 
 const imageSlideTemplate = {
     filename: 'lol.jpg',
@@ -17,7 +17,7 @@ const imageSlideTemplate = {
 function generateSlideData(file) {
     return new Promise(async (resolve, reject) => {
         try {
-            const thumbname = path.join(app.getPath('temp'), `/thumbs/thumb_${file.name}`);
+            const thumbname = path.join(remote.app.getPath('temp'), `/thumbs/thumb_${file.name}`);
             const simg = sharp(file.path);
 
             const metadata = await simg.metadata();
@@ -111,7 +111,16 @@ function updateSlide(slide) {
 }
 
 function reportProgress(percent) {
+    // console.log(percent, Date.now());
+    const currentWindow = remote.getCurrentWindow();
+    currentWindow.setProgressBar(percent / 100);
     EventBus.$emit('progress', percent);
+
+    if (percent === 100) {
+        setTimeout(() => {
+            currentWindow.setProgressBar(-1);
+        }, 500);
+    }
 }
 
 function allProgress(promises) {
