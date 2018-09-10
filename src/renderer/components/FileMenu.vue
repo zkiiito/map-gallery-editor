@@ -54,7 +54,8 @@
                     this.fileName = filename.toString();
                     fs.readFile(this.fileName, 'utf-8', (err, data) => {
                         if (err) {
-                            return this.$bus.$emit('error', err);
+                            this.$bus.$emit('error', err);
+                            return;
                         }
 
                         let parsedData = '';
@@ -62,7 +63,8 @@
                         try {
                             parsedData = JSON.parse(data);
                         } catch (err) {
-                            return this.$bus.$emit('error', err);
+                            this.$bus.$emit('error', err);
+                            return;
                         }
 
                         // todo: verify, update thumbnails

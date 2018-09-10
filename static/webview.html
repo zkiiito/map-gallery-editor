@@ -37,6 +37,12 @@
     }).catch((err) => {
         sendError(err);
     });
+
+    function showRoute(route) {
+        MapAnimator.showRoute(route, (err) => {
+            sendError(err);
+        });
+    }
 </script>
 </body>
 </html>
