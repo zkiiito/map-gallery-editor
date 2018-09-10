@@ -58,14 +58,18 @@ function generateExport(slide, dir) {
         }
 
         try {
-            const simg = sharp(slide.path);
+            const filepath = path.join(dir, 'images', `export_${slide.id}_${slide.filename}`);
 
-            const imageData = await simg
-                .resize(1920, 1080)
-                .max()
-                .toBuffer();
+            if (!fse.existsSync(filepath) || fse.statSync(filepath).mtime < slide.modified_at.getTime()) {
+                const simg = sharp(slide.path);
 
-            await fse.outputFile(path.join(dir, 'images', `export_${slide.id}_${slide.filename}`), imageData);
+                const imageData = await simg
+                    .resize(1920, 1080)
+                    .max()
+                    .toBuffer();
+
+                await fse.outputFile(filepath, imageData);
+            }
 
             return resolve();
         } catch (err) {

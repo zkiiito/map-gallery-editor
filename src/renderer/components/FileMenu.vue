@@ -49,7 +49,7 @@
             openProject() {
                 dialog.showOpenDialog({
                     properties: ['openFile'],
-                    // filters: [{ name: 'Images', extensions: ['jpg', 'jpeg', 'png', 'gif'] }],
+                    filters: [{ name: 'MapGallery Editor files', extensions: ['mapgallery'] }],
                 }, (filename) => {
                     this.fileName = filename.toString();
                     fs.readFile(this.fileName, 'utf-8', (err, data) => {
@@ -80,7 +80,9 @@
                 });
             },
             saveProjectAs() {
-                dialog.showSaveDialog((fileName) => {
+                dialog.showSaveDialog({
+                    filters: [{ name: 'MapGallery Editor files', extensions: ['mapgallery'] }],
+                }, (fileName) => {
                     if (fileName) {
                         this.fileName = fileName.toString();
                         this.saveProject();
@@ -115,7 +117,10 @@
                                     return `export_${slide.id}_${slide.filename}`;
                                 });
 
-                                return fse.outputFile(path.join(dir.toString(), 'scripts', 'demo.js'), `MapGallery.initialize(${JSON.stringify(data)});`);
+                                return fse.outputFile(
+                                    path.join(dir.toString(), 'scripts', 'demo.js'),
+                                    `MapGallery.initialize(${JSON.stringify(data)});`,
+                                );
                             }).catch((err) => {
                                 this.$bus.$emit('error', err);
                             });
