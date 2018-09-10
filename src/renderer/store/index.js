@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
+import ImageProcessor from '../nodeland/ImageProcessor';
 const Ajv = require('ajv');
 const ajv = new Ajv();
 const schema = require('./schema');
@@ -94,15 +95,13 @@ export default new Vuex.Store({
         loadSlides({ commit }, data) {
             commit('setSlides', data);
         },
-        loadFileData({ commit }, data) {
-            // todo: update thumbnails
-
+        async loadFileData({ commit }, data) {
             const valid = validate(data);
             if (!valid) {
                 throw new Error('invalid file');
             }
 
-            const slides = data.slides.map((slide) => {
+            let slides = data.slides.map((slide) => {
                 if (slide.exif_date) {
                     slide.exif_date = new Date(slide.exif_date);
                 }
@@ -113,6 +112,8 @@ export default new Vuex.Store({
 
                 return slide;
             });
+
+            slides = await ImageProcessor.updateSlides(slides);
 
             commit('setTitle', data.title);
             commit('setDescription', data.description);

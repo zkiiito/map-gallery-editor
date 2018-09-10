@@ -1,5 +1,4 @@
 import EventBus from '../EventBus';
-const fs = require('fs');
 const fse = require('fs-extra');
 const sharp = require('sharp');
 const exifReader = require('exif-reader');
@@ -36,7 +35,7 @@ function generateSlideData(file) {
                 },
             };
 
-            if (!fs.existsSync(thumbname) || fs.statSync(thumbname).mtime < file.lastModifiedDate) {
+            if (!fse.existsSync(thumbname) || fse.statSync(thumbname).mtime < file.lastModifiedDate) {
                 const thumbData = await simg
                     .resize(150, 150)
                     .max()
@@ -75,6 +74,42 @@ function generateExport(slide, dir) {
     });
 }
 
+function updateSlide(slide) {
+    return new Promise(async (resolve, reject) => {
+        if (slide.path === undefined) {
+            resolve(slide);
+            return;
+        }
+
+        let imageStat = null;
+        let thumbStat = null;
+
+        try {
+            imageStat = await fse.stat(slide.path);
+        } catch (err) {
+            reject('Image not found');
+            return;
+        }
+
+        try {
+            thumbStat = await fse.stat(slide.thumbnail);
+        } catch (err) {
+            thumbStat = null;
+        }
+
+        if (thumbStat === null || thumbStat.mtimeMs < imageStat.mtimeMs || slide.modified_at < imageStat.mtime) {
+            const newSlide = await generateSlideData({
+                name: slide.filename,
+                path: slide.path,
+            });
+
+            slide = { ...slide, ...newSlide };
+        }
+
+        resolve(slide);
+    });
+}
+
 function reportProgress(percent) {
     EventBus.$emit('progress', percent);
 }
@@ -101,7 +136,13 @@ function exportSlides(slides, dir) {
     return allProgress(promises);
 }
 
+function updateSlides(slides) {
+    const promises = slides.map(slide => updateSlide(slide));
+    return allProgress(promises);
+}
+
 export default {
     processNewImages,
     exportSlides,
+    updateSlides,
 };
