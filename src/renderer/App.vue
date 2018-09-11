@@ -74,9 +74,9 @@ export default {
         },
     },
     mounted() {
-        document.getElementById('slides').addEventListener('wheel', function (evt) {
-            if (this.className.indexOf('small')) {
-                this.scrollLeft += evt.deltaY;
+        document.getElementById('slides').addEventListener('wheel', (evt) => {
+            if (evt.target.className.indexOf('small')) {
+                evt.target.scrollLeft += evt.deltaY;
             }
         });
     },

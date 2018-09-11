@@ -91,7 +91,7 @@ function updateSlide(slide) {
         try {
             imageStat = await fse.stat(slide.path);
         } catch (err) {
-            reject('Image not found');
+            reject(new Error('Image not found'));
             return;
         }
 
