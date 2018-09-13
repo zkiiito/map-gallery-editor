@@ -18,7 +18,6 @@
 <script>
     import ImageProcessor from '../nodeland/ImageProcessor.js';
     const { Menu, MenuItem, dialog } = require('electron').remote; // eslint-disable-line
-    const fs = require('fs');
     const fse = require('fs-extra');
     const path = require('path');
     const SettingsStore = require('electron-store');
@@ -50,34 +49,29 @@
                 dialog.showOpenDialog({
                     properties: ['openFile'],
                     filters: [{ name: 'MapGallery Editor files', extensions: ['mapgallery'] }],
-                }, (filename) => {
+                }, async (filename) => {
                     this.fileName = filename.toString();
-                    fs.readFile(this.fileName, 'utf-8', (err, data) => {
-                        if (err) {
-                            this.$bus.$emit('error', err);
-                            return;
-                        }
 
-                        let parsedData = '';
-
-                        try {
-                            parsedData = JSON.parse(data);
-                            this.$store.dispatch('loadFileData', parsedData);
-                        } catch (err) {
-                            this.$bus.$emit('error', err);
-                        }
-                    });
+                    try {
+                        const data = await fse.readFile(this.fileName, 'utf-8');
+                        const parsedData = JSON.parse(data);
+                        this.$store.dispatch('loadFileData', parsedData);
+                    } catch (err) {
+                        this.$bus.$emit('error', err);
+                    }
                 });
             },
-            saveProject() {
+            async saveProject() {
                 if (this.fileName === '') {
                     this.saveProjectAs();
                     return;
                 }
 
-                fs.writeFile(this.fileName, this.$store.getters.fileData, (err) => {
+                try {
+                    await fse.writeFile(this.fileName, this.$store.getters.fileData);
+                } catch (err) {
                     this.$bus.$emit('file-error', err);
-                });
+                }
             },
             saveProjectAs() {
                 dialog.showSaveDialog({
@@ -105,25 +99,29 @@
                 this.$store.commit('orderByExif');
             },
             exportProject() {
-                dialog.showOpenDialog({ properties: ['openDirectory', 'createDirectory'] }, (dir) => {
+                dialog.showOpenDialog({ properties: ['openDirectory', 'createDirectory'] }, async (dir) => {
                     if (dir) {
-                        ImageProcessor.exportSlides(this.$store.state.slides, dir.toString())
-                            .then(() => fse.copy(path.join(__static, 'MapGallery'), dir.toString()))
-                            .then(() => {
-                                const data = this.$store.state.slides.map((slide) => {
-                                    if (slide.from) {
-                                        return slide;
-                                    }
-                                    return `export_${slide.id}_${slide.filename}`;
-                                });
+                        try {
+                            await ImageProcessor.exportSlides(this.$store.state.slides, dir.toString());
 
-                                return fse.outputFile(
-                                    path.join(dir.toString(), 'scripts', 'demo.js'),
-                                    `MapGallery.initialize(${JSON.stringify(data)});`,
-                                );
-                            }).catch((err) => {
-                                this.$bus.$emit('error', err);
+                            const mapGalleryRoot = process.env.NODE_ENV !== 'development' ? process.resourcesPath : __static;
+
+                            await fse.copy(path.join(mapGalleryRoot, 'MapGallery'), dir.toString());
+
+                            const data = this.$store.state.slides.map((slide) => {
+                                if (slide.from) {
+                                    return slide;
+                                }
+                                return `export_${slide.id}_${slide.filename}`;
                             });
+
+                            await fse.outputFile(
+                                path.join(dir.toString(), 'scripts', 'demo.js'),
+                                `MapGallery.initialize(${JSON.stringify(data)});`,
+                            );
+                        } catch (err) {
+                            this.$bus.$emit('error', err);
+                        }
                     }
                 });
             },

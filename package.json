@@ -26,6 +26,12 @@
     "asarUnpack": [
       "**/node_modules/sharp/**/*"
     ],
+    "extraResources": [
+      {
+        "from": "./static/MapGallery/",
+        "to": "MapGallery"
+      }
+    ],
     "productName": "map-gallery-editor",
     "appId": "online.mapgallery",
     "directories": {
