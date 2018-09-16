@@ -69,6 +69,7 @@
     "MapGallery": "git+https://github.com/zkiiito/MapGallery.git#1.0.0",
     "ajv": "^6.5.3",
     "electron-store": "^2.0.0",
+    "electron-unhandled": "^1.1.0",
     "exif-reader": "^1.0.2",
     "file-url": "^2.0.2",
     "fs-extra": "^7.0.0",

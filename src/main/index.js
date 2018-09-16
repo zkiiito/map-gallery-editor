@@ -1,4 +1,6 @@
 import { app, BrowserWindow } from 'electron' // eslint-disable-line
+const unhandled = require('electron-unhandled');
+unhandled();
 
 /**
  * Set `__static` path to static files in production
