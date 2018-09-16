@@ -102,12 +102,14 @@ function updateSlide(slide) {
         }
 
         if (thumbStat === null || thumbStat.mtimeMs < imageStat.mtimeMs || slide.modified_at < imageStat.mtime) {
+            const { id } = slide;
             const newSlide = await generateSlideData({
                 name: slide.filename,
                 path: slide.path,
             });
 
             slide = { ...slide, ...newSlide };
+            slide.id = id;
         }
 
         resolve(slide);
