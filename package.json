@@ -32,11 +32,11 @@
     ],
     "extraResources": [
       {
-        "from": "./static/MapGallery/",
+        "from": "./node_modules/MapGallery/",
         "to": "MapGallery"
       }
     ],
-    "productName": "map-gallery-editor",
+    "productName": "MapGallery Editor",
     "appId": "online.mapgallery",
     "directories": {
       "output": "build"

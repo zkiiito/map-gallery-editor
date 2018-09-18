@@ -131,21 +131,6 @@ let rendererConfig = {
     }),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),
-    new WriteFilePlugin(), //needed for CopyWebpackPlugin in webpack-dev-server
-    new CopyWebpackPlugin([
-        {
-            from: path.join(__dirname, '../node_modules/MapGallery/css'),
-            to: path.join(__dirname, '../static/MapGallery/css'),
-        },
-        {
-            from: path.join(__dirname, '../node_modules/MapGallery/scripts'),
-            to: path.join(__dirname, '../static/MapGallery/scripts'),
-        },
-        {
-            from: path.join(__dirname, '../node_modules/MapGallery/index.html'),
-            to: path.join(__dirname, '../static/MapGallery/index.html'),
-        },
-    ]),
   ],
   output: {
     filename: '[name].js',
@@ -169,7 +154,15 @@ if (process.env.NODE_ENV !== 'production') {
   rendererConfig.plugins.push(
     new webpack.DefinePlugin({
       '__static': `"${path.join(__dirname, '../static').replace(/\\/g, '\\\\')}"`
-    })
+    }),
+    new WriteFilePlugin(), //needed for CopyWebpackPlugin in webpack-dev-server
+    new CopyWebpackPlugin([
+        {
+            from: path.join(__dirname, '../node_modules/MapGallery'),
+            to: path.join(__dirname, '../static/MapGallery'),
+            ignore: ['*.jpg']
+        },
+    ]),
   )
 }
 
@@ -186,7 +179,12 @@ if (process.env.NODE_ENV === 'production') {
         from: path.join(__dirname, '../static'),
         to: path.join(__dirname, '../dist/electron/static'),
         ignore: ['.*']
-      }
+      },
+      {
+        from: path.join(__dirname, '../node_modules/MapGallery'),
+        to: path.join(__dirname, '../dist/electron/static/MapGallery'),
+        ignore: ['*.jpg']
+      },
     ]),
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': '"production"'
