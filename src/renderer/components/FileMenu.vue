@@ -11,7 +11,6 @@
         <button v-on:click="nextSlide">&gt;</button>
         <button v-on:click="closeSlide" v-show="this.$store.state.currentSlide">close</button>
         <button v-on:click="deleteSlide" v-show="this.$store.state.currentSlide">delete</button>
-        <input type="text" v-model="googleMapsApiKey" placeholder="google maps api key"/>
     </div>
 </template>
 
@@ -20,8 +19,6 @@
     const { Menu, MenuItem, dialog } = require('electron').remote; // eslint-disable-line
     const fse = require('fs-extra');
     const path = require('path');
-    const SettingsStore = require('electron-store');
-    const settingsStore = new SettingsStore();
 
     export default {
         name: 'FileMenu',
@@ -29,16 +26,6 @@
             return {
                 fileName: '',
             };
-        },
-        computed: {
-            googleMapsApiKey: {
-                get() {
-                    return settingsStore.get('googleMapsApiKey');
-                },
-                set(value) {
-                    settingsStore.set('googleMapsApiKey', value);
-                },
-            },
         },
         methods: {
             newProject() {
