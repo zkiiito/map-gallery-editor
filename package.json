@@ -3,7 +3,11 @@
   "version": "0.0.0",
   "author": "zooli <zkiiito@gmail.com>",
   "description": "MapGalleryEditor",
-  "license": null,
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:zkiiito/map-gallery-editor.git"
+  },
+  "license": "GPL-3.0",
   "main": "./dist/electron/main.js",
   "scripts": {
     "build": "node .electron-vue/build.js && electron-builder",
