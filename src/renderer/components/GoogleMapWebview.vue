@@ -1,6 +1,6 @@
 <template>
     <div class="googleMap">
-        <webview src="static/webview.html" ref="webview"/>
+        <webview src="http://hummezum.hu/mapgalleryeditor/webview.html" ref="webview"/>
     </div>
 </template>
 
@@ -24,7 +24,7 @@ export default {
         });
 
         this.$refs.webview.addEventListener('ipc-message', (msg) => {
-            this.$bus.$emit('map-error', msg.channel);
+            this.$bus.$emit('error', msg.channel);
         });
     },
     watch: {
