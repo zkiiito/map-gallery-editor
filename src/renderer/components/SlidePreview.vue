@@ -56,7 +56,15 @@ export default {
         height: 120px;
         margin: 10px;
         float: left;
-        cursor: grab;
+        cursor: move;
+    }
+
+    .slide.map {
+        display: flex;
+        align-items: center;
+        text-align: center;
+        justify-content: center;
+        background-color: aliceblue;        
     }
 
     .slide .imgholder {

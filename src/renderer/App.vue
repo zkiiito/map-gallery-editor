@@ -13,13 +13,12 @@
       <draggable :options="{group: 'slides', draggable: '.draggable'}" v-model="slides" id="slideholder"
                  v-bind:class="$store.getters.currentSlideType !== null ? 'small' : 'big'">
         <SlidePreview v-for="slide in slides" :key="slide.id" v-bind:slide="slide" class="draggable"/>
-        <div style="float: left; width: 150px" v-on:click="addMapSlide">
-          Add map slide
+        <div class="addSlide">
+          <label v-on:click="addMapSlide">+ add map slide</label>
         </div>
-        <div style="float: left; width: 150px">
-          <label>Add images
-            <input type="file" multiple id="addImages" style="display: none" v-on:change="addImages" accept="image/*">
-          </label>
+        <div class="addSlide">
+          <label for="addImages">+ add images</label>
+          <input type="file" multiple id="addImages" style="display: none" v-on:change="addImages" accept="image/*">
         </div>
       </draggable>
     </div>
@@ -75,8 +74,8 @@ export default {
     },
     mounted() {
         document.getElementById('slides').addEventListener('wheel', (evt) => {
-            if (evt.target.className.indexOf('small')) {
-                evt.target.scrollLeft += evt.deltaY;
+            if (evt.currentTarget.className.indexOf('small')) {
+                evt.currentTarget.scrollLeft += evt.deltaY;
             }
         });
     },
@@ -123,5 +122,27 @@ export default {
 
   .flexgrow {
     flex-grow: 1;
+  }
+
+  .addSlide {
+    width: 150px;
+    height: 120px;
+    margin: 10px;
+    float: left;
+
+    display: flex;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    background-color: aliceblue;
+  }  
+
+  .addSlide label {
+    padding: 4px;
+    font-size: 0.8em;
+    font-weight: bold;
+    background-color: #ffffff;
+    box-shadow: 0 2px 5px 0 rgba(0,0,0,0.75);
+    cursor: pointer;
   }
 </style>
