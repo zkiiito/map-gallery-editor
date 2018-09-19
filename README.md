@@ -1,5 +1,7 @@
 # map-gallery-editor
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/zkiiito/map-gallery-editor.svg)](https://greenkeeper.io/)
+
 > MapGalleryEditor
 
 #### Build Setup
