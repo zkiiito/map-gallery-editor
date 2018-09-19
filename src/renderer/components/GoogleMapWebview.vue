@@ -1,6 +1,6 @@
 <template>
     <div class="googleMap">
-        <webview src="http://hummezum.hu/mapgalleryeditor/webview.html" ref="webview"/>
+        <webview src="https://webview.mapgallery.online/webview.html" httpreferrer="https://editor.mapgallery.online" ref="webview"/>
     </div>
 </template>
 
