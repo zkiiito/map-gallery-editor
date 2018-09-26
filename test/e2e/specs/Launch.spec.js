@@ -27,24 +27,21 @@ describe('Launch', function () {
         expect(imageSlides.value.length).to.equal(2);
     });
 
-    it('should add a new map slide', async function () {
-        await this.app.client.click('.addSlide label');
-        await this.app.client.waitForExist('div.slide.map');
-    });
-
     it('should open image preview', async function () {
-        await this.app.client.click('div.slide.image img');
-        await this.app.client.waitForVisible('#imageviewer');
+        return this.app.client.click('div.slide.image img').waitForVisible('#imageviewer');
     });
 
-    it('should go back and forth', async function () {
-
+    it('should add a new map slide', async function () {
+        return this.app.client.click('.addSlide label')
+            .waitForExist('div.slide.map');
     });
 
     it('should load google maps', async function () {
-
+        await this.app.client.click('div.slide.map').waitForVisible('#editor');
+        expect(await this.app.client.waitUntilWindowLoaded().getWindowCount()).to.equal(2);
+        await this.app.client.windowByIndex(1).waitForExist('.gm-style'); // only class in google maps
     });
-
+/*
     it('should save map edits', async function () {
 
     });
@@ -72,7 +69,7 @@ describe('Launch', function () {
     it('should save project', async function () {
 
     });
-    
+
     it('should create new project', async function () {
 
     });
@@ -84,4 +81,9 @@ describe('Launch', function () {
     it('should delete slide', async function () {
 
     });
+
+    it('should go back and forth', async function () {
+
+    });
+*/
 });
