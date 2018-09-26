@@ -145,5 +145,11 @@
     "webpack-hot-middleware": "^2.22.2",
     "webpack-merge": "^4.1.3",
     "write-file-webpack-plugin": "^4.4.0"
+  },
+  "greenkeeper": {
+    "ignore": [
+      "babel-loader",
+      "babel-plugin-istanbul"
+    ]
   }
 }
