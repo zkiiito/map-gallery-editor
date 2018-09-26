@@ -11,10 +11,13 @@
         <button v-on:click="nextSlide">&gt;</button>
         <button v-on:click="closeSlide" v-show="this.$store.state.currentSlide">close</button>
         <button v-on:click="deleteSlide" v-show="this.$store.state.currentSlide">delete</button>
+        <button v-show="this.$store.state.user === null">login</button>
+        <button v-on:click="logout" v-show="this.$store.state.user !== null">logout</button>
     </div>
 </template>
 
 <script>
+    import AppServer from '../services/AppServer';
     import ImageProcessor from '../services/ImageProcessor.js';
     const { Menu, MenuItem, dialog } = require('electron').remote; // eslint-disable-line
     const fse = require('fs-extra');
@@ -111,6 +114,9 @@
                         }
                     }
                 });
+            },
+            logout() {
+                AppServer.logout();
             },
         },
     };
