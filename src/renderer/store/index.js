@@ -2,6 +2,8 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import ImageProcessor from '../services/ImageProcessor';
 const Ajv = require('ajv');
+const uuidv4 = require('uuid/v4');
+
 const ajv = new Ajv();
 const schema = require('./schema');
 const validate = ajv.compile(schema);
@@ -10,10 +12,12 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
     state: {
+        id: uuidv4(),
         title: '',
         description: '',
         slides: [],
         currentSlide: null,
+        user: null,
     },
     mutations: {
         setSlides(state, slides) {
@@ -90,8 +94,20 @@ export default new Vuex.Store({
         setDescription(state, description) {
             state.description = description;
         },
+        setId(state, id) {
+            state.id = id;
+        },
+        setUser(state, user) {
+            state.user = user;
+        },
     },
     actions: {
+        resetProject({ commit }) {
+            commit('setId', uuidv4());
+            commit('setTitle', '');
+            commit('setDescription', '');
+            commit('setSlides', []);
+        },
         loadSlides({ commit }, data) {
             commit('setSlides', data);
         },
@@ -115,6 +131,7 @@ export default new Vuex.Store({
 
             slides = await ImageProcessor.updateSlides(slides);
 
+            commit('setId', data.id);
             commit('setTitle', data.title);
             commit('setDescription', data.description);
             commit('setSlides', slides);

@@ -29,7 +29,7 @@
         },
         methods: {
             newProject() {
-                this.$store.dispatch('loadSlides', []);
+                this.$store.dispatch('resetProject', []);
                 this.fileName = '';
             },
             openProject() {
