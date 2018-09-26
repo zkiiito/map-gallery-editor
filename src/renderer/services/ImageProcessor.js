@@ -51,6 +51,15 @@ function generateSlideData(file) {
     });
 }
 
+async function getImageExport(path) {
+    const simg = sharp(path);
+
+    return simg
+        .resize(1920, 1080)
+        .max()
+        .toBuffer();
+}
+
 function generateExport(slide, dir) {
     return new Promise(async (resolve, reject) => {
         if (slide.path === undefined) {
@@ -61,13 +70,7 @@ function generateExport(slide, dir) {
             const filepath = path.join(dir, 'images', `export_${slide.id}_${slide.filename}`);
 
             if (!fse.existsSync(filepath) || fse.statSync(filepath).mtime < slide.modified_at.getTime()) {
-                const simg = sharp(slide.path);
-
-                const imageData = await simg
-                    .resize(1920, 1080)
-                    .max()
-                    .toBuffer();
-
+                const imageData = await getImageExport(slide.path);
                 await fse.outputFile(filepath, imageData);
             }
 
@@ -160,4 +163,5 @@ export default {
     processNewImages,
     exportSlides,
     updateSlides,
+    getImageExport,
 };

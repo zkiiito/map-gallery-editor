@@ -13,6 +13,7 @@
         <button v-on:click="deleteSlide" v-show="this.$store.state.currentSlide">delete</button>
         <button v-show="this.$store.state.user === null">login</button>
         <button v-on:click="logout" v-show="this.$store.state.user !== null">logout</button>
+        <button v-on:click="publish" v-show="this.$store.state.user !== null">publish</button>
     </div>
 </template>
 
@@ -86,6 +87,9 @@
             },
             logout() {
                 AppServer.logout();
+            },
+            publish() {
+                ProjectHandler.publishProject();
             },
         },
     };

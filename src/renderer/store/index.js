@@ -1,12 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import ImageProcessor from '../services/ImageProcessor';
-const Ajv = require('ajv');
 const uuidv4 = require('uuid/v4');
-
-const ajv = new Ajv();
-const schema = require('./schema');
-const validate = ajv.compile(schema);
 
 Vue.use(Vuex);
 
@@ -95,7 +89,7 @@ export default new Vuex.Store({
             state.description = description;
         },
         setId(state, id) {
-            state.id = id;
+            state.id = id || uuidv4();
         },
         setUser(state, user) {
             state.user = user;
@@ -103,38 +97,13 @@ export default new Vuex.Store({
     },
     actions: {
         resetProject({ commit }) {
-            commit('setId', uuidv4());
+            commit('setId', null);
             commit('setTitle', '');
             commit('setDescription', '');
             commit('setSlides', []);
         },
         loadSlides({ commit }, data) {
             commit('setSlides', data);
-        },
-        async loadFileData({ commit }, data) {
-            const valid = validate(data);
-            if (!valid) {
-                throw new Error('invalid file');
-            }
-
-            let slides = data.slides.map((slide) => {
-                if (slide.exif_date) {
-                    slide.exif_date = new Date(slide.exif_date);
-                }
-
-                if (slide.modified_at) {
-                    slide.modified_at = new Date(slide.modified_at);
-                }
-
-                return slide;
-            });
-
-            slides = await ImageProcessor.updateSlides(slides);
-
-            commit('setId', data.id);
-            commit('setTitle', data.title);
-            commit('setDescription', data.description);
-            commit('setSlides', slides);
         },
     },
     getters: {
@@ -150,6 +119,7 @@ export default new Vuex.Store({
             return 'image';
         },
         fileData: state => JSON.stringify({
+            id: state.id,
             title: state.title,
             description: state.description,
             slides: state.slides,

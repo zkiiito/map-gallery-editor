@@ -32,8 +32,16 @@ function logout() {
     firebase.auth().signOut();
 }
 
-function uploadGallery() {
+function uploadFile(filename, buffer, projectId) {
+    const storageRef = firebase.storage().ref().child(`users/${firebase.auth().currentUser.uid}/galleries/${projectId}`);
+    const metadata = {
+        contentType: 'image/jpeg',
+    };
 
+    const ref = storageRef.child(filename);
+    ref.put(buffer, metadata).then((snapshot) => {
+        console.log(snapshot);
+    });
 }
 
 init();
@@ -41,5 +49,5 @@ init();
 export default {
     loginByToken,
     logout,
-    uploadGallery,
+    uploadFile,
 };
