@@ -34,7 +34,7 @@ import SlidePreview from './components/SlidePreview.vue';
 import FileMenu from './components/FileMenu.vue';
 import ErrorBar from './components/ErrorBar';
 
-import ImageProcessor from './nodeland/ImageProcessor.js';
+import ImageProcessor from './services/ImageProcessor.js';
 const uuidv4 = require('uuid/v4');
 
 export default {
@@ -135,7 +135,7 @@ export default {
     text-align: center;
     justify-content: center;
     background-color: aliceblue;
-  }  
+  }
 
   .addSlide label {
     padding: 4px;

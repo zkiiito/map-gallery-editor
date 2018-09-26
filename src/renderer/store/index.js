@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import ImageProcessor from '../nodeland/ImageProcessor';
+import ImageProcessor from '../services/ImageProcessor';
 const Ajv = require('ajv');
 const ajv = new Ajv();
 const schema = require('./schema');

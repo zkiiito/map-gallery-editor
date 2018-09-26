@@ -15,7 +15,7 @@
 </template>
 
 <script>
-    import ImageProcessor from '../nodeland/ImageProcessor.js';
+    import ImageProcessor from '../services/ImageProcessor.js';
     const { Menu, MenuItem, dialog } = require('electron').remote; // eslint-disable-line
     const fse = require('fs-extra');
     const path = require('path');
