@@ -18,10 +18,8 @@
 
 <script>
     import AppServer from '../services/AppServer';
-    import ImageProcessor from '../services/ImageProcessor.js';
+    import ProjectHandler from '../services/ProjectHandler';
     const { Menu, MenuItem, dialog } = require('electron').remote; // eslint-disable-line
-    const fse = require('fs-extra');
-    const path = require('path');
 
     export default {
         name: 'FileMenu',
@@ -39,29 +37,20 @@
                 dialog.showOpenDialog({
                     properties: ['openFile'],
                     filters: [{ name: 'MapGallery Editor files', extensions: ['mapgallery'] }],
-                }, async (filename) => {
-                    this.fileName = filename.toString();
-
-                    try {
-                        const data = await fse.readFile(this.fileName, 'utf-8');
-                        const parsedData = JSON.parse(data);
-                        this.$store.dispatch('loadFileData', parsedData);
-                    } catch (err) {
-                        this.$bus.$emit('error', err);
+                }, (filename) => {
+                    if (filename) {
+                        this.fileName = filename.toString();
+                        ProjectHandler.openProject(this.fileName);
                     }
                 });
             },
-            async saveProject() {
+            saveProject() {
                 if (this.fileName === '') {
                     this.saveProjectAs();
                     return;
                 }
 
-                try {
-                    await fse.writeFile(this.fileName, this.$store.getters.fileData);
-                } catch (err) {
-                    this.$bus.$emit('file-error', err);
-                }
+                ProjectHandler.saveProject(this.fileName);
             },
             saveProjectAs() {
                 dialog.showSaveDialog({
@@ -89,29 +78,9 @@
                 this.$store.commit('orderByExif');
             },
             exportProject() {
-                dialog.showOpenDialog({ properties: ['openDirectory', 'createDirectory'] }, async (dir) => {
+                dialog.showOpenDialog({ properties: ['openDirectory', 'createDirectory'] }, (dir) => {
                     if (dir) {
-                        try {
-                            await ImageProcessor.exportSlides(this.$store.state.slides, dir.toString());
-
-                            const mapGalleryRoot = process.env.NODE_ENV !== 'development' ? process.resourcesPath : __static;
-
-                            await fse.copy(path.join(mapGalleryRoot, 'MapGallery'), dir.toString());
-
-                            const data = this.$store.state.slides.map((slide) => {
-                                if (slide.from) {
-                                    return slide;
-                                }
-                                return `export_${slide.id}_${slide.filename}`;
-                            });
-
-                            await fse.outputFile(
-                                path.join(dir.toString(), 'scripts', 'demo.js'),
-                                `MapGallery.initialize(${JSON.stringify(data)});`,
-                            );
-                        } catch (err) {
-                            this.$bus.$emit('error', err);
-                        }
+                        ProjectHandler.exportProject(dir.toString());
                     }
                 });
             },
