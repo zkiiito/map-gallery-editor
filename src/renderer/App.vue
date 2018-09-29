@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <AuthPopup v-show="$store.getters.isPopupOpen('auth')"/>
+    <vue-progress-bar></vue-progress-bar>
     <ErrorBar/>
     <FileMenu/>
     <div id="editor" v-show="$store.getters.currentSlideType === 'map'">
@@ -37,6 +38,7 @@ import ErrorBar from './components/ErrorBar';
 import AuthPopup from './components/AuthPopup';
 
 import ImageProcessor from './services/ImageProcessor.js';
+const { remote } = require('electron');
 const uuidv4 = require('uuid/v4');
 
 export default {
@@ -78,6 +80,23 @@ export default {
         document.getElementById('slides').addEventListener('wheel', (evt) => {
             if (evt.currentTarget.className.indexOf('small')) {
                 evt.currentTarget.scrollLeft += evt.deltaY;
+            }
+        });
+
+        this.$bus.$on('progress', (percent) => {
+            if (percent === 0) {
+                this.$Progress.start();
+            }
+            // console.log(percent, Date.now());
+            const currentWindow = remote.getCurrentWindow();
+            currentWindow.setProgressBar(percent / 100);
+            this.$Progress.set(percent);
+
+            if (percent === 100) {
+                setTimeout(() => {
+                    currentWindow.setProgressBar(-1);
+                    this.$Progress.finish();
+                }, 500);
             }
         });
     },

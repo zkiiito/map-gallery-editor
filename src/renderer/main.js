@@ -1,5 +1,5 @@
 import Vue from 'vue';
-
+import VueProgressBar from 'vue-progressbar';
 import App from './App';
 import store from './store';
 import EventBus from './EventBus';
@@ -16,6 +16,12 @@ Object.defineProperties(Vue.prototype, {
         },
     },
 });
+
+const progressBarOptions = {
+    thickness: '5px',
+};
+
+Vue.use(VueProgressBar, progressBarOptions);
 
 /* eslint-disable no-new */
 new Vue({

@@ -84,6 +84,8 @@ function publishProject() {
     AppServer.uploadGalleryData(data).then(() => {
         const { slides } = store.state.gallery;
         const queue = new Queue(5, Infinity);
+        let filesAll = 0;
+        let filesUploaded = 0;
 
         slides.forEach((slide) => {
             if (slide.from) {
@@ -91,12 +93,16 @@ function publishProject() {
             }
 
             queue.add(() => ImageProcessor.getImageExport(slide.path))
-                .then((buffer) => {
-                    return AppServer.uploadFile(`export_${slide.id}_${slide.filename}`, buffer, store.state.gallery.id);
+                .then(buffer => AppServer.uploadFile(`export_${slide.id}_${slide.filename}`, buffer, store.state.gallery.id))
+                .then(() => {
+                    filesUploaded++;
+                    EventBus.$emit('progress', filesUploaded / filesAll * 100);
                 })
                 .catch((err) => {
                     EventBus.$emit('error', err);
                 });
+
+            filesAll++;
         });
     }).catch((err) => {
         EventBus.$emit('error', err);

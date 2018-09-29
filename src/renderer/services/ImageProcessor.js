@@ -120,16 +120,7 @@ function updateSlide(slide) {
 }
 
 function reportProgress(percent) {
-    // console.log(percent, Date.now());
-    const currentWindow = remote.getCurrentWindow();
-    currentWindow.setProgressBar(percent / 100);
     EventBus.$emit('progress', percent);
-
-    if (percent === 100) {
-        setTimeout(() => {
-            currentWindow.setProgressBar(-1);
-        }, 500);
-    }
 }
 
 function allProgress(promises) {
