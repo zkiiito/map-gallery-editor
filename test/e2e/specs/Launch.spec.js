@@ -13,6 +13,9 @@ const images = [
 describe('Launch', function () {
     before(utils.beforeEach);
     after(utils.afterEach);
+    beforeEach(function () {
+        this.timeout(10000);
+    });
 
     it('shows the proper application title', function () {
         return this.app.client.getTitle()
