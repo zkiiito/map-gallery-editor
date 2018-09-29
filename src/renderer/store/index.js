@@ -120,7 +120,7 @@ export default new Vuex.Store({
 
                     return 'image';
                 },
-                fileData: state => JSON.stringify({
+                fileData: state => ({
                     id: state.id,
                     title: state.title,
                     description: state.description,

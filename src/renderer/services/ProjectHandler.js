@@ -46,7 +46,7 @@ async function openProject(path) {
 
 async function saveProject(path) {
     try {
-        await fse.writeFile(path, store.getters.fileData);
+        await fse.writeFile(path, JSON.stringify(store.getters.fileData));
     } catch (err) {
         EventBus.$emit('file-error', err);
     }
@@ -79,21 +79,27 @@ async function exportProject(dir) {
 }
 
 function publishProject() {
-    const { slides } = store.state.gallery;
-    const queue = new Queue(5, Infinity);
+    const data = store.getters.fileData;
 
-    slides.forEach((slide) => {
-        if (slide.from) {
-            return;
-        }
+    AppServer.uploadGalleryData(data).then(() => {
+        const { slides } = store.state.gallery;
+        const queue = new Queue(5, Infinity);
 
-        queue.add(() => ImageProcessor.getImageExport(slide.path))
-            .then((buffer) => {
-                AppServer.uploadFile(`export_${slide.id}_${slide.filename}`, buffer, store.state.id);
-            })
-            .catch((err) => {
-                EventBus.$emit('error', err);
-            });
+        slides.forEach((slide) => {
+            if (slide.from) {
+                return;
+            }
+
+            queue.add(() => ImageProcessor.getImageExport(slide.path))
+                .then((buffer) => {
+                    return AppServer.uploadFile(`export_${slide.id}_${slide.filename}`, buffer, store.state.gallery.id);
+                })
+                .catch((err) => {
+                    EventBus.$emit('error', err);
+                });
+        });
+    }).catch((err) => {
+        EventBus.$emit('error', err);
     });
 }
 

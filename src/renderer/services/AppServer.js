@@ -32,16 +32,30 @@ function logout() {
     firebase.auth().signOut();
 }
 
-function uploadFile(filename, buffer, projectId) {
-    const storageRef = firebase.storage().ref().child(`users/${firebase.auth().currentUser.uid}/galleries/${projectId}`);
+function uploadFile(filename, buffer, galleryId) {
+    const { uid } = firebase.auth().currentUser;
+    const storageRef = firebase.storage().ref().child(`users/${uid}/galleries/${galleryId}`);
     const metadata = {
         contentType: 'image/jpeg',
     };
 
     const ref = storageRef.child(filename);
-    ref.put(buffer, metadata).then((snapshot) => {
+    return ref.put(buffer, metadata).then((snapshot) => {
         console.log(snapshot);
     });
+}
+
+function uploadGalleryData(galleryData) {
+    const { uid } = firebase.auth().currentUser;
+    const db = firebase.firestore();
+
+    // Disable deprecated features
+    db.settings({
+        timestampsInSnapshots: true,
+    });
+
+    return db.collection('users').doc(uid).collection('galleries').doc(galleryData.id)
+        .set(galleryData);
 }
 
 init();
@@ -50,4 +64,5 @@ export default {
     loginByToken,
     logout,
     uploadFile,
+    uploadGalleryData,
 };
