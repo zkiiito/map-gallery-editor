@@ -1,5 +1,15 @@
 import utils from '../utils';
 
+const path = require('path');
+
+const images = [
+    'alex-lopez-385829-unsplash.jpg',
+    'alex-lopez-455677-unsplash.jpg',
+    'alex-lopez-486018-unsplash.jpg',
+    'alex-lopez-495037-unsplash.jpg',
+    'alex-lopez-614947-unsplash.jpg',
+].map(filename => path.join(__dirname, '../../sampleimages/', filename));
+
 describe('Launch', function () {
     before(utils.beforeEach);
     after(utils.afterEach);
@@ -18,8 +28,8 @@ describe('Launch', function () {
     });
 
     it('should load 2 images', async function () {
-        this.app.client.chooseFile('#addImages', 'E:\\nepal1.jpg');
-        this.app.client.chooseFile('#addImages', 'E:\\nepal2.jpg');
+        this.app.client.chooseFile('#addImages', images[0]);
+        this.app.client.chooseFile('#addImages', images[1]);
         await this.app.client.waitForExist('div.slide.image:nth-child(2)', 5000);
 
         // ?
@@ -39,7 +49,7 @@ describe('Launch', function () {
     it('should load google maps', async function () {
         await this.app.client.click('div.slide.map').waitForVisible('#editor');
         expect(await this.app.client.waitUntilWindowLoaded().getWindowCount()).to.equal(2);
-        await this.app.client.windowByIndex(1).waitForExist('.gm-style'); // only class in google maps
+        await this.app.client.windowByIndex(1).waitForExist('.gm-style', 10000); // only class in google maps
     });
 /*
     it('should save map edits', async function () {
