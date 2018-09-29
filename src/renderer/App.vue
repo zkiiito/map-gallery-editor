@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <Auth v-show="$store.getters.isPopupOpen('auth')"/>
+    <AuthPopup v-show="$store.getters.isPopupOpen('auth')"/>
     <ErrorBar/>
     <FileMenu/>
     <div id="editor" v-show="$store.getters.currentSlideType === 'map'">
@@ -34,7 +34,7 @@ import ImageView from './components/ImageView.vue';
 import SlidePreview from './components/SlidePreview.vue';
 import FileMenu from './components/FileMenu.vue';
 import ErrorBar from './components/ErrorBar';
-import Auth from './components/Auth';
+import AuthPopup from './components/AuthPopup';
 
 import ImageProcessor from './services/ImageProcessor.js';
 const uuidv4 = require('uuid/v4');
@@ -42,7 +42,7 @@ const uuidv4 = require('uuid/v4');
 export default {
     name: 'app',
     components: {
-        GoogleMap, GoogleMapForm, ImageView, SlidePreview, draggable, FileMenu, ErrorBar, Auth,
+        GoogleMap, GoogleMapForm, ImageView, SlidePreview, draggable, FileMenu, ErrorBar, AuthPopup,
     },
     computed: {
         slides: {
