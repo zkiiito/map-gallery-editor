@@ -40,9 +40,7 @@ function uploadFile(filename, buffer, galleryId) {
     };
 
     const ref = storageRef.child(filename);
-    return ref.put(buffer, metadata).then((snapshot) => {
-        console.log(snapshot);
-    });
+    return ref.put(buffer, metadata);
 }
 
 function uploadGalleryData(galleryData) {

@@ -137,15 +137,11 @@ export default new Vuex.Store({
                     state.popups.push(popup);
                 },
                 closePopup(state, popup) {
-                    state.popups = state.popups.filter((openpopup) => {
-                        return popup !== openpopup;
-                    });
+                    state.popups = state.popups.filter(openpopup => popup !== openpopup);
                 },
             },
             getters: {
-                isPopupOpen: (state) => (popup) => {
-                    return state.popups.indexOf(popup) >= 0;
-                },
+                isPopupOpen: state => (popup => state.popups.indexOf(popup) >= 0),
             },
         },
     },

@@ -52,6 +52,10 @@ async function saveProject(path) {
     }
 }
 
+function getExportedFilename(slide) {
+    return `export_${slide.id}_${slide.filename}`;
+}
+
 async function exportProject(dir) {
     const { slides } = store.state.gallery;
 
@@ -66,7 +70,7 @@ async function exportProject(dir) {
             if (slide.from) {
                 return slide;
             }
-            return `export_${slide.id}_${slide.filename}`;
+            return getExportedFilename(slide);
         });
 
         await fse.outputFile(
@@ -93,16 +97,16 @@ function publishProject() {
             }
 
             queue.add(() => ImageProcessor.getImageExport(slide.path))
-                .then(buffer => AppServer.uploadFile(`export_${slide.id}_${slide.filename}`, buffer, store.state.gallery.id))
+                .then(buffer => AppServer.uploadFile(getExportedFilename(slide), buffer, store.state.gallery.id))
                 .then(() => {
-                    filesUploaded++;
+                    filesUploaded += 1;
                     EventBus.$emit('progress', filesUploaded / filesAll * 100);
                 })
                 .catch((err) => {
                     EventBus.$emit('error', err);
                 });
 
-            filesAll++;
+            filesAll += 1;
         });
     }).catch((err) => {
         EventBus.$emit('error', err);

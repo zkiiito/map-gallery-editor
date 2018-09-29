@@ -38,7 +38,6 @@ import ErrorBar from './components/ErrorBar';
 import AuthPopup from './components/AuthPopup';
 
 import ImageProcessor from './services/ImageProcessor.js';
-const { remote } = require('electron');
 const uuidv4 = require('uuid/v4');
 
 export default {
@@ -87,8 +86,8 @@ export default {
             if (percent === 0) {
                 this.$Progress.start();
             }
-            // console.log(percent, Date.now());
-            const currentWindow = remote.getCurrentWindow();
+
+            const currentWindow = this.$electron.remote.getCurrentWindow();
             currentWindow.setProgressBar(percent / 100);
             this.$Progress.set(percent);
 

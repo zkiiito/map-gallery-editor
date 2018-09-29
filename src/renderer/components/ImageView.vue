@@ -9,7 +9,8 @@ export default {
     name: 'ImageView',
     computed: {
         src() {
-            return this.$store.getters.currentSlideType === 'image' ? fileUrl(this.$store.state.gallery.currentSlide.path) : '';
+            return this.$store.getters.currentSlideType === 'image'
+                ? fileUrl(this.$store.state.gallery.currentSlide.path) : '';
         },
         styleObject() {
             return {
