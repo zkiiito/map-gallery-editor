@@ -29,7 +29,6 @@ export default {
         });
 
         this.$bus.$on('user', (user) => {
-            console.log('user', user);
             this.$store.commit('setUser', user);
             this.$store.commit('closePopup', 'auth');
         });

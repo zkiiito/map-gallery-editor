@@ -12,7 +12,7 @@
         <button v-on:click="closeSlide" v-show="this.$store.state.gallery.currentSlide">close</button>
         <button v-on:click="deleteSlide" v-show="this.$store.state.gallery.currentSlide">delete</button>
         <button v-on:click="login" v-show="this.$store.state.gallery.user === null">login</button>
-        <button v-on:click="logout" v-show="this.$store.state.gallery.user !== null">logout</button>
+        <button v-on:click="logout" v-if="this.$store.state.gallery.user !== null">logout: {{ username }}</button>
         <button v-on:click="publish" v-show="this.$store.state.gallery.user !== null">publish</button>
     </div>
 </template>
@@ -28,6 +28,11 @@
             return {
                 fileName: '',
             };
+        },
+        computed: {
+            username() {
+                return this.$store.state.gallery.user ? this.$store.state.gallery.user.displayName : '';
+            },
         },
         methods: {
             newProject() {
