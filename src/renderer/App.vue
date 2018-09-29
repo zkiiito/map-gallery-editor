@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <Auth/>
+    <Auth v-show="$store.getters.isPopupOpen('auth')"/>
     <ErrorBar/>
     <FileMenu/>
     <div id="editor" v-show="$store.getters.currentSlideType === 'map'">
@@ -47,7 +47,7 @@ export default {
     computed: {
         slides: {
             get() {
-                return this.$store.state.slides;
+                return this.$store.state.gallery.slides;
             },
             set(value) {
                 this.$store.commit('updateOrder', value.map(el => el.id));

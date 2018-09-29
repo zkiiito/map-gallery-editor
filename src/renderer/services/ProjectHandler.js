@@ -53,14 +53,16 @@ async function saveProject(path) {
 }
 
 async function exportProject(dir) {
+    const { slides } = store.state.gallery;
+
     try {
-        await ImageProcessor.exportSlides(store.state.slides, dir);
+        await ImageProcessor.exportSlides(slides, dir);
 
         const mapGalleryRoot = process.env.NODE_ENV !== 'development' ? process.resourcesPath : __static;
 
         await fse.copy(path.join(mapGalleryRoot, 'MapGallery'), dir);
 
-        const data = store.state.slides.map((slide) => {
+        const data = slides.map((slide) => {
             if (slide.from) {
                 return slide;
             }
@@ -77,9 +79,10 @@ async function exportProject(dir) {
 }
 
 function publishProject() {
+    const { slides } = store.state.gallery;
     const queue = new Queue(5, Infinity);
 
-    store.state.slides.forEach((slide) => {
+    slides.forEach((slide) => {
         if (slide.from) {
             return;
         }

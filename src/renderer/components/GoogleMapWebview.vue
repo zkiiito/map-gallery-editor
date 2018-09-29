@@ -9,7 +9,7 @@ export default {
     name: 'GoogleMap',
     computed: {
         currentSlide() {
-            return this.$store.state.currentSlide;
+            return this.$store.state.gallery.currentSlide;
         },
     },
     mounted() {
