@@ -20,8 +20,15 @@ function generateSlideData(file) {
             const thumbname = path.join(remote.app.getPath('temp'), `/thumbs/thumb_${file.name}`);
             const simg = sharp(file.path);
 
+            let exifdate = file.lastModifiedDate;
+
             const metadata = await simg.metadata();
-            const exifdate = metadata.exif ? exifReader(metadata.exif).exif.DateTimeOriginal : file.lastModifiedDate;
+            if (metadata.exif) {
+                const exifDecoded = exifReader(metadata.exif);
+                if (exifDecoded.exif) {
+                    exifdate = exifDecoded.exif.DateTimeOriginal || exifdate;
+                }
+            }
 
             const res = {
                 ...imageSlideTemplate,
