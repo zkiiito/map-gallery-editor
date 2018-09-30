@@ -5,15 +5,15 @@
         <button v-on:click="saveProject">Save</button>
         <button v-on:click="saveProjectAs">SaveAs</button>
         <input type="text" v-bind:value="fileName" readonly size="50"/>
-        <button v-on:click="exportProject">Export</button>
-        <button v-on:click="orderExif">EXIF</button>
+        <button v-on:click="orderExif">EXIF sort</button>
         <button v-on:click="prevSlide">&lt;</button>
         <button v-on:click="nextSlide">&gt;</button>
-        <button v-on:click="closeSlide" v-show="this.$store.state.gallery.currentSlide">close</button>
-        <button v-on:click="deleteSlide" v-show="this.$store.state.gallery.currentSlide">delete</button>
+        <button v-on:click="closeSlide" v-show="this.$store.state.gallery.currentSlide">close slide</button>
+        <button v-on:click="deleteSlide" v-show="this.$store.state.gallery.currentSlide">delete slide</button>
         <button v-on:click="login" v-show="this.$store.state.gallery.user === null">login</button>
         <button v-on:click="logout" v-if="this.$store.state.gallery.user !== null">logout: {{ username }}</button>
         <button v-on:click="publish" v-show="this.$store.state.gallery.user !== null">publish</button>
+        <button v-on:click="exportProject">Export to disk</button>
     </div>
 </template>
 
