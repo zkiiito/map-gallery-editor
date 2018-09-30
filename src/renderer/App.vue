@@ -99,6 +99,12 @@ export default {
             }
         });
 
+        this.$bus.$on('error', () => {
+            const currentWindow = this.$electron.remote.getCurrentWindow();
+            currentWindow.setProgressBar(-1);
+            this.$Progress.fail();
+        });
+
         this.$bus.$on('user', (user) => {
             this.$store.commit('setUser', user);
         });
