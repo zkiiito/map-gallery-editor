@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <AuthPopup v-show="$store.getters.isPopupOpen('auth')"/>
+    <AuthPopup v-if="$store.getters.isPopupOpen('auth')"/>
     <vue-progress-bar></vue-progress-bar>
     <ErrorBar/>
     <FileMenu/>
@@ -97,6 +97,10 @@ export default {
                     this.$Progress.finish();
                 }, 500);
             }
+        });
+
+        this.$bus.$on('user', (user) => {
+            this.$store.commit('setUser', user);
         });
     },
 };

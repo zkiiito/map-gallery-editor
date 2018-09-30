@@ -28,8 +28,7 @@ export default {
             AppServer.loginByToken(msg.channel);
         });
 
-        this.$bus.$on('user', (user) => {
-            this.$store.commit('setUser', user);
+        this.$bus.$on('user', () => {
             this.$store.commit('closePopup', 'auth');
         });
     },

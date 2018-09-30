@@ -12,11 +12,7 @@ function init() {
     });
 
     firebase.auth().onAuthStateChanged((user) => {
-        if (user) {
-            EventBus.$emit('user', user);
-        } else {
-            EventBus.$emit('user', null);
-        }
+        EventBus.$emit('user', user);
     });
 }
 
