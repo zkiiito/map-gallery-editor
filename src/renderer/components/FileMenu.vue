@@ -9,16 +9,18 @@
         <button v-on:click="orderExif">EXIF</button>
         <button v-on:click="prevSlide">&lt;</button>
         <button v-on:click="nextSlide">&gt;</button>
-        <button v-on:click="closeSlide" v-show="this.$store.state.currentSlide">close</button>
-        <button v-on:click="deleteSlide" v-show="this.$store.state.currentSlide">delete</button>
+        <button v-on:click="closeSlide" v-show="this.$store.state.gallery.currentSlide">close</button>
+        <button v-on:click="deleteSlide" v-show="this.$store.state.gallery.currentSlide">delete</button>
+        <button v-on:click="login" v-show="this.$store.state.gallery.user === null">login</button>
+        <button v-on:click="logout" v-if="this.$store.state.gallery.user !== null">logout: {{ username }}</button>
+        <button v-on:click="publish" v-show="this.$store.state.gallery.user !== null">publish</button>
     </div>
 </template>
 
 <script>
-    import ImageProcessor from '../nodeland/ImageProcessor.js';
+    import AppServer from '../services/AppServer';
+    import ProjectHandler from '../services/ProjectHandler';
     const { Menu, MenuItem, dialog } = require('electron').remote; // eslint-disable-line
-    const fse = require('fs-extra');
-    const path = require('path');
 
     export default {
         name: 'FileMenu',
@@ -27,38 +29,34 @@
                 fileName: '',
             };
         },
+        computed: {
+            username() {
+                return this.$store.state.gallery.user ? this.$store.state.gallery.user.displayName : '';
+            },
+        },
         methods: {
             newProject() {
-                this.$store.dispatch('loadSlides', []);
+                this.$store.dispatch('resetProject', []);
                 this.fileName = '';
             },
             openProject() {
                 dialog.showOpenDialog({
                     properties: ['openFile'],
                     filters: [{ name: 'MapGallery Editor files', extensions: ['mapgallery'] }],
-                }, async (filename) => {
-                    this.fileName = filename.toString();
-
-                    try {
-                        const data = await fse.readFile(this.fileName, 'utf-8');
-                        const parsedData = JSON.parse(data);
-                        this.$store.dispatch('loadFileData', parsedData);
-                    } catch (err) {
-                        this.$bus.$emit('error', err);
+                }, (filename) => {
+                    if (filename) {
+                        this.fileName = filename.toString();
+                        ProjectHandler.openProject(this.fileName);
                     }
                 });
             },
-            async saveProject() {
+            saveProject() {
                 if (this.fileName === '') {
                     this.saveProjectAs();
                     return;
                 }
 
-                try {
-                    await fse.writeFile(this.fileName, this.$store.getters.fileData);
-                } catch (err) {
-                    this.$bus.$emit('file-error', err);
-                }
+                ProjectHandler.saveProject(this.fileName);
             },
             saveProjectAs() {
                 dialog.showSaveDialog({
@@ -86,31 +84,20 @@
                 this.$store.commit('orderByExif');
             },
             exportProject() {
-                dialog.showOpenDialog({ properties: ['openDirectory', 'createDirectory'] }, async (dir) => {
+                dialog.showOpenDialog({ properties: ['openDirectory', 'createDirectory'] }, (dir) => {
                     if (dir) {
-                        try {
-                            await ImageProcessor.exportSlides(this.$store.state.slides, dir.toString());
-
-                            const mapGalleryRoot = process.env.NODE_ENV !== 'development' ? process.resourcesPath : __static;
-
-                            await fse.copy(path.join(mapGalleryRoot, 'MapGallery'), dir.toString());
-
-                            const data = this.$store.state.slides.map((slide) => {
-                                if (slide.from) {
-                                    return slide;
-                                }
-                                return `export_${slide.id}_${slide.filename}`;
-                            });
-
-                            await fse.outputFile(
-                                path.join(dir.toString(), 'scripts', 'demo.js'),
-                                `MapGallery.initialize(${JSON.stringify(data)});`,
-                            );
-                        } catch (err) {
-                            this.$bus.$emit('error', err);
-                        }
+                        ProjectHandler.exportProject(dir.toString());
                     }
                 });
+            },
+            logout() {
+                AppServer.logout();
+            },
+            publish() {
+                ProjectHandler.publishProject();
+            },
+            login() {
+                this.$store.commit('openPopup', 'auth');
             },
         },
     };

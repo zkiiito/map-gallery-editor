@@ -1,5 +1,7 @@
 <template>
   <div id="app">
+    <AuthPopup v-if="$store.getters.isPopupOpen('auth')"/>
+    <vue-progress-bar></vue-progress-bar>
     <ErrorBar/>
     <FileMenu/>
     <div id="editor" v-show="$store.getters.currentSlideType === 'map'">
@@ -33,19 +35,20 @@ import ImageView from './components/ImageView.vue';
 import SlidePreview from './components/SlidePreview.vue';
 import FileMenu from './components/FileMenu.vue';
 import ErrorBar from './components/ErrorBar';
+import AuthPopup from './components/AuthPopup';
 
-import ImageProcessor from './nodeland/ImageProcessor.js';
+import ImageProcessor from './services/ImageProcessor.js';
 const uuidv4 = require('uuid/v4');
 
 export default {
     name: 'app',
     components: {
-        GoogleMap, GoogleMapForm, ImageView, SlidePreview, draggable, FileMenu, ErrorBar,
+        GoogleMap, GoogleMapForm, ImageView, SlidePreview, draggable, FileMenu, ErrorBar, AuthPopup,
     },
     computed: {
         slides: {
             get() {
-                return this.$store.state.slides;
+                return this.$store.state.gallery.slides;
             },
             set(value) {
                 this.$store.commit('updateOrder', value.map(el => el.id));
@@ -77,6 +80,27 @@ export default {
             if (evt.currentTarget.className.indexOf('small')) {
                 evt.currentTarget.scrollLeft += evt.deltaY;
             }
+        });
+
+        this.$bus.$on('progress', (percent) => {
+            if (percent === 0) {
+                this.$Progress.start();
+            }
+
+            const currentWindow = this.$electron.remote.getCurrentWindow();
+            currentWindow.setProgressBar(percent / 100);
+            this.$Progress.set(percent);
+
+            if (percent === 100) {
+                setTimeout(() => {
+                    currentWindow.setProgressBar(-1);
+                    this.$Progress.finish();
+                }, 500);
+            }
+        });
+
+        this.$bus.$on('user', (user) => {
+            this.$store.commit('setUser', user);
         });
     },
 };
@@ -135,7 +159,7 @@ export default {
     text-align: center;
     justify-content: center;
     background-color: aliceblue;
-  }  
+  }
 
   .addSlide label {
     padding: 4px;

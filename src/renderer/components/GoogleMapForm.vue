@@ -44,34 +44,34 @@ export default {
     computed: {
         routeFrom: {
             get() {
-                return this.$store.state.currentSlide.from;
+                return this.$store.state.gallery.currentSlide.from;
             },
             set(value) {
-                this.$store.state.currentSlide.from = value;
+                this.$store.state.gallery.currentSlide.from = value;
             },
         },
         routeTo: {
             get() {
-                return this.$store.state.currentSlide.to;
+                return this.$store.state.gallery.currentSlide.to;
             },
             set(value) {
-                this.$store.state.currentSlide.to = value;
+                this.$store.state.gallery.currentSlide.to = value;
             },
         },
         routeSpeed: {
             get() {
-                return this.$store.state.currentSlide.speed;
+                return this.$store.state.gallery.currentSlide.speed;
             },
             set(value) {
-                this.$store.state.currentSlide.speed = value;
+                this.$store.state.gallery.currentSlide.speed = value;
             },
         },
         routeMode: {
             get() {
-                return this.$store.state.currentSlide.mode;
+                return this.$store.state.gallery.currentSlide.mode;
             },
             set(value) {
-                this.$store.state.currentSlide.mode = value;
+                this.$store.state.gallery.currentSlide.mode = value;
             },
         },
     },

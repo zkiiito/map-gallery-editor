@@ -22,14 +22,14 @@ export default {
             const classes = [];
             classes.push(this.slide.from ? 'map' : 'image');
 
-            if (this.slide === this.$store.state.currentSlide) {
+            if (this.slide === this.$store.state.gallery.currentSlide) {
                 classes.push('current');
             }
 
             return classes;
         },
         currentSlide() {
-            return this.$store.state.currentSlide;
+            return this.$store.state.gallery.currentSlide;
         },
         thumbnailUrl() {
             return fileUrl(this.slide.thumbnail);
@@ -64,7 +64,7 @@ export default {
         align-items: center;
         text-align: center;
         justify-content: center;
-        background-color: aliceblue;        
+        background-color: aliceblue;
     }
 
     .slide .imgholder {
