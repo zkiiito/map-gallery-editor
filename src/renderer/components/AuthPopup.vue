@@ -42,6 +42,6 @@ export default {
 
 <style scoped>
     webview {
-        height: 500px;
+        height: 580px;
     }
 </style>

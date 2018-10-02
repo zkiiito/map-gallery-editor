@@ -49,8 +49,8 @@
     }
 
     .modal-container {
-        width: 300px;
-        margin: 0px auto;
+        width: 400px;
+        margin: 0 auto;
         padding: 20px 30px;
         background-color: #fff;
         border-radius: 2px;
@@ -65,7 +65,7 @@
     }
 
     .modal-body {
-        margin: 20px 0;
+        margin: 2px 0;
     }
 
     .modal-default-button {
