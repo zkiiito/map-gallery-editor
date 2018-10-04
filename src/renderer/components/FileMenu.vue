@@ -38,6 +38,7 @@
             newProject() {
                 this.$store.dispatch('resetProject', []);
                 this.fileName = '';
+                this.$bus.$emit('clearErrors');
             },
             openProject() {
                 dialog.showOpenDialog({
@@ -107,7 +108,7 @@
             publish() {
                 ProjectHandler.publishProject()
                     .then((url) => {
-                        console.log(url);
+                        this.$bus.$emit('error', `project url: ${url}`);
                     })
                     .catch((err) => {
                         this.$bus.$emit('error', err);

@@ -16,6 +16,10 @@
             this.$bus.$on('error', (err) => {
                 this.errors.push(err);
             });
+
+            this.$bus.$on('clearErrors', () => {
+                this.errors = [];
+            });
         },
     };
 </script>
