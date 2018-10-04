@@ -86,7 +86,7 @@ function publishProject() {
                 }
 
                 queue.add(() => ImageProcessor.getImageExport(slide.path))
-                    .then(buffer => AppServer.uploadFile(getExportedFilename(slide), buffer, store.state.gallery.id))
+                    .then(buffer => AppServer.uploadFile(getExportedFilename(slide), buffer, store.state.gallery.id, slide.modified_at))
                     .then(() => {
                         filesUploaded += 1;
                         EventBus.$emit('progress', filesUploaded / filesAll * 100);

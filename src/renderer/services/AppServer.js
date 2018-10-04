@@ -31,7 +31,7 @@ function logout() {
     firebase.auth().signOut();
 }
 
-function uploadFile(filename, buffer, galleryId) {
+function uploadFile(filename, buffer, galleryId, modifiedAt) {
     const { uid } = firebase.auth().currentUser;
     const storageRef = firebase.storage().ref().child(`users/${uid}/galleries/${galleryId}`);
     const metadata = {
@@ -39,7 +39,20 @@ function uploadFile(filename, buffer, galleryId) {
     };
 
     const ref = storageRef.child(filename);
-    return ref.put(buffer, metadata);
+    let doUpload = false;
+
+    ref.getMetadata()
+        .then((metadata) => {
+            const serverDate = new Date(metadata.updated);
+            if (serverDate < modifiedAt) {
+                doUpload = true;
+            }
+        })
+        .catch(() => {
+            doUpload = true;
+        });
+
+    return doUpload ? ref.put(buffer, metadata) : true;
 }
 
 function uploadGalleryData(galleryData) {
