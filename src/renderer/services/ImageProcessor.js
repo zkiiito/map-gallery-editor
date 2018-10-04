@@ -20,6 +20,10 @@ function generateSlideData(file) {
             const thumbname = path.join(remote.app.getPath('temp'), `/thumbs/thumb_${file.name}`);
             const simg = sharp(file.path);
 
+            if (file.lastModifiedDate === undefined) {
+                file.lastModifiedDate = fse.statSync(file.path).mtime;
+            }
+
             let exifdate = file.lastModifiedDate;
 
             const metadata = await simg.metadata();
