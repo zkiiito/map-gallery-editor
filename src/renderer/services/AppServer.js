@@ -55,6 +55,12 @@ function uploadGalleryData(galleryData) {
         .set(galleryData);
 }
 
+function getPublishedUrl(galleryData) {
+    const { uid } = firebase.auth().currentUser;
+
+    return `https://mapgallery.online/gallery/${uid}/${galleryData.id}`;
+}
+
 init();
 
 export default {
@@ -62,4 +68,5 @@ export default {
     logout,
     uploadFile,
     uploadGalleryData,
+    getPublishedUrl,
 };
