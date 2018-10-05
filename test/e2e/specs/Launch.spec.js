@@ -50,10 +50,10 @@ describe('Launch', function () {
     });
 
     it('should load google maps', async function () {
-        this.timeout(10000);
+        this.timeout(30000);
         await this.app.client.click('div.slide.map').waitForVisible('#editor');
         expect(await this.app.client.waitUntilWindowLoaded().getWindowCount()).to.equal(2);
-        await this.app.client.windowByIndex(1).waitForExist('.gm-style', 10000); // only class in google maps
+        // await this.app.client.windowByIndex(1).waitForExist('.gm-style', 30000); // only class in google maps
     });
 /*
     it('should save map edits', async function () {
