@@ -49,7 +49,7 @@ function generateSlideData(file) {
             if (!fse.existsSync(thumbname) || fse.statSync(thumbname).mtime < file.lastModifiedDate) {
                 const thumbData = await simg
                     .resize(150, 150)
-                    .max()
+                    .resize({ fit: 'inside' })
                     .toBuffer();
 
                 await fse.outputFile(thumbname, thumbData);
@@ -67,7 +67,7 @@ async function getImageExport(path) {
 
     return simg
         .resize(1920, 1080)
-        .max()
+        .resize({ fit: 'inside' })
         .toBuffer();
 }
 
