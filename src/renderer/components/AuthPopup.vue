@@ -7,7 +7,7 @@
         </template>
 
         <template slot="body">
-            <webview src="https://us-central1-mapgallery-216911.cloudfunctions.net/auth/" httpreferrer="https://editor.mapgallery.online" ref="webview"/>
+            <webview src="https://mapgallery.online/auth/" httpreferrer="https://editor.mapgallery.online" ref="webview"/>
         </template>
     </Modal>
 </template>
@@ -42,6 +42,6 @@ export default {
 
 <style scoped>
     webview {
-        height: 500px;
+        height: 580px;
     }
 </style>

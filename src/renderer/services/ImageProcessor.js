@@ -20,6 +20,10 @@ function generateSlideData(file) {
             const thumbname = path.join(remote.app.getPath('temp'), `/thumbs/thumb_${file.name}`);
             const simg = sharp(file.path);
 
+            if (file.lastModifiedDate === undefined) {
+                file.lastModifiedDate = fse.statSync(file.path).mtime;
+            }
+
             let exifdate = file.lastModifiedDate;
 
             const metadata = await simg.metadata();
@@ -101,7 +105,7 @@ function updateSlide(slide) {
         try {
             imageStat = await fse.stat(slide.path);
         } catch (err) {
-            reject(new Error('Image not found'));
+            reject(new Error(`Image not found: ${slide.path}`));
             return;
         }
 

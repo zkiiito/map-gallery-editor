@@ -1,5 +1,8 @@
 import EventBus from '../EventBus';
-const firebase = require('firebase');
+const firebase = require('firebase/app');
+require('firebase/auth');
+require('firebase/storage');
+require('firebase/firestore');
 
 function init() {
     firebase.initializeApp({
@@ -28,7 +31,7 @@ function logout() {
     firebase.auth().signOut();
 }
 
-function uploadFile(filename, buffer, galleryId) {
+function uploadFile(filename, buffer, galleryId, modifiedAt) {
     const { uid } = firebase.auth().currentUser;
     const storageRef = firebase.storage().ref().child(`users/${uid}/galleries/${galleryId}`);
     const metadata = {
@@ -36,7 +39,20 @@ function uploadFile(filename, buffer, galleryId) {
     };
 
     const ref = storageRef.child(filename);
-    return ref.put(buffer, metadata);
+    let doUpload = false;
+
+    ref.getMetadata()
+        .then((metadata) => {
+            const serverDate = new Date(metadata.updated);
+            if (serverDate < modifiedAt) {
+                doUpload = true;
+            }
+        })
+        .catch(() => {
+            doUpload = true;
+        });
+
+    return doUpload ? ref.put(buffer, metadata) : true;
 }
 
 function uploadGalleryData(galleryData) {
@@ -52,6 +68,12 @@ function uploadGalleryData(galleryData) {
         .set(galleryData);
 }
 
+function getPublishedUrl(galleryData) {
+    const { uid } = firebase.auth().currentUser;
+
+    return `https://mapgallery.online/gallery/${uid}/${galleryData.id}`;
+}
+
 init();
 
 export default {
@@ -59,4 +81,5 @@ export default {
     logout,
     uploadFile,
     uploadGalleryData,
+    getPublishedUrl,
 };

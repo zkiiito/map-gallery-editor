@@ -38,6 +38,7 @@
             newProject() {
                 this.$store.dispatch('resetProject', []);
                 this.fileName = '';
+                this.$bus.$emit('clearErrors');
             },
             openProject() {
                 dialog.showOpenDialog({
@@ -46,7 +47,11 @@
                 }, (filename) => {
                     if (filename) {
                         this.fileName = filename.toString();
-                        ProjectHandler.openProject(this.fileName);
+                        ProjectHandler.openProject(this.fileName)
+                            .catch((err) => {
+                                this.fileName = '';
+                                this.$bus.$emit('error', err);
+                            });
                     }
                 });
             },
@@ -56,7 +61,11 @@
                     return;
                 }
 
-                ProjectHandler.saveProject(this.fileName);
+                ProjectHandler.saveProject(this.fileName)
+                    .catch((err) => {
+                        this.fileName = '';
+                        this.$bus.$emit('error', err);
+                    });
             },
             saveProjectAs() {
                 dialog.showSaveDialog({
@@ -86,7 +95,10 @@
             exportProject() {
                 dialog.showOpenDialog({ properties: ['openDirectory', 'createDirectory'] }, (dir) => {
                     if (dir) {
-                        ProjectHandler.exportProject(dir.toString());
+                        ProjectHandler.exportProject(dir.toString())
+                            .catch((err) => {
+                                this.$bus.$emit('error', err);
+                            });
                     }
                 });
             },
@@ -94,7 +106,13 @@
                 AppServer.logout();
             },
             publish() {
-                ProjectHandler.publishProject();
+                ProjectHandler.publishProject()
+                    .then((url) => {
+                        this.$bus.$emit('error', `project url: ${url}`);
+                    })
+                    .catch((err) => {
+                        this.$bus.$emit('error', err);
+                    });
             },
             login() {
                 this.$store.commit('openPopup', 'auth');
