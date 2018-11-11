@@ -72,7 +72,7 @@
   "dependencies": {
     "MapGallery": "git+https://github.com/zkiiito/MapGallery.git#1.0.0",
     "ajv": "^6.5.3",
-    "electron-unhandled": "^1.1.0",
+    "electron-unhandled": "^2.0.0",
     "exif-reader": "^1.0.2",
     "file-url": "^2.0.2",
     "firebase": "^5.5.1",
