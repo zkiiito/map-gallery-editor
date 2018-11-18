@@ -4,6 +4,8 @@ require('firebase/auth');
 require('firebase/storage');
 require('firebase/firestore');
 
+let imageIndex = {};
+
 function init() {
     firebase.initializeApp({
         apiKey: 'AIzaSyBxJ2a3cME3l1zGkq5seDV_Czt4XBezg20',
@@ -12,6 +14,10 @@ function init() {
         projectId: 'mapgallery-216911',
         storageBucket: 'mapgallery-216911.appspot.com',
         messagingSenderId: '1046834610547',
+    });
+
+    firebase.firestore().settings({
+        timestampsInSnapshots: true,
     });
 
     firebase.auth().onAuthStateChanged((user) => {
@@ -39,32 +45,37 @@ async function uploadFile(filename, buffer, galleryId, modifiedAt) {
     };
 
     const ref = storageRef.child(filename);
-    let doUpload = false;
+    const modifiedAtTime = new Date(modifiedAt).getTime();
+    const doUpload = imageIndex[ref.fullPath] === undefined || modifiedAtTime > imageIndex[ref.fullPath];
 
-    try {
-        const metadata = await ref.getMetadata();
-        const serverDate = new Date(metadata.updated);
-        if (serverDate < modifiedAt) {
-            doUpload = true;
-        }
-    } catch (err) {
-        doUpload = true;
-    }
+    console.log(filename, ref.fullPath, modifiedAtTime, imageIndex[ref.fullPath], doUpload);
 
     return doUpload ? ref.put(buffer, metadata) : true;
+}
+
+function getImageIndex(galleryData) {
+    const { uid } = firebase.auth().currentUser;
+    const db = firebase.firestore();
+    imageIndex = {};
+
+    return db.collection('users').doc(uid).collection('imageindexes').doc(galleryData.id)
+        .collection('images')
+        .get()
+        .then((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+                imageIndex[doc.get('name')] = doc.get('uploaded_at');
+            });
+            console.log(imageIndex);
+        });
 }
 
 function uploadGalleryData(galleryData) {
     const { uid } = firebase.auth().currentUser;
     const db = firebase.firestore();
 
-    // Disable deprecated features
-    db.settings({
-        timestampsInSnapshots: true,
-    });
-
-    return db.collection('users').doc(uid).collection('galleries').doc(galleryData.id)
-        .set(galleryData);
+    return getImageIndex(galleryData)
+        .then(() => db.collection('users').doc(uid).collection('galleries').doc(galleryData.id)
+            .set(galleryData));
 }
 
 function getPublishedUrl(galleryData) {
