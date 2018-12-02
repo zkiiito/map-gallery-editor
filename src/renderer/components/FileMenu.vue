@@ -74,6 +74,8 @@
                     filters: [{ name: 'MapGallery Editor files', extensions: ['mapgallery'] }],
                 }, (fileName) => {
                     if (fileName) {
+                        //force id regeneration
+                        this.$store.commit('setId', false);
                         this.fileName = fileName.toString();
                         this.saveProject();
                     }
