@@ -19,7 +19,7 @@
           <label v-on:click="addMapSlide">+ add map slide</label>
         </div>
         <div class="addSlide">
-          <label v-on:click="addImages">+ add images</label>
+          <label id="addImages" v-on:click="addImages">+ add images</label>
         </div>
       </draggable>
     </div>
