@@ -3,6 +3,7 @@ import VueProgressBar from 'vue-progressbar';
 import App from './App';
 import store from './store';
 import EventBus from './EventBus';
+import FileMenu from './services/FileMenu';
 const unhandled = require('electron-unhandled');
 unhandled();
 
