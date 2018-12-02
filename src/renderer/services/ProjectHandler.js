@@ -92,6 +92,7 @@ function publishProject() {
                         EventBus.$emit('progress', filesUploaded / filesAll * 100);
                     })
                     .catch((err) => {
+                        console.log(err);// TODO: test, [Object object]
                         EventBus.$emit('error', err);
                     });
 
