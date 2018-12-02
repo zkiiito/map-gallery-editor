@@ -57,7 +57,7 @@ export default {
     },
     methods: {
         addMapSlide() {
-            this.$store.commit('addSlide', {
+            this.$store.commit('addSlideAfterCurrent', {
                 id: uuidv4(),
                 from: 'Budapest',
                 to: 'Vienna',

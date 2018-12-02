@@ -32,6 +32,14 @@ export default new Vuex.Store({
                 addSlide(state, slide) {
                     state.slides.push(slide);
                 },
+                addSlideAfterCurrent(state, slide) {
+                    if (state.currentSlide) {
+                        const index = state.slides.findIndex(slide => slide === state.currentSlide);
+                        state.slides.splice(index+1, 0, slide);
+                    } else {
+                        state.slides.push(slide);
+                    }
+                },
                 addSlides(state, slides) {
                     state.slides = state.slides.concat(slides);
                 },

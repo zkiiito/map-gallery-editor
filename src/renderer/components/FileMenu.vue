@@ -5,6 +5,7 @@
         <button v-on:click="saveProject">Save</button>
         <button v-on:click="saveProjectAs">SaveAs</button>
         <input type="text" v-bind:value="fileName" readonly size="50"/>
+        <button v-on:click="addMapSlide">add Map</button>
         <button v-on:click="orderExif">EXIF sort</button>
         <button v-on:click="prevSlide">&lt;</button>
         <button v-on:click="nextSlide">&gt;</button>
@@ -21,6 +22,7 @@
     import AppServer from '../services/AppServer';
     import ProjectHandler from '../services/ProjectHandler';
     const { Menu, MenuItem, dialog } = require('electron').remote; // eslint-disable-line
+    const uuidv4 = require('uuid/v4');
 
     export default {
         name: 'FileMenu',
@@ -75,6 +77,15 @@
                         this.fileName = fileName.toString();
                         this.saveProject();
                     }
+                });
+            },
+            addMapSlide() {
+                this.$store.commit('addSlideAfterCurrent', {
+                    id: uuidv4(),
+                    from: 'Budapest',
+                    to: 'Vienna',
+                    speed: 5000,
+                    mode: 'DRIVING',
                 });
             },
             prevSlide() {
