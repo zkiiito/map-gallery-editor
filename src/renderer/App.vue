@@ -1,33 +1,37 @@
 <template>
-  <div id="app">
-    <AuthPopup v-if="$store.getters.isPopupOpen('auth')"/>
-    <vue-progress-bar></vue-progress-bar>
-    <ErrorBar/>
-    <FileMenu/>
-    <div id="editor" v-show="$store.getters.currentSlideType === 'map'">
-      <GoogleMap class="flexgrow"/>
-      <GoogleMapForm/>
-    </div>
-    <div id="imageviewer" v-show="$store.getters.currentSlideType === 'image'">
-      <ImageView class="flexgrow"/>
-    </div>
-    <div id="slides">
-      <draggable :options="{group: 'slides', draggable: '.draggable'}" v-model="slides" id="slideholder"
-                 v-bind:class="$store.getters.currentSlideType !== null ? 'small' : 'big'">
-        <SlidePreview v-for="slide in slides" :key="slide.id" v-bind:slide="slide" class="draggable"/>
-        <div class="addSlide">
-          <label v-on:click="addMapSlide">+ add map slide</label>
+    <div id="app">
+        <AuthPopup v-if="$store.getters.isPopupOpen('auth')"/>
+        <vue-progress-bar/>
+        <ErrorBar/>
+        <FileMenu/>
+        <div v-show="$store.getters.currentSlideType === 'map'" id="editor">
+            <GoogleMap class="flexgrow"/>
+            <GoogleMapForm/>
         </div>
-        <div class="addSlide">
-          <label id="addImages" v-on:click="addImages">+ add images</label>
+        <div v-show="$store.getters.currentSlideType === 'image'" id="imageviewer">
+            <ImageView class="flexgrow"/>
         </div>
-      </draggable>
+        <div id="slides">
+            <Draggable
+                id="slideholder"
+                v-model="slides"
+                :options="{group: 'slides', draggable: '.draggable'}"
+                :class="$store.getters.currentSlideType !== null ? 'small' : 'big'"
+            >
+                <SlidePreview v-for="slide in slides" :key="slide.id" :slide="slide" class="draggable"/>
+                <div class="addSlide">
+                    <label @click="addMapSlide">+ add map slide</label>
+                </div>
+                <div class="addSlide">
+                    <label id="addImages" @click="addImages">+ add images</label>
+                </div>
+            </Draggable>
+        </div>
     </div>
-  </div>
 </template>
 
 <script>
-import draggable from 'vuedraggable';
+import Draggable from 'vuedraggable';
 import GoogleMap from './components/GoogleMapWebview.vue';
 import GoogleMapForm from './components/GoogleMapForm.vue';
 import ImageView from './components/ImageView.vue';
@@ -38,9 +42,9 @@ import AuthPopup from './components/AuthPopup';
 import Controller from './services/Controller';
 
 export default {
-    name: 'app',
+    name: 'App',
     components: {
-        GoogleMap, GoogleMapForm, ImageView, SlidePreview, draggable, FileMenu, ErrorBar, AuthPopup,
+        GoogleMap, GoogleMapForm, ImageView, SlidePreview, Draggable, FileMenu, ErrorBar, AuthPopup,
     },
     computed: {
         slides: {
@@ -50,14 +54,6 @@ export default {
             set(value) {
                 this.$store.commit('updateOrder', value.map(el => el.id));
             },
-        },
-    },
-    methods: {
-        addMapSlide() {
-            Controller.addMapSlide();
-        },
-        addImages() {
-            Controller.addImages();
         },
     },
     mounted() {
@@ -94,6 +90,14 @@ export default {
         this.$bus.$on('user', (user) => {
             this.$store.commit('setUser', user);
         });
+    },
+    methods: {
+        addMapSlide() {
+            Controller.addMapSlide();
+        },
+        addImages() {
+            Controller.addImages();
+        },
     },
 };
 </script>

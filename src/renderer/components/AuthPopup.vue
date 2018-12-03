@@ -7,7 +7,7 @@
         </template>
 
         <template slot="body">
-            <webview src="https://mapgallery.online/auth/" httpreferrer="https://editor.mapgallery.online" ref="webview"/>
+            <webview ref="webview" src="https://mapgallery.online/auth/" httpreferrer="https://editor.mapgallery.online"/>
         </template>
     </Modal>
 </template>

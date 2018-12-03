@@ -1,14 +1,18 @@
 module.exports = {
     root: true,
-    parser: 'babel-eslint',
+    parser: 'vue-eslint-parser',
     parserOptions: {
+        parser: 'babel-eslint',
         sourceType: 'module',
     },
     env: {
         browser: true,
         node: true,
     },
-    extends: 'airbnb-base',
+    extends: [
+        'airbnb-base',
+        'plugin:vue/recommended',
+    ],
     globals: {
         __static: true,
     },
@@ -28,5 +32,13 @@ module.exports = {
         'indent': ['error', 4],
         'max-len': ['warn', 120],
         'linebreak-style': 0,
+        'vue/html-indent': ['error', 4],
+        'vue/singleline-html-element-content-newline': 0,
+        'vue/max-attributes-per-line': 0,
+        'vue/html-closing-bracket-spacing': ['error', {
+            'startTag': 'never',
+            'endTag': 'never',
+            'selfClosingTag': 'never'
+        }],
     }
 };

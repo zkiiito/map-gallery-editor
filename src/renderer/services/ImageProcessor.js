@@ -36,7 +36,7 @@ function generateSlideData(filepath) {
                 ...imageSlideTemplate,
                 ...{
                     id: uuidv4(),
-                    filename: filename,
+                    filename,
                     thumbnail: thumbname,
                     path: filepath,
                     exif_date: exifdate,

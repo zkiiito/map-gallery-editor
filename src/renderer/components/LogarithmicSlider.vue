@@ -1,5 +1,5 @@
 <template>
-    <input class="input" type="range" :min="minpos" :max="maxpos" v-model="realValue">
+    <input v-model="realValue" class="input" type="range" :min="minpos" :max="maxpos">
 </template>
 
 <script>

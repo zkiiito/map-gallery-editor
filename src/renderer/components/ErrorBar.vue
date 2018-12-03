@@ -1,27 +1,27 @@
 <template>
     <div>
-        <p v-for="error in errors">{{ error.toString() }}</p>
+        <p v-for="error in errors" :key="error">{{ error.toString() }}</p>
     </div>
 </template>
 
 <script>
-    export default {
-        name: 'ErrorBar',
-        data() {
-            return {
-                errors: [],
-            };
-        },
-        mounted() {
-            this.$bus.$on('error', (err) => {
-                this.errors.push(err);
-            });
+export default {
+    name: 'ErrorBar',
+    data() {
+        return {
+            errors: [],
+        };
+    },
+    mounted() {
+        this.$bus.$on('error', (err) => {
+            this.errors.push(err);
+        });
 
-            this.$bus.$on('clearErrors', () => {
-                this.errors = [];
-            });
-        },
-    };
+        this.$bus.$on('clearErrors', () => {
+            this.errors = [];
+        });
+    },
+};
 </script>
 
 <style scoped>

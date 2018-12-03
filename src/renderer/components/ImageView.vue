@@ -1,5 +1,5 @@
 <template>
-    <div class="imageview" v-bind:style="styleObject"></div>
+    <div class="imageview" :style="styleObject"/>
 </template>
 
 <script>

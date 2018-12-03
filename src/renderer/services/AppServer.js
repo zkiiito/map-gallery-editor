@@ -48,7 +48,7 @@ async function uploadFile(filename, buffer, galleryId, modifiedAt) {
     const modifiedAtTime = new Date(modifiedAt).getTime();
     const doUpload = imageIndex[ref.fullPath] === undefined || modifiedAtTime > imageIndex[ref.fullPath];
 
-    console.log(filename, ref.fullPath, modifiedAtTime, imageIndex[ref.fullPath], doUpload);
+    // console.log(filename, ref.fullPath, modifiedAtTime, imageIndex[ref.fullPath], doUpload);
 
     return doUpload ? ref.put(buffer, metadata) : true;
 }
@@ -65,7 +65,7 @@ function getImageIndex(galleryData) {
             querySnapshot.forEach((doc) => {
                 imageIndex[doc.get('name')] = doc.get('uploaded_at');
             });
-            console.log(imageIndex);
+            // console.log(imageIndex);
         });
 }
 

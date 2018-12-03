@@ -32,9 +32,21 @@ const menu = Menu.buildFromTemplate([
         submenu: [
             { label: 'Next', click: Controller.nextSlide, accelerator: 'Right' },
             { label: 'Previous', click: Controller.prevSlide, accelerator: 'Left' },
-            { label: 'Close', click: Controller.closeSlide, accelerator: 'Esc', enabled: false, id: 'close' },
+            {
+                label: 'Close',
+                click: Controller.closeSlide,
+                accelerator: 'Esc',
+                enabled: false,
+                id: 'close',
+            },
             { type: 'separator' },
-            { label: 'Delete', click: Controller.deleteSlide, accelerator: 'Delete', enablded: false, id: 'delete' },
+            {
+                label: 'Delete',
+                click: Controller.deleteSlide,
+                accelerator: 'Delete',
+                enablded: false,
+                id: 'delete',
+            },
         ],
     },
     {
@@ -107,5 +119,6 @@ EventBus.$on('filename', (filename) => {
     }
 });
 
-Menu.setApplicationMenu(menu);
-export default menu;
+export default () => {
+    Menu.setApplicationMenu(menu);
+};

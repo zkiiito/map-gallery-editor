@@ -3,13 +3,13 @@
         <div class="field">
             <label class="label">From</label>
             <div class="control">
-                <input class="input" type="text" placeholder="Start location" v-model="routeFrom">
+                <input v-model="routeFrom" class="input" type="text" placeholder="Start location">
             </div>
         </div>
         <div class="field">
             <label class="label">To</label>
             <div class="control">
-                <input class="input" type="text" placeholder="End location" v-model="routeTo">
+                <input v-model="routeTo" class="input" type="text" placeholder="End location">
             </div>
         </div>
         <div class="field">
@@ -30,7 +30,7 @@
         </div>
 
         <div class="control">
-            <button class="button is-link" type="button" v-on:click="showRoute">test</button>
+            <button class="button is-link" type="button" @click="showRoute">test</button>
         </div>
     </form>
 </template>
