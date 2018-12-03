@@ -70,6 +70,7 @@ export default {
         this.$bus.$on('progress', (percent) => {
             if (percent === 0) {
                 this.$Progress.start();
+                this.$Progress.pause();
             }
 
             const currentWindow = this.$electron.remote.getCurrentWindow();
