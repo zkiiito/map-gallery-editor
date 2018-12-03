@@ -13,6 +13,12 @@
             </div>
         </div>
         <div class="field">
+            <label class="label">Waypoints</label>
+            <div class="control">
+                <textarea v-model="routeWaypoints" class="input" placeholder="One per line"></textarea>
+            </div>
+        </div>
+        <div class="field">
             <label class="label">Speed</label>
             <div class="control">
                 <LogarithmicSlider v-model="routeSpeed"/>
@@ -56,6 +62,28 @@ export default {
             },
             set(value) {
                 this.$store.state.gallery.currentSlide.to = value;
+            },
+        },
+        // "waypoints":[{"location":"Istanbul"}]
+        routeWaypoints: {
+            get() {
+                const { waypoints } = this.$store.state.gallery.currentSlide;
+                if (waypoints) {
+                    return waypoints.map(waypoint => waypoint.location).join('\n');
+                }
+
+                return '';
+            },
+            set(value) {
+                const waypoints = value.split('\n');
+                const res = [];
+                waypoints.forEach((waypoint) => {
+                    if (waypoint.length) {
+                        res.push({ location: waypoint });
+                    }
+                });
+
+                this.$store.state.gallery.currentSlide.waypoints = res;
             },
         },
         routeSpeed: {

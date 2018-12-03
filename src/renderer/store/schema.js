@@ -30,6 +30,20 @@ module.exports = {
                     ],
                     pattern: '^(.*)$',
                 },
+                waypoints: {
+                    type: 'array',
+                    items: {
+                        type: 'object',
+                        required: [
+                            'location',
+                        ],
+                        properties: {
+                            location: {
+                                type: 'string',
+                            },
+                        },
+                    },
+                },
                 to: {
                     $id: '#/items/properties/to',
                     type: 'string',
