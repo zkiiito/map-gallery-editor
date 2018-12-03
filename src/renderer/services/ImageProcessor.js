@@ -4,6 +4,7 @@ const sharp = require('sharp');
 const exifReader = require('exif-reader');
 const uuidv4 = require('uuid/v4');
 const path = require('path');
+const Queue = require('promise-queue');
 const { remote } = require('electron'); // eslint-disable-line
 
 const imageSlideTemplate = {
@@ -127,31 +128,41 @@ function reportProgress(percent) {
     EventBus.$emit('progress', percent);
 }
 
-function allProgress(promises) {
-    let done = 0;
-    reportProgress(0);
-    promises.forEach((promise) => {
-        promise.then(() => {
-            done += 1;
-            reportProgress((done * 100) / promises.length);
-        }).catch(() => {});
+function allProgressGenerators(promiseGenerators) {
+    return new Promise((resolve, reject) => {
+        let done = 0;
+        const all = promiseGenerators.length;
+        const queue = new Queue(4, Infinity);
+        const results = [];
+        reportProgress(0);
+
+        promiseGenerators.forEach((promiseGenerator) => {
+            queue.add(promiseGenerator)
+                .then((result) => {
+                    done += 1;
+                    results.push(result);
+                    reportProgress(done / all * 100);
+                    if (done === all) {
+                        resolve(results);
+                    }
+                }).catch(reject);
+        });
     });
-    return Promise.all(promises);
 }
 
 function processNewImages(files) {
-    const promises = files.map(generateSlideData);
-    return allProgress(promises);
+    const promiseGenerators = files.map(file => () => generateSlideData(file));
+    return allProgressGenerators(promiseGenerators);
 }
 
 function exportSlides(slides, dir) {
-    const promises = slides.map(slide => generateExport(slide, dir));
-    return allProgress(promises);
+    const promiseGenerators = slides.map(slide => () => generateExport(slide, dir));
+    return allProgressGenerators(promiseGenerators);
 }
 
 function updateSlides(slides) {
-    const promises = slides.map(slide => updateSlide(slide));
-    return allProgress(promises);
+    const promiseGenerators = slides.map(slide => () => updateSlide(slide));
+    return allProgressGenerators(promiseGenerators);
 }
 
 export default {
