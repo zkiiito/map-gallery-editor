@@ -58,8 +58,8 @@ function getImageIndex(galleryData) {
     const db = firebase.firestore();
     imageIndex = {};
 
-    return db.collection('users').doc(uid).collection('imageindexes').doc(galleryData.id)
-        .collection('images')
+    return db.collection('users').doc(uid).collection('galleries').doc(galleryData.id)
+        .collection('imageindex')
         .get()
         .then((querySnapshot) => {
             querySnapshot.forEach((doc) => {
