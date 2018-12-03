@@ -19,8 +19,7 @@
           <label v-on:click="addMapSlide">+ add map slide</label>
         </div>
         <div class="addSlide">
-          <label for="addImages">+ add images</label>
-          <input type="file" multiple id="addImages" style="display: none" v-on:change="addImages" accept="image/*">
+          <label id="addImages" v-on:click="addImages">+ add images</label>
         </div>
       </draggable>
     </div>
@@ -36,9 +35,7 @@ import SlidePreview from './components/SlidePreview.vue';
 import FileMenu from './components/FileMenu.vue';
 import ErrorBar from './components/ErrorBar';
 import AuthPopup from './components/AuthPopup';
-
-import ImageProcessor from './services/ImageProcessor.js';
-const uuidv4 = require('uuid/v4');
+import Controller from './services/Controller';
 
 export default {
     name: 'app',
@@ -57,22 +54,10 @@ export default {
     },
     methods: {
         addMapSlide() {
-            this.$store.commit('addSlideAfterCurrent', {
-                id: uuidv4(),
-                from: 'Budapest',
-                to: 'Vienna',
-                speed: 5000,
-                mode: 'DRIVING',
-            });
+            Controller.addMapSlide();
         },
-        addImages(event) {
-            const files = Array.from(event.target.files);
-
-            ImageProcessor.processNewImages(files).then((slides) => {
-                this.$store.commit('addSlides', slides);
-            }).catch((err) => {
-                this.$bus.$emit('error', err);
-            });
+        addImages() {
+            Controller.addImages();
         },
     },
     mounted() {

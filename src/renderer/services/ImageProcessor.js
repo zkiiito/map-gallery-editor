@@ -14,17 +14,14 @@ const imageSlideTemplate = {
     visible: true,
 };
 
-function generateSlideData(file) {
+function generateSlideData(filepath) {
     return new Promise(async (resolve, reject) => {
         try {
-            const thumbname = path.join(remote.app.getPath('temp'), `/thumbs/thumb_${file.name}`);
-            const simg = sharp(file.path);
-
-            if (file.lastModifiedDate === undefined) {
-                file.lastModifiedDate = fse.statSync(file.path).mtime;
-            }
-
-            let exifdate = file.lastModifiedDate;
+            const filename = path.basename(filepath);
+            const thumbname = path.join(remote.app.getPath('temp'), `/thumbs/thumb_${filename}`);
+            const simg = sharp(filepath);
+            const fileLastModifiedDate = fse.statSync(filepath).mtime;
+            let exifdate = fileLastModifiedDate;
 
             const metadata = await simg.metadata();
             if (metadata.exif) {
@@ -38,15 +35,15 @@ function generateSlideData(file) {
                 ...imageSlideTemplate,
                 ...{
                     id: uuidv4(),
-                    filename: file.name,
+                    filename: filename,
                     thumbnail: thumbname,
-                    path: file.path,
+                    path: filepath,
                     exif_date: exifdate,
-                    modified_at: file.lastModifiedDate,
+                    modified_at: fileLastModifiedDate,
                 },
             };
 
-            if (!fse.existsSync(thumbname) || fse.statSync(thumbname).mtime < file.lastModifiedDate) {
+            if (!fse.existsSync(thumbname) || fse.statSync(thumbname).mtime < fileLastModifiedDate) {
                 const thumbData = await simg
                     .resize(150, 150)
                     .resize({ fit: 'inside' })
@@ -117,11 +114,7 @@ function updateSlide(slide) {
 
         if (thumbStat === null || thumbStat.mtimeMs < imageStat.mtimeMs || slide.modified_at < imageStat.mtime) {
             const { id } = slide;
-            const newSlide = await generateSlideData({
-                name: slide.filename,
-                path: slide.path,
-            });
-
+            const newSlide = await generateSlideData(slide.path);
             slide = { ...slide, ...newSlide };
             slide.id = id;
         }

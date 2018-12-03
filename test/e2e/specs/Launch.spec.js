@@ -1,26 +1,13 @@
 import utils from '../utils';
 
-const path = require('path');
-
-const images = [
-    'alex-lopez-385829-unsplash.jpg',
-    'alex-lopez-455677-unsplash.jpg',
-    'alex-lopez-486018-unsplash.jpg',
-    'alex-lopez-495037-unsplash.jpg',
-    'alex-lopez-614947-unsplash.jpg',
-].map(filename => path.join(__dirname, '../../sampleimages/', filename));
-
 describe('Launch', function () {
     before(utils.beforeEach);
     after(utils.afterEach);
-    beforeEach(function () {
-        this.timeout(10000);
-    });
 
     it('shows the proper application title', function () {
         return this.app.client.getTitle()
             .then((title) => {
-                expect(title).to.equal('map-gallery-editor');
+                expect(title).to.equal('MapGallery Editor');
             });
     });
 
@@ -31,8 +18,7 @@ describe('Launch', function () {
     });
 
     it('should load 2 images', async function () {
-        this.app.client.chooseFile('#addImages', images[0]);
-        this.app.client.chooseFile('#addImages', images[1]);
+        this.app.client.click('label#addImages');
         await this.app.client.waitForExist('div.slide.image:nth-child(2)', 5000);
 
         // ?

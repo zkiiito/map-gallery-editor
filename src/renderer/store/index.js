@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
+import EventBus from '../EventBus';
 const uuidv4 = require('uuid/v4');
 
 Vue.use(Vuex);
@@ -22,6 +23,7 @@ export default new Vuex.Store({
                 },
                 setCurrentSlide(state, slide) {
                     state.currentSlide = slide;
+                    EventBus.$emit('currentSlide', slide);
                 },
                 updateOrder(state, ids) {
                     state.slides = ids.reduce((newSlides, id) => {
@@ -139,6 +141,7 @@ export default new Vuex.Store({
         ui: {
             state: {
                 popups: [],
+                filename: null,
             },
             mutations: {
                 openPopup(state, popup) {
@@ -146,6 +149,10 @@ export default new Vuex.Store({
                 },
                 closePopup(state, popup) {
                     state.popups = state.popups.filter(openpopup => popup !== openpopup);
+                },
+                setFilename(state, filename) {
+                    state.filename = filename;
+                    EventBus.$emit('filename', filename);
                 },
             },
             getters: {
