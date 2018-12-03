@@ -3,19 +3,19 @@
         <div class="field">
             <label class="label">From</label>
             <div class="control">
-                <input v-model="routeFrom" class="input" type="text" placeholder="Start location">
+                <input v-model.lazy="routeFrom" class="input" type="text" placeholder="Start location">
             </div>
         </div>
         <div class="field">
             <label class="label">To</label>
             <div class="control">
-                <input v-model="routeTo" class="input" type="text" placeholder="End location">
+                <input v-model.lazy="routeTo" class="input" type="text" placeholder="End location">
             </div>
         </div>
         <div class="field">
             <label class="label">Waypoints</label>
             <div class="control">
-                <textarea v-model="routeWaypoints" class="input" placeholder="One per line"></textarea>
+                <textarea v-model.lazy="routeWaypoints" class="input" placeholder="One per line"></textarea>
             </div>
         </div>
         <div class="field">
@@ -53,7 +53,7 @@ export default {
                 return this.$store.state.gallery.currentSlide.from;
             },
             set(value) {
-                this.$store.state.gallery.currentSlide.from = value;
+                this.$store.commit('updateCurrentSlide', { from: value });
             },
         },
         routeTo: {
@@ -61,7 +61,7 @@ export default {
                 return this.$store.state.gallery.currentSlide.to;
             },
             set(value) {
-                this.$store.state.gallery.currentSlide.to = value;
+                this.$store.commit('updateCurrentSlide', { to: value });
             },
         },
         // "waypoints":[{"location":"Istanbul"}]
@@ -83,7 +83,7 @@ export default {
                     }
                 });
 
-                this.$store.state.gallery.currentSlide.waypoints = res;
+                this.$store.commit('updateCurrentSlide', { waypoints: res });
             },
         },
         routeSpeed: {
@@ -91,7 +91,7 @@ export default {
                 return this.$store.state.gallery.currentSlide.speed;
             },
             set(value) {
-                this.$store.state.gallery.currentSlide.speed = value;
+                this.$store.commit('updateCurrentSlide', { speed: value });
             },
         },
         routeMode: {
@@ -99,7 +99,7 @@ export default {
                 return this.$store.state.gallery.currentSlide.mode;
             },
             set(value) {
-                this.$store.state.gallery.currentSlide.mode = value;
+                this.$store.commit('updateCurrentSlide', { mode: value });
             },
         },
     },

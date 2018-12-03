@@ -67,6 +67,13 @@ export default new Vuex.Store({
                         }
                     }
                 },
+                updateCurrentSlide(state, newValues) {
+                    if (state.currentSlide === null) {
+                        return;
+                    }
+
+                    state.currentSlide = { ...state.currentSlide, ...newValues };
+                },
                 deleteCurrentSlide(state) {
                     if (state.currentSlide === null) {
                         return;
