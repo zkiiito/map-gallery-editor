@@ -37,7 +37,7 @@ export default new Vuex.Store({
                 addSlideAfterCurrent(state, slide) {
                     if (state.currentSlide) {
                         const index = state.slides.findIndex(slide => slide === state.currentSlide);
-                        state.slides.splice(index+1, 0, slide);
+                        state.slides.splice(index + 1, 0, slide);
                     } else {
                         state.slides.push(slide);
                     }
@@ -66,6 +66,13 @@ export default new Vuex.Store({
                             state.currentSlide = state.slides[idx];
                         }
                     }
+                },
+                updateCurrentSlide(state, newValues) {
+                    if (state.currentSlide === null) {
+                        return;
+                    }
+
+                    state.currentSlide = { ...state.currentSlide, ...newValues };
                 },
                 deleteCurrentSlide(state) {
                     if (state.currentSlide === null) {

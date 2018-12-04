@@ -3,20 +3,16 @@
         <div class="modal-mask">
             <div class="modal-wrapper">
                 <div class="modal-container">
-
                     <div class="modal-header">
-                        <slot name="header">
-                        </slot>
+                        <slot name="header"/>
                     </div>
 
                     <div class="modal-body">
-                        <slot name="body">
-                        </slot>
+                        <slot name="body"/>
                     </div>
 
                     <div class="modal-footer">
-                        <slot name="footer">
-                        </slot>
+                        <slot name="footer"/>
                     </div>
                 </div>
             </div>
@@ -25,9 +21,9 @@
 </template>
 
 <script>
-    export default {
-        name: 'Modal',
-    };
+export default {
+    name: 'Modal',
+};
 </script>
 
 <style scoped>

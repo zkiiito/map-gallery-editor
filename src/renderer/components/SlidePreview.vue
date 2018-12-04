@@ -1,5 +1,5 @@
 <template>
-    <div class="slide" v-on:click="setCurrent" v-bind:class="classObject">
+    <div class="slide" :class="classObject" @click="setCurrent">
         <template v-if="slide.from">
             {{ slide.from }} - {{ slide.to }}
         </template>
@@ -16,7 +16,9 @@ const fileUrl = require('file-url');
 
 export default {
     name: 'SlidePreview',
-    props: ['slide'],
+    props: {
+        slide: Object,
+    },
     computed: {
         classObject() {
             const classes = [];
@@ -35,16 +37,16 @@ export default {
             return fileUrl(this.slide.thumbnail);
         },
     },
-    methods: {
-        setCurrent() {
-            this.$store.commit('setCurrentSlide', this.slide);
-        },
-    },
     watch: {
         currentSlide(newSlide) {
             if (newSlide === this.slide) {
                 // TODO: scrollTo
             }
+        },
+    },
+    methods: {
+        setCurrent() {
+            this.$store.commit('setCurrentSlide', this.slide);
         },
     },
 };

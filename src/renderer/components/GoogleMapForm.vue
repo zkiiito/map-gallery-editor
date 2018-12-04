@@ -3,13 +3,19 @@
         <div class="field">
             <label class="label">From</label>
             <div class="control">
-                <input class="input" type="text" placeholder="Start location" v-model="routeFrom">
+                <input v-model.lazy="routeFrom" class="input" type="text" placeholder="Start location">
             </div>
         </div>
         <div class="field">
             <label class="label">To</label>
             <div class="control">
-                <input class="input" type="text" placeholder="End location" v-model="routeTo">
+                <input v-model.lazy="routeTo" class="input" type="text" placeholder="End location">
+            </div>
+        </div>
+        <div class="field">
+            <label class="label">Waypoints</label>
+            <div class="control">
+                <textarea v-model.lazy="routeWaypoints" class="input" placeholder="One per line"></textarea>
             </div>
         </div>
         <div class="field">
@@ -30,7 +36,7 @@
         </div>
 
         <div class="control">
-            <button class="button is-link" type="button" v-on:click="showRoute">test</button>
+            <button class="button is-link" type="button" @click="showRoute">test</button>
         </div>
     </form>
 </template>
@@ -47,7 +53,7 @@ export default {
                 return this.$store.state.gallery.currentSlide.from;
             },
             set(value) {
-                this.$store.state.gallery.currentSlide.from = value;
+                this.$store.commit('updateCurrentSlide', { from: value });
             },
         },
         routeTo: {
@@ -55,7 +61,29 @@ export default {
                 return this.$store.state.gallery.currentSlide.to;
             },
             set(value) {
-                this.$store.state.gallery.currentSlide.to = value;
+                this.$store.commit('updateCurrentSlide', { to: value });
+            },
+        },
+        // "waypoints":[{"location":"Istanbul"}]
+        routeWaypoints: {
+            get() {
+                const { waypoints } = this.$store.state.gallery.currentSlide;
+                if (waypoints) {
+                    return waypoints.map(waypoint => waypoint.location).join('\n');
+                }
+
+                return '';
+            },
+            set(value) {
+                const waypoints = value.split('\n');
+                const res = [];
+                waypoints.forEach((waypoint) => {
+                    if (waypoint.length) {
+                        res.push({ location: waypoint });
+                    }
+                });
+
+                this.$store.commit('updateCurrentSlide', { waypoints: res });
             },
         },
         routeSpeed: {
@@ -63,7 +91,7 @@ export default {
                 return this.$store.state.gallery.currentSlide.speed;
             },
             set(value) {
-                this.$store.state.gallery.currentSlide.speed = value;
+                this.$store.commit('updateCurrentSlide', { speed: value });
             },
         },
         routeMode: {
@@ -71,7 +99,7 @@ export default {
                 return this.$store.state.gallery.currentSlide.mode;
             },
             set(value) {
-                this.$store.state.gallery.currentSlide.mode = value;
+                this.$store.commit('updateCurrentSlide', { mode: value });
             },
         },
     },

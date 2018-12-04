@@ -1,6 +1,6 @@
 <template>
     <div class="googleMap">
-        <webview src="https://mapgallery.online/webview.html" httpreferrer="https://editor.mapgallery.online" ref="webview"/>
+        <webview ref="webview" src="https://mapgallery.online/webview.html" httpreferrer="https://editor.mapgallery.online"/>
     </div>
 </template>
 
@@ -10,6 +10,16 @@ export default {
     computed: {
         currentSlide() {
             return this.$store.state.gallery.currentSlide;
+        },
+    },
+    watch: {
+        currentSlide(newSlide, oldSlide) {
+            if (!oldSlide || !newSlide || newSlide.id !== oldSlide.id) {
+                this.$refs.webview.executeJavaScript('MapAnimator.stopAnimation();');
+                if (newSlide && newSlide.from) {
+                    this.$refs.webview.executeJavaScript(`showRoute(${JSON.stringify(newSlide)});`);
+                }
+            }
         },
     },
     mounted() {
@@ -26,16 +36,6 @@ export default {
         this.$refs.webview.addEventListener('ipc-message', (msg) => {
             this.$bus.$emit('error', msg.channel);
         });
-    },
-    watch: {
-        currentSlide(newSlide, oldSlide) {
-            if (!oldSlide || !newSlide || newSlide.id !== oldSlide.id) {
-                this.$refs.webview.executeJavaScript('MapAnimator.stopAnimation();');
-                if (newSlide && newSlide.from) {
-                    this.$refs.webview.executeJavaScript(`showRoute(${JSON.stringify(newSlide)});`);
-                }
-            }
-        },
     },
 };
 </script>
