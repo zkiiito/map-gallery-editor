@@ -72,7 +72,9 @@ export default new Vuex.Store({
                         return;
                     }
 
-                    state.currentSlide = { ...state.currentSlide, ...newValues };
+                    Object.keys(newValues).forEach((key) => {
+                        state.currentSlide[key] = newValues[key];
+                    });
                 },
                 deleteCurrentSlide(state) {
                     if (state.currentSlide === null) {
