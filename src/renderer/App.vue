@@ -1,6 +1,7 @@
 <template>
     <div id="app">
         <AuthPopup v-if="$store.getters.isPopupOpen('auth')"/>
+        <FlickrPopup v-if="$store.getters.isPopupOpen('flickr')"/>
         <vue-progress-bar/>
         <ErrorBar/>
         <FileMenu/>
@@ -39,12 +40,13 @@ import SlidePreview from './components/SlidePreview.vue';
 import FileMenu from './components/FileMenu.vue';
 import ErrorBar from './components/ErrorBar';
 import AuthPopup from './components/AuthPopup';
+import FlickrPopup from './components/FlickrPopup';
 import Controller from './services/Controller';
 
 export default {
     name: 'App',
     components: {
-        GoogleMap, GoogleMapForm, ImageView, SlidePreview, Draggable, FileMenu, ErrorBar, AuthPopup,
+        GoogleMap, GoogleMapForm, ImageView, SlidePreview, Draggable, FileMenu, ErrorBar, AuthPopup, FlickrPopup,
     },
     computed: {
         slides: {
@@ -88,7 +90,7 @@ export default {
         });
 
         this.$bus.$on('user', (user) => {
-            this.$store.commit('setUser', user);
+            this.$store.commit('setGoogleUser', user);
         });
     },
     methods: {

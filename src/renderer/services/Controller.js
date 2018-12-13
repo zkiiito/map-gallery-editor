@@ -115,6 +115,9 @@ const Controller = {
     login() {
         store.commit('openPopup', 'auth');
     },
+    openFlickr() {
+        store.commit('openPopup', 'flickr');
+    },
 };
 
 export default Controller;
