@@ -156,6 +156,16 @@ module.exports = {
                     ],
                     pattern: '^(.*)$',
                 },
+                source: {
+                    $id: '#/items/properties/source',
+                    type: 'string',
+                    title: 'The Source Schema',
+                    default: '',
+                    examples: [
+                        'flickr',
+                    ],
+                    pattern: '^([a-z]+)$',
+                },
             },
         },
     },

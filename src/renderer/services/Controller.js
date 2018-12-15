@@ -1,5 +1,5 @@
 import store from '../store';
-import EventBus from '../EventBus';
+import EventBus from './EventBus';
 import AppServer from './AppServer';
 import ImageProcessor from './ImageProcessor';
 import ProjectHandler from './ProjectHandler';

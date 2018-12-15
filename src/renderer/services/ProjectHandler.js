@@ -1,4 +1,4 @@
-import EventBus from '../EventBus';
+import EventBus from './EventBus';
 import ImageProcessor from './ImageProcessor';
 import store from '../store';
 import AppServer from './AppServer';
@@ -45,6 +45,9 @@ async function saveProject(path) {
 }
 
 function getExportedFilename(slide) {
+    if (slide.source === 'flickr') {
+        return slide.path;
+    }
     return `export_${slide.id}_${slide.filename}`;
 }
 
@@ -81,7 +84,7 @@ function publishProject() {
             let filesUploaded = 0;
 
             slides.forEach((slide) => {
-                if (slide.from) {
+                if (slide.from || slide.source === 'flickr') {
                     return;
                 }
 

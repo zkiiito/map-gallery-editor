@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import EventBus from '../EventBus';
+import EventBus from '../services/EventBus';
 const uuidv4 = require('uuid/v4');
 
 Vue.use(Vuex);
@@ -176,7 +176,6 @@ export default new Vuex.Store({
                 },
                 setFlickrUser(state, user) {
                     state.flickrUser = user;
-                    EventBus.emit('flickrUser', user);
                 },
             },
         },

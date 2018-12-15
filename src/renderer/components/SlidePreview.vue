@@ -34,7 +34,12 @@ export default {
             return this.$store.state.gallery.currentSlide;
         },
         thumbnailUrl() {
-            return fileUrl(this.slide.thumbnail);
+            switch (this.slide.source) {
+            case 'flickr':
+                return this.slide.thumbnail;
+            default:
+                return fileUrl(this.slide.thumbnail);
+            }
         },
     },
     watch: {
@@ -78,6 +83,7 @@ export default {
 
     .slide img {
         max-height: 120px;
+        max-width: 150px;
         box-shadow: 0 2px 5px 0 rgba(0,0,0,0.75);
     }
 
