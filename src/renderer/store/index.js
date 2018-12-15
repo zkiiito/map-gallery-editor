@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import EventBus from '../EventBus';
+import EventBus from '../services/EventBus';
 const uuidv4 = require('uuid/v4');
 
 Vue.use(Vuex);
@@ -112,9 +112,6 @@ export default new Vuex.Store({
                 setId(state, id) {
                     state.id = id || uuidv4();
                 },
-                setUser(state, user) {
-                    state.user = user;
-                },
             },
             actions: {
                 resetProject({ commit }) {
@@ -166,6 +163,20 @@ export default new Vuex.Store({
             },
             getters: {
                 isPopupOpen: state => (popup => state.popups.indexOf(popup) >= 0),
+            },
+        },
+        user: {
+            state: {
+                googleUser: null,
+                flickrUser: null,
+            },
+            mutations: {
+                setGoogleUser(state, user) {
+                    state.googleUser = user;
+                },
+                setFlickrUser(state, user) {
+                    state.flickrUser = user;
+                },
             },
         },
     },

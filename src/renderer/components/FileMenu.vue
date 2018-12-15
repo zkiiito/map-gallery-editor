@@ -1,8 +1,8 @@
 <template>
     <div>
         <button @click="addMapSlide">add Map</button>
-        <button v-show="this.$store.state.gallery.user === null" @click="login">login</button>
-        <button v-if="this.$store.state.gallery.user !== null" @click="logout">logout: {{ username }}</button>
+        <button v-show="this.$store.state.user.googleUser === null" @click="login">login</button>
+        <button v-if="this.$store.state.user.googleUser !== null" @click="logout">logout: {{ username }}</button>
     </div>
 </template>
 
@@ -13,7 +13,7 @@ export default {
     name: 'FileMenu',
     computed: {
         username() {
-            return this.$store.state.gallery.user ? this.$store.state.gallery.user.displayName : '';
+            return this.$store.state.user.googleUser ? this.$store.state.user.googleUser.displayName : '';
         },
     },
     methods: {

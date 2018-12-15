@@ -1,7 +1,7 @@
 import { remote, shell } from 'electron'; // eslint-disable-line
 
 import Controller from './Controller';
-import EventBus from '../EventBus';
+import EventBus from './EventBus';
 const { Menu } = remote;
 
 const menu = Menu.buildFromTemplate([
@@ -21,6 +21,8 @@ const menu = Menu.buildFromTemplate([
         submenu: [
             { label: 'Add Images', click: Controller.addImages },
             { label: 'Add Map Slide', click: Controller.addMapSlide },
+            { type: 'separator' },
+            { label: 'Import Images from Flickr', click: Controller.openFlickr },
             { type: 'separator' },
             { label: 'Order by EXIF Date', click: Controller.orderExif },
             { type: 'separator' },

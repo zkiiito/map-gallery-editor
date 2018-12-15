@@ -1,4 +1,4 @@
-import EventBus from '../EventBus';
+import EventBus from './EventBus';
 const fse = require('fs-extra');
 const sharp = require('sharp');
 const exifReader = require('exif-reader');
@@ -71,7 +71,7 @@ async function getImageExport(path) {
 
 function generateExport(slide, dir) {
     return new Promise(async (resolve, reject) => {
-        if (slide.path === undefined) {
+        if (slide.path === undefined || slide.source === 'flickr') {
             return resolve();
         }
 
@@ -92,7 +92,7 @@ function generateExport(slide, dir) {
 
 function updateSlide(slide) {
     return new Promise(async (resolve, reject) => {
-        if (slide.path === undefined) {
+        if (slide.path === undefined || slide.source === 'flickr') {
             resolve(slide);
             return;
         }

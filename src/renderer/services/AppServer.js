@@ -1,4 +1,4 @@
-import EventBus from '../EventBus';
+import EventBus from './EventBus';
 const firebase = require('firebase/app');
 require('firebase/auth');
 require('firebase/storage');

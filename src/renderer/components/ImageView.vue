@@ -9,8 +9,15 @@ export default {
     name: 'ImageView',
     computed: {
         src() {
-            return this.$store.getters.currentSlideType === 'image'
-                ? fileUrl(this.$store.state.gallery.currentSlide.path) : '';
+            if (this.$store.getters.currentSlideType === 'image') {
+                switch (this.$store.state.gallery.currentSlide.source) {
+                case 'flickr':
+                    return this.$store.state.gallery.currentSlide.path;
+                default:
+                    return fileUrl(this.$store.state.gallery.currentSlide.path);
+                }
+            }
+            return '';
         },
         styleObject() {
             return {
