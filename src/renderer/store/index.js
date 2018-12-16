@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
+import createPersistedState from 'vuex-persistedstate';
 import EventBus from '../services/EventBus';
 const uuidv4 = require('uuid/v4');
 
@@ -180,5 +181,26 @@ export default new Vuex.Store({
                 },
             },
         },
+        app: {
+            state: {
+                galleryHistory: [],
+            },
+            mutations: {
+                setFilename(state, filename) {
+                    if (filename) {
+                        const idx = state.galleryHistory.indexOf(filename);
+                        if (idx > -1) {
+                            state.galleryHistory.splice(idx, 1);
+                        }
+
+                        state.galleryHistory.push(filename);
+                    }
+                },
+            },
+        },
     },
+    plugins: [createPersistedState({
+        key: 'MapGalleryEditor',
+        paths: ['app'],
+    })],
 });
