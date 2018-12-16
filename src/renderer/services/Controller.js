@@ -12,6 +12,7 @@ const Controller = {
         store.dispatch('resetProject', []);
         store.commit('setFilename', null);
         EventBus.$emit('clearErrors');
+        Controller.openProjectData();
     },
     openProject() {
         dialog.showOpenDialog({
@@ -117,6 +118,9 @@ const Controller = {
     },
     openFlickr() {
         store.commit('openPopup', 'flickr');
+    },
+    openProjectData() {
+        store.commit('openPopup', 'projectData');
     },
 };
 

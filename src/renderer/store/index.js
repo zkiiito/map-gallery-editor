@@ -105,6 +105,7 @@ export default new Vuex.Store({
                 },
                 setTitle(state, title) {
                     state.title = title;
+                    EventBus.$emit(EventBus.events.PROJECT_TITLE_CHANGED, title);
                 },
                 setDescription(state, description) {
                     state.description = description;

@@ -19,6 +19,8 @@ const menu = Menu.buildFromTemplate([
     {
         label: 'Project',
         submenu: [
+            { label: 'Properties', click: Controller.openProjectData },
+            { type: 'separator' },
             { label: 'Add Images', click: Controller.addImages },
             { label: 'Add Map Slide', click: Controller.addMapSlide },
             { type: 'separator' },
@@ -113,13 +115,25 @@ EventBus.$on('currentSlide', (slide) => {
     }
 });
 
-EventBus.$on('filename', (filename) => {
-    if (filename) {
-        remote.getCurrentWindow().setTitle(`MapGallery Editor  - ${filename}`);
-    } else {
-        remote.getCurrentWindow().setTitle('MapGallery Editor');
-    }
+let filename = '';
+let projectTitle = '';
+
+function setWindowTitle() {
+    const title = `${projectTitle || ''}${filename ? ' [' + filename + ']' : ''} - MapGallery Editor`;
+
+    remote.getCurrentWindow().setTitle(title);
+}
+
+EventBus.$on('filename', (value) => {
+    filename = value;
+    setWindowTitle();
 });
+
+EventBus.$on(EventBus.events.PROJECT_TITLE_CHANGED, (value) => {
+    projectTitle = value;
+    setWindowTitle();
+});
+
 
 export default () => {
     Menu.setApplicationMenu(menu);

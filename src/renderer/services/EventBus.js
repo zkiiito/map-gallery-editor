@@ -4,6 +4,7 @@ const EventBus = new Vue();
 
 EventBus.events = {
     FLICKR_USER_READY: 'flickr_user_ready',
+    PROJECT_TITLE_CHANGED: 'project_title_changed',
 };
 
 export default EventBus;
