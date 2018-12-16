@@ -154,9 +154,11 @@ export default new Vuex.Store({
             mutations: {
                 openPopup(state, popup) {
                     state.popups.push(popup);
+                    EventBus.$emit(EventBus.events.POPUP_OPENED, popup);
                 },
                 closePopup(state, popup) {
                     state.popups = state.popups.filter(openpopup => popup !== openpopup);
+                    EventBus.$emit(EventBus.events.POPUP_CLOSED, popup, state.popups.length);
                 },
                 setFilename(state, filename) {
                     state.filename = filename;

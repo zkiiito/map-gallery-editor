@@ -134,6 +134,15 @@ EventBus.$on(EventBus.events.PROJECT_TITLE_CHANGED, (value) => {
     setWindowTitle();
 });
 
+EventBus.$on(EventBus.events.POPUP_OPENED, () => {
+    Menu.setApplicationMenu(new Menu());
+});
+
+EventBus.$on(EventBus.events.POPUP_CLOSED, (value, num) => {
+    if (num === 0) {
+        Menu.setApplicationMenu(menu);
+    }
+});
 
 export default () => {
     Menu.setApplicationMenu(menu);
