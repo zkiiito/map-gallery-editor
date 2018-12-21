@@ -104,7 +104,7 @@ export default {
             this.$store.commit('setGoogleUser', user);
         });
 
-        Controller.openProjectData();
+        // Controller.openProjectData();
     },
     methods: {
         addMapSlide() {
