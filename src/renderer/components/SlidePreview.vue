@@ -1,11 +1,17 @@
 <template>
     <div class="slide" :class="classObject" @click="setCurrent">
+        <div class="menu menu-top">
+            <a href="#">:</a>
+        </div>
         <template v-if="slide.from">
             {{ slide.from }} - {{ slide.to }}
         </template>
         <template v-else>
             <div class="imgholder">
                 <img :src="thumbnailUrl" :title="slide.filename">
+            </div>
+            <div class="menu menu-bottom">
+                <a href="#">0</a>
             </div>
         </template>
     </div>
@@ -59,11 +65,13 @@ export default {
 
 <style scoped>
     .slide {
-        width: 150px;
-        height: 120px;
+        width: 165px;
+        height: 165px;
         margin: 10px;
         float: left;
         cursor: move;
+        background-color: #ffffff;
+        position: relative;
     }
 
     .slide.map {
@@ -71,7 +79,6 @@ export default {
         align-items: center;
         text-align: center;
         justify-content: center;
-        background-color: aliceblue;
     }
 
     .slide .imgholder {
@@ -82,16 +89,31 @@ export default {
     }
 
     .slide img {
-        max-height: 120px;
+        max-height: 150px;
         max-width: 150px;
-        box-shadow: 0 2px 5px 0 rgba(0,0,0,0.75);
+        border-radius: 4px;
     }
 
-    .slide.image.current img {
-        box-shadow: 0 2px 5px 0 rgba(255,0,0,0.75);
+    .slide.current {
+        outline: 4px solid #f5c500;
+        outline-offset: -4px;
     }
 
-    .slide.map.current {
-        box-shadow: 0 2px 5px 0 rgba(255,0,0,0.75);
+    .slide:hover {
+        box-shadow: 0 2px 9px 0 rgba(0, 0, 0, 0.3);
+    }
+
+    .menu {
+        position: absolute;
+        right: 5px;
+        display: none;
+    }
+
+    .menu.menu-bottom {
+        bottom: 5px;
+    }
+
+    .slide:hover .menu {
+        display: block;
     }
 </style>

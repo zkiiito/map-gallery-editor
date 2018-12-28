@@ -6,29 +6,41 @@
         <SplashPopup v-if="$store.getters.isPopupOpen('splash')"/>
         <vue-progress-bar/>
         <ErrorBar/>
-        <FileMenu/>
-        <div v-show="$store.getters.currentSlideType === 'map'" id="editor">
-            <GoogleMap class="flexgrow"/>
-            <GoogleMapForm/>
-        </div>
-        <div v-show="$store.getters.currentSlideType === 'image'" id="imageviewer">
-            <ImageView class="flexgrow"/>
-        </div>
-        <div id="slides">
-            <Draggable
-                id="slideholder"
-                v-model="slides"
-                :options="{group: 'slides', draggable: '.draggable'}"
-                :class="$store.getters.currentSlideType !== null ? 'small' : 'big'"
-            >
-                <SlidePreview v-for="slide in slides" :key="slide.id" :slide="slide" class="draggable"/>
-                <div class="addSlide">
-                    <label @click="addMapSlide">+ add map slide</label>
+        <!--FileMenu/-->
+
+        <div id="main">
+            <div id="main-left">
+                <div id="main-logo">
+                    <img src="static/logo.png" alt="logo">
                 </div>
-                <div class="addSlide">
-                    <label id="addImages" @click="addImages">+ add images</label>
+                <div id="main-title">
+                    <h1>Weekend in Austria</h1>
+                    <h2>Salzburg, Wien, Linz and other adventures</h2>
                 </div>
-            </Draggable>
+
+                <label @click="addMapSlide">+ add map slide</label><br>
+                <label id="addImages" @click="addImages">+ add images</label>
+            </div>
+
+            <div id="main-right">
+                <div v-show="$store.state.ui.mode === 'map'" id="mode-map">
+                    <GoogleMap style="height: 100%"/>
+                    <!--GoogleMapForm/-->
+                </div>
+
+                <div v-show="$store.state.ui.mode === 'slides'" id="mode-slides">
+                    <div id="slides">
+                        <Draggable
+                            id="slideholder"
+                            v-model="slides"
+                            :options="{group: 'slides', draggable: '.draggable'}"
+                            :class="$store.getters.currentSlideType !== null ? 'small' : 'big'"
+                        >
+                            <SlidePreview v-for="slide in slides" :key="slide.id" :slide="slide" class="draggable"/>
+                        </Draggable>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -73,12 +85,6 @@ export default {
         },
     },
     mounted() {
-        document.getElementById('slides').addEventListener('wheel', (evt) => {
-            if (evt.currentTarget.className.indexOf('small')) {
-                evt.currentTarget.scrollLeft += evt.deltaY;
-            }
-        });
-
         this.$bus.$on('progress', (percent) => {
             if (percent === 0) {
                 this.$Progress.start();
@@ -107,8 +113,7 @@ export default {
             this.$store.commit('setGoogleUser', user);
         });
 
-        // Controller.openProjectData();
-        Controller.openSplash();
+        // Controller.openSplash();
     },
     methods: {
         addMapSlide() {
@@ -147,51 +152,54 @@ export default {
   }
 
   #app {
-    display: flex;
-    flex-direction: column;
+    width: 100%;
     height: 100%;
   }
 
-  #editor, #imageviewer {
-    display: flex;
-    flex-grow: 1;
+  #main {
+      height: 100%;
+      display: flex;
+      flex-direction: row;
   }
 
-  #slides {
-    overflow-x: auto;
+  #main-left {
+      height: 100%;
+      width: 380px;
+      flex-shrink: 0;
   }
 
-  #slideholder.big {
-    width: 100%;
+  #main-logo {
+      padding: 20px 40px;
+      border-bottom: 1px solid #f6f6f6;
+      margin-bottom: 30px;
   }
 
-  #slideholder.small {
-    width: 900000px;
+  #main-title {
+      border-left: 8px solid #f5c500;
+      padding: 10px 32px;
   }
 
-  .flexgrow {
-    flex-grow: 1;
+  #main-title h1 {
+      margin: 0;
+      font-size: 24px;
+      font-weight: 400;
+      margin-bottom: 5px;
   }
 
-  .addSlide {
-    width: 150px;
-    height: 120px;
-    margin: 10px;
-    float: left;
-
-    display: flex;
-    align-items: center;
-    text-align: center;
-    justify-content: center;
-    background-color: aliceblue;
+  #main-title h2 {
+      margin: 0;
+      font-size: 16px;
+      font-weight: 300;
   }
 
-  .addSlide label {
-    padding: 4px;
-    font-size: 0.8em;
-    font-weight: bold;
-    background-color: #ffffff;
-    box-shadow: 0 2px 5px 0 rgba(0,0,0,0.75);
-    cursor: pointer;
+  #main-right {
+      height: 100%;
+      background-color: #f6f6f6;
+      overflow-y: scroll;
+      flex-grow: 1;
+  }
+
+  #mode-map {
+      height: 100%;
   }
 </style>

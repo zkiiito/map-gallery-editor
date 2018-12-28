@@ -150,6 +150,7 @@ export default new Vuex.Store({
             state: {
                 popups: [],
                 returnToSplash: false,
+                mode: 'slides', // slides, map
                 filename: null,
             },
             mutations: {
@@ -167,6 +168,12 @@ export default new Vuex.Store({
                 },
                 setReturnToSplash(state, returnToSplash) {
                     state.returnToSplash = returnToSplash;
+                },
+                setCurrentSlide(state, slide) {
+                    // TODO: remove
+                    if (slide.from) {
+                        state.mode = 'map';
+                    }
                 },
             },
             getters: {
