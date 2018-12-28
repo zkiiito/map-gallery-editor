@@ -119,8 +119,13 @@ const Controller = {
     openFlickr() {
         store.commit('openPopup', 'flickr');
     },
-    openProjectData() {
+    openProjectData(returnToSplash) {
+        returnToSplash = returnToSplash || false;
+        store.commit('setReturnToSplash', returnToSplash);
         store.commit('openPopup', 'projectData');
+    },
+    openSplash() {
+        store.commit('openPopup', 'splash');
     },
 };
 

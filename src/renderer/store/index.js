@@ -149,6 +149,7 @@ export default new Vuex.Store({
         ui: {
             state: {
                 popups: [],
+                returnToSplash: false,
                 filename: null,
             },
             mutations: {
@@ -163,6 +164,9 @@ export default new Vuex.Store({
                 setFilename(state, filename) {
                     state.filename = filename;
                     EventBus.$emit('filename', filename);
+                },
+                setReturnToSplash(state, returnToSplash) {
+                    state.returnToSplash = returnToSplash;
                 },
             },
             getters: {

@@ -19,7 +19,7 @@ const menu = Menu.buildFromTemplate([
     {
         label: 'Project',
         submenu: [
-            { label: 'Properties', click: Controller.openProjectData },
+            { label: 'Properties', click: () => Controller.openProjectData() },
             { type: 'separator' },
             { label: 'Add Images', click: Controller.addImages },
             { label: 'Add Map Slide', click: Controller.addMapSlide },

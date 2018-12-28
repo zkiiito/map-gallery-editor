@@ -2,7 +2,7 @@
     <transition name="modal">
         <div class="modal-mask">
             <div class="modal-wrapper">
-                <div class="modal-container">
+                <div class="modal-container" :style="style">
                     <div class="modal-header">
                         <slot name="header"/>
                     </div>
@@ -23,6 +23,21 @@
 <script>
 export default {
     name: 'Modal',
+    props: {
+        width: {
+            type: Number,
+            default: 500,
+        },
+        padding: {
+            type: Number,
+            default: 40,
+        },
+    },
+    computed: {
+        style() {
+            return `width: ${this.width - 2 * this.padding}px; padding: ${this.padding}px`;
+        },
+    },
 };
 </script>
 
@@ -45,14 +60,14 @@ export default {
     }
 
     .modal-container {
-        width: 400px;
+        width: 420px;
         margin: 0 auto;
-        padding: 20px 30px;
+        padding: 40px;
+        overflow: auto;
         background-color: #fff;
-        border-radius: 2px;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, .33);
+        border-radius: 10px;
+        box-shadow: 0 2px 11px 3px rgba(0, 0, 0, 0.5);
         transition: all .3s ease;
-        font-family: Helvetica, Arial, sans-serif;
     }
 
     .modal-header h3 {
@@ -61,7 +76,7 @@ export default {
     }
 
     .modal-body {
-        margin: 2px 0;
+        /* margin: 2px 0; */
     }
 
     .modal-default-button {

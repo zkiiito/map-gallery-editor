@@ -3,6 +3,7 @@
         <AuthPopup v-if="$store.getters.isPopupOpen('auth')"/>
         <FlickrPopup v-if="$store.getters.isPopupOpen('flickr')"/>
         <ProjectDataPopup v-if="$store.getters.isPopupOpen('projectData')"/>
+        <SplashPopup v-if="$store.getters.isPopupOpen('splash')"/>
         <vue-progress-bar/>
         <ErrorBar/>
         <FileMenu/>
@@ -43,6 +44,7 @@ import ErrorBar from './components/ErrorBar';
 import AuthPopup from './components/AuthPopup';
 import FlickrPopup from './components/FlickrPopup';
 import ProjectDataPopup from './components/ProjectDataPopup';
+import SplashPopup from './components/SplashPopup';
 import Controller from './services/Controller';
 
 export default {
@@ -58,6 +60,7 @@ export default {
         AuthPopup,
         FlickrPopup,
         ProjectDataPopup,
+        SplashPopup,
     },
     computed: {
         slides: {
@@ -105,6 +108,7 @@ export default {
         });
 
         // Controller.openProjectData();
+        Controller.openSplash();
     },
     methods: {
         addMapSlide() {
@@ -124,12 +128,22 @@ export default {
     padding: 0;
   }
 
+  p {
+      margin: 0;
+  }
+
+  a {
+      text-decoration: none;
+      color: #23abad;
+  }
+
   body,
   button,
   input,
   select,
   textarea {
-    font-family: BlinkMacSystemFont, -apple-system, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+    font-family: 'Roboto', sans-serif;
+    color: #404041;
   }
 
   #app {
