@@ -18,6 +18,8 @@
                     <h2>Salzburg, Wien, Linz and other adventures</h2>
                 </div>
 
+                <GoogleMapForm/>
+
                 <label @click="addMapSlide">+ add map slide</label><br>
                 <label id="addImages" @click="addImages">+ add images</label>
             </div>
@@ -144,6 +146,15 @@ export default {
   a {
       text-decoration: none;
       color: #23abad;
+  }
+
+  input, textarea {
+      border-radius: 5px;
+      background-color: #f6f6f6;
+      color: #404041;
+      line-height: 1.2;
+      border: 0 none;
+      padding: 8px;
   }
 
   body,

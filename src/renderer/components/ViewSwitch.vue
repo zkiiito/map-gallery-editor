@@ -55,7 +55,7 @@ export default {
     font-weight: 400;
     background-color: #ffffff;
     border-bottom: 5px solid #ffffff;
-    color: #aaaaaa;
+    color: #b0b0b0;
     float: left;
     cursor: pointer;
 }

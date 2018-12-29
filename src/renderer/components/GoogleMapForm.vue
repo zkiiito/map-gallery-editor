@@ -1,52 +1,39 @@
 <template>
-    <form v-if="this.$store.getters.currentSlideType === 'map'">
-        <div class="field">
-            <label class="label">From</label>
-            <div class="control">
-                <input v-model.lazy="routeFrom" class="input" type="text" placeholder="Start location">
-            </div>
-        </div>
-        <div class="field">
-            <label class="label">To</label>
-            <div class="control">
-                <input v-model.lazy="routeTo" class="input" type="text" placeholder="End location">
-            </div>
-        </div>
-        <div class="field">
-            <label class="label">Waypoints</label>
-            <div class="control">
-                <textarea v-model.lazy="routeWaypoints" class="input" placeholder="One per line"></textarea>
-            </div>
-        </div>
-        <div class="field">
-            <label class="label">Speed</label>
-            <div class="control">
-                <LogarithmicSlider v-model="routeSpeed"/>
-            </div>
-        </div>
-        <div class="field">
-            <label class="label">Travel mode</label>
-            <div class="select">
-                <select v-model="routeMode">
-                    <option value="DRIVING" selected>driving</option>
-                    <option value="FLYING">flying</option>
-                    <option value="WALKING">walking</option>
-                </select>
-            </div>
-        </div>
+    <div v-if="this.$store.getters.currentSlideType === 'map'" id="map-form">
+        <form>
+            <dl>
+                <dt><label class="label">From:</label></dt>
+                <dd><input v-model.lazy="routeFrom" class="input" type="text" placeholder="Start location"></dd>
+                <dt><label class="label">To:</label></dt>
+                <dd><input v-model.lazy="routeTo" class="input" type="text" placeholder="End location"></dd>
+                <dt><label class="label">Via:</label></dt>
+                <dd><textarea v-model.lazy="routeWaypoints" class="input" placeholder="One per line"/></dd>
+                <dt><label class="label">Speed:</label></dt>
+                <dd><LogarithmicSlider v-model="routeSpeed"/></dd>
+            </dl>
 
-        <div class="control">
-            <button class="button is-link" type="button" @click="showRoute">test</button>
-        </div>
-    </form>
+            <div id="map-route-mode">
+                <input id="route-mode-driving" v-model="routeMode" type="radio" name="route-mode" value="DRIVING">
+                <label for="route-mode-driving">DRIVING</label>
+                <input id="route-mode-flying" v-model="routeMode" type="radio" name="route-mode" value="FLYING">
+                <label for="route-mode-flying">FLYING</label>
+                <input id="route-mode-walking" v-model="routeMode" type="radio" name="route-mode" value="WALKING">
+                <label for="route-mode-walking">WALKING</label>
+            </div>
+
+            <BigButton class="big-button" type="empty" cssclass="small" label="Add"/>
+            <BigButton class="big-button" type="empty" cssclass="small" label="Run test!" @click="showRoute"/>
+        </form>
+    </div>
 </template>
 
 <script>
 import LogarithmicSlider from './LogarithmicSlider.vue';
+import BigButton from './BigButton';
 
 export default {
     name: 'GoogleMapForm',
-    components: { LogarithmicSlider },
+    components: { BigButton, LogarithmicSlider },
     computed: {
         routeFrom: {
             get() {
@@ -112,5 +99,69 @@ export default {
 </script>
 
 <style scoped>
+div#map-form {
+    width: 268px;
+    border: 1px solid #dddddd;
+    border-radius: 10px;
+    margin-left: 40px;
+    padding: 24px 16px 20px 16px;
+    overflow: auto;
+}
+
+dl {
+    overflow: auto;
+    margin: 0;
+}
+
+dl dt {
+    float: left;
+    width: 20%;
+    line-height: 30px;
+}
+
+dl dd {
+    float: left;
+    width: 78%;
+    margin: 0 0 16px;
+}
+
+label {
+    font-size: 14px;
+    color: #b0b0b0;
+}
+
+input, textarea {
+    width: 90%;
+}
+
+#map-route-mode {
+    border-radius: 5px;
+    overflow: auto;
+    background-color: #f6f6f6;
+}
+
+#map-route-mode input {
+   display: none;
+}
+
+#map-route-mode input:checked + label {
+    background-color: #eeeeee;
+    color: #23abad;
+}
+
+#map-route-mode label {
+    float: left;
+    width: 33%;
+    text-align: center;
+    cursor: pointer;
+    line-height: 32px;
+    letter-spacing: -0.2px;
+}
+
+.big-button {
+    float: right;
+    margin: 20px 0 0 10px;
+}
+
 
 </style>

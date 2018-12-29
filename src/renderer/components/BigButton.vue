@@ -1,5 +1,5 @@
 <template>
-    <button :style="style" @click="$emit('click')" type="button">{{ label }}</button>
+    <button :style="style" :class="cssclass" type="button" @click="$emit('click')">{{ label }}</button>
 </template>
 
 <script>
@@ -17,6 +17,10 @@ export default {
         color: {
             type: String,
             default: '#23abad',
+        },
+        cssclass: {
+            type: String,
+            default: '',
         },
     },
     computed: {
@@ -45,6 +49,14 @@ export default {
         border-style: solid;
         cursor: pointer;
         color: #ffffff;
+    }
+
+    button.small {
+        width: 75px;
+        height: 36px;
+        border-radius: 5px;
+        font-size: 14px;
+        border-width: 1px;
     }
 
     button:hover {
