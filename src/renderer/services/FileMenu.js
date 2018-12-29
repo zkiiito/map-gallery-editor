@@ -119,7 +119,8 @@ let filename = '';
 let projectTitle = '';
 
 function setWindowTitle() {
-    const title = `${projectTitle || ''}${filename ? ' [' + filename + ']' : ''} - MapGallery Editor`;
+    const titleFilename = filename ? ` [${filename}]` : '';
+    const title = `${projectTitle || ''}${titleFilename} - MapGallery Editor`;
 
     remote.getCurrentWindow().setTitle(title);
 }

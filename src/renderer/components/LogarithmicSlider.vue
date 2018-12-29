@@ -10,6 +10,7 @@ export default {
     props: {
         value: {
             type: Number,
+            default: 0,
         },
         minpos: {
             default: 1,

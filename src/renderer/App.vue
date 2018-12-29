@@ -23,7 +23,8 @@
 
                 <div style="margin-left: 40px; margin-top: 15px">
                     <BigButton v-if="$store.state.gallery.slides.every(slide => slide.from === undefined)"
-                               cssclass="huge" @click="addMapSlide">
+                               cssclass="huge" @click="addMapSlide"
+                    >
                         <div class="bigbutton-content">
                             <img src="static/ui/map-illustration.png" alt="map icon">
                             ADD MAP
@@ -33,7 +34,8 @@
                     <div style="margin: 15px"/>
 
                     <BigButton v-if="$store.state.gallery.slides.every(slide => slide.path === undefined)"
-                               cssclass="huge" @click="addImages">
+                               cssclass="huge" @click="addImages"
+                    >
                         <div class="bigbutton-content">
                             <img src="static/ui/pic-illustration.png" alt="photo icon">
                             ADD PICTURES
@@ -42,8 +44,9 @@
                 </div>
 
                 <div v-if="$store.state.gallery.slides.some(slide => slide.from !== undefined)
-                    && $store.state.gallery.slides.some(slide => slide.path !== undefined)
-                " style="text-align:center; font-size: 12px">
+                         && $store.state.gallery.slides.some(slide => slide.path !== undefined)"
+                     style="text-align:center; font-size: 12px"
+                >
                     <a href="#" @click="addMapSlide">⊕ Add map</a>&nbsp;&nbsp;
                     <a href="#" @click="addImages">⊕ Add pictures</a>
                 </div>
@@ -76,9 +79,8 @@
 <script>
 import Draggable from 'vuedraggable';
 import GoogleMap from './components/GoogleMapWebview.vue';
-import GoogleMapForm from './components/GoogleMapForm.vue';
 import SlidePreview from './components/SlidePreview.vue';
-import FileMenu from './components/FileMenu.vue';
+// import FileMenu from './components/FileMenu.vue';
 import ErrorBar from './components/ErrorBar';
 import AuthPopup from './components/AuthPopup';
 import FlickrPopup from './components/FlickrPopup';
@@ -95,10 +97,9 @@ export default {
         BigButton,
         ProjectNavigator,
         GoogleMap,
-        GoogleMapForm,
         SlidePreview,
         Draggable,
-        FileMenu,
+        // FileMenu,
         ErrorBar,
         AuthPopup,
         FlickrPopup,

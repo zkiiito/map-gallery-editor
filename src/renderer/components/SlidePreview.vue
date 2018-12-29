@@ -3,7 +3,7 @@
         <div class="menu menu-top">
             <a href="#">:</a>
         </div>
-        <template v-if="slide.hasOwnProperty('from')">
+        <template v-if="Object.prototype.hasOwnProperty.call(slide, 'from')">
             <dl>
                 <dt>From:</dt>
                 <dd>{{ slide.from }}</dd>
@@ -28,12 +28,15 @@ const fileUrl = require('file-url');
 export default {
     name: 'SlidePreview',
     props: {
-        slide: Object,
+        slide: {
+            type: Object,
+            default: () => {},
+        },
     },
     computed: {
         classObject() {
             const classes = [];
-            classes.push(this.slide.hasOwnProperty('from') ? 'map' : 'image');
+            classes.push(Object.prototype.hasOwnProperty.call(this.slide, 'from') ? 'map' : 'image');
 
             if (this.slide === this.$store.state.gallery.currentSlide) {
                 classes.push('current');

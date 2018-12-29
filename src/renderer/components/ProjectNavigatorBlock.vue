@@ -1,17 +1,21 @@
 <template>
     <div>
         <div v-if="isMapBlock" class="block block-map" @click="openMap">
-            <div class="dot"></div>
+            <div class="dot"/>
             <p class="header">Section {{ block.id }}</p>
             <p>{{ block.slides[0].from }} to {{ block.slides[0].to }}</p>
         </div>
 
         <GoogleMapForm v-if="isMapBlock && $store.state.ui.view === 'map'
-            && block.slides[0] === $store.state.gallery.currentSlide"/>
+            && block.slides[0] === $store.state.gallery.currentSlide"
+        />
 
         <div v-if="!isMapBlock" class="block block-gallery">
             <div v-for="(slide, idx) in block.slides.slice(0, 6)" :key="idx" class="img"
-                 :style="`background-image: url('${thumbnailUrl(slide)}')`"></div>
+                 :style="`background-image: url('${thumbnailUrl(slide)}')`"
+            >
+                <span v-if="idx === 0" class="count">{{ block.slides.length }}</span>
+            </div>
             <br style="clear:both">
         </div>
     </div>
@@ -23,11 +27,11 @@ const fileUrl = require('file-url');
 
 export default {
     name: 'ProjectNavigatorBlock',
-    components: {GoogleMapForm},
+    components: { GoogleMapForm },
     props: {
         block: {
             type: Object,
-            default: {},
+            default: () => {},
         },
     },
     computed: {
@@ -93,7 +97,7 @@ export default {
         border-radius: 4px;
     }
 
-    div.img.count {
+    div.img span.count {
         text-align: center;
         line-height: 40px;
         font-size: 16px;

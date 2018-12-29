@@ -3,13 +3,21 @@
         <form>
             <dl>
                 <dt><label class="label">From:</label></dt>
-                <dd><input v-model.lazy="routeFrom" class="input" type="text" placeholder="Start location" required></dd>
+                <dd>
+                    <input v-model.lazy="routeFrom" class="input" type="text" placeholder="Start location" required>
+                </dd>
                 <dt><label class="label">To:</label></dt>
-                <dd><input v-model.lazy="routeTo" class="input" type="text" placeholder="End location" required></dd>
+                <dd>
+                    <input v-model.lazy="routeTo" class="input" type="text" placeholder="End location" required>
+                </dd>
                 <dt><label class="label">Via:</label></dt>
-                <dd><textarea v-model.lazy="routeWaypoints" class="input" placeholder="One per line"/></dd>
+                <dd>
+                    <textarea v-model.lazy="routeWaypoints" class="input" placeholder="One per line"/>
+                </dd>
                 <dt><label class="label">Speed:</label></dt>
-                <dd><LogarithmicSlider v-model="routeSpeed"/></dd>
+                <dd>
+                    <LogarithmicSlider v-model="routeSpeed"/>
+                </dd>
             </dl>
 
             <div id="map-route-mode">

@@ -17,7 +17,7 @@ export default {
             let mapIdx = 1;
 
             this.$store.state.gallery.slides.forEach((slide) => {
-                if (slide.hasOwnProperty('from')) {
+                if (Object.prototype.hasOwnProperty.call(slide, 'from')) {
                     if (curBlock.length) {
                         blocks.push({
                             id: `g${mapIdx}`,
@@ -30,7 +30,7 @@ export default {
                         id: mapIdx,
                         slides: [slide],
                     });
-                    mapIdx++;
+                    mapIdx += 1;
                     curBlock = [];
                 } else {
                     curBlock.push(slide);
