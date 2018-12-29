@@ -13,16 +13,17 @@
                 <div id="main-logo">
                     <img src="static/ui/logo.png" alt="logo">
                 </div>
-                <div id="main-title">
-                    <h1>Weekend in Austria</h1>
-                    <h2>Salzburg, Wien, Linz and other adventures</h2>
+                <div id="main-title" @click="openProjectData">
+                    <h1>{{ $store.state.gallery.title.length ? $store.state.gallery.title : 'Unnamed trip' }}</h1>
+                    <h2>{{ $store.state.gallery.description }}</h2>
                 </div>
 
-                <ProjectNavigator/>
-                <GoogleMapForm/>
+                <ProjectNavigator v-if="$store.state.gallery.slides.length > 0"/>
+                <!--GoogleMapForm/-->
 
                 <div style="margin-left: 40px">
-                    <BigButton cssclass="huge" @click="addMapSlide">
+                    <BigButton v-if="$store.state.gallery.slides.every(slide => slide.from === undefined)"
+                               cssclass="huge" @click="addMapSlide">
                         <div class="bigbutton-content">
                             <img src="static/ui/map-illustration.png" alt="map icon">
                             ADD MAP
@@ -31,7 +32,8 @@
 
                     <div style="margin: 15px"/>
 
-                    <BigButton cssclass="huge" @click="addImages">
+                    <BigButton v-if="$store.state.gallery.slides.every(slide => slide.path === undefined)"
+                               cssclass="huge" @click="addImages">
                         <div class="bigbutton-content">
                             <img src="static/ui/pic-illustration.png" alt="photo icon">
                             ADD PICTURES
@@ -45,7 +47,6 @@
 
                 <div v-show="$store.state.ui.view === 'map'" id="view-map">
                     <GoogleMap style="height: 100%"/>
-                    <!--GoogleMapForm/-->
                 </div>
 
                 <div v-show="$store.state.ui.view === 'gallery'" id="view-gallery">
@@ -141,10 +142,16 @@ export default {
     },
     methods: {
         addMapSlide() {
-            Controller.addMapSlide();
+            const mapSlide = Controller.addMapSlide();
+            this.$store.commit('setCurrentSlide', mapSlide);
         },
         addImages() {
-            Controller.addImages();
+            Controller.addImages().then(() => {
+                this.$store.commit('setView', 'gallery');
+            });
+        },
+        openProjectData() {
+            Controller.openProjectData();
         },
     },
 };

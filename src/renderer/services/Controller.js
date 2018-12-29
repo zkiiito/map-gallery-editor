@@ -54,27 +54,34 @@ const Controller = {
         });
     },
     addImages() {
-        dialog.showOpenDialog({
-            properties: ['openFile', 'multiSelections'],
-            filters: [{ name: 'MapGallery Editor files', extensions: ['jpg', 'JPG', 'jpeg', 'JPEG'] }],
-        }, (files) => {
-            if (files) {
-                ImageProcessor.processNewImages(files).then((slides) => {
-                    store.commit('addSlides', slides);
-                }).catch((err) => {
-                    EventBus.$emit('error', err);
-                });
-            }
+        return new Promise((resolve, reject) => {
+            dialog.showOpenDialog({
+                properties: ['openFile', 'multiSelections'],
+                filters: [{ name: 'MapGallery Editor files', extensions: ['jpg', 'JPG', 'jpeg', 'JPEG'] }],
+            }, (files) => {
+                if (files) {
+                    ImageProcessor.processNewImages(files).then((slides) => {
+                        store.commit('addSlides', slides);
+                        return resolve();
+                    }).catch((err) => {
+                        EventBus.$emit('error', err);
+                        reject(err);
+                    });
+                }
+            });
         });
     },
     addMapSlide() {
-        store.commit('addSlideAfterCurrent', {
+        const slide = {
             id: uuidv4(),
             from: 'Budapest',
             to: 'Vienna',
             speed: 5000,
             mode: 'DRIVING',
-        });
+        };
+
+        store.commit('addSlideAfterCurrent', slide);
+        return slide;
     },
     prevSlide() {
         store.commit('moveSlide', -1);

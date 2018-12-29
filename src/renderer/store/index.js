@@ -169,12 +169,6 @@ export default new Vuex.Store({
                 setReturnToSplash(state, returnToSplash) {
                     state.returnToSplash = returnToSplash;
                 },
-                setCurrentSlide(state, slide) {
-                    // TODO: remove
-                    if (slide.from) {
-                        state.view = 'map';
-                    }
-                },
                 setView(state, view) {
                     state.view = view;
                 },
