@@ -18,6 +18,7 @@
                     <h2>Salzburg, Wien, Linz and other adventures</h2>
                 </div>
 
+                <ProjectNavigator/>
                 <GoogleMapForm/>
 
                 <label @click="addMapSlide">+ add map slide</label><br>
@@ -53,7 +54,6 @@
 import Draggable from 'vuedraggable';
 import GoogleMap from './components/GoogleMapWebview.vue';
 import GoogleMapForm from './components/GoogleMapForm.vue';
-import ImageView from './components/ImageView.vue';
 import SlidePreview from './components/SlidePreview.vue';
 import FileMenu from './components/FileMenu.vue';
 import ErrorBar from './components/ErrorBar';
@@ -62,14 +62,15 @@ import FlickrPopup from './components/FlickrPopup';
 import ProjectDataPopup from './components/ProjectDataPopup';
 import SplashPopup from './components/SplashPopup';
 import ViewSwitch from './components/ViewSwitch';
+import ProjectNavigator from './components/ProjectNavigator';
 import Controller from './services/Controller';
 
 export default {
     name: 'App',
     components: {
+        ProjectNavigator,
         GoogleMap,
         GoogleMapForm,
-        ImageView,
         SlidePreview,
         Draggable,
         FileMenu,
