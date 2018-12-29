@@ -11,7 +11,7 @@
         <div id="main">
             <div id="main-left">
                 <div id="main-logo">
-                    <img src="static/logo.png" alt="logo">
+                    <img src="static/ui/logo.png" alt="logo">
                 </div>
                 <div id="main-title">
                     <h1>Weekend in Austria</h1>
@@ -21,8 +21,23 @@
                 <ProjectNavigator/>
                 <GoogleMapForm/>
 
-                <label @click="addMapSlide">+ add map slide</label><br>
-                <label id="addImages" @click="addImages">+ add images</label>
+                <div style="margin-left: 40px">
+                    <BigButton cssclass="huge" @click="addMapSlide">
+                        <div class="bigbutton-content">
+                            <img src="static/ui/map-illustration.png" alt="map icon">
+                            ADD MAP
+                        </div>
+                    </BigButton>
+
+                    <div style="margin: 15px"/>
+
+                    <BigButton cssclass="huge" @click="addImages">
+                        <div class="bigbutton-content">
+                            <img src="static/ui/pic-illustration.png" alt="photo icon">
+                            ADD PICTURES
+                        </div>
+                    </BigButton>
+                </div>
             </div>
 
             <div id="main-right">
@@ -64,10 +79,12 @@ import SplashPopup from './components/SplashPopup';
 import ViewSwitch from './components/ViewSwitch';
 import ProjectNavigator from './components/ProjectNavigator';
 import Controller from './services/Controller';
+import BigButton from './components/BigButton';
 
 export default {
     name: 'App',
     components: {
+        BigButton,
         ProjectNavigator,
         GoogleMap,
         GoogleMapForm,
@@ -166,60 +183,71 @@ export default {
     font-family: 'Roboto', sans-serif;
     color: #404041;
   }
+</style>
 
-  #app {
-    width: 100%;
-    height: 100%;
-  }
+<style scoped>
+    #app {
+        width: 100%;
+        height: 100%;
+    }
 
-  #main {
-      height: 100%;
-      display: flex;
-      flex-direction: row;
-  }
+    #main {
+        height: 100%;
+        display: flex;
+        flex-direction: row;
+    }
 
-  #main-left {
-      height: 100%;
-      width: 380px;
-      flex-shrink: 0;
-  }
+    #main-left {
+        height: 100%;
+        width: 380px;
+        flex-shrink: 0;
+        overflow-y: auto;
+    }
 
-  #main-logo {
-      padding: 20px 40px;
-      border-bottom: 1px solid #f6f6f6;
-      margin-bottom: 30px;
-  }
+    #main-logo {
+        padding: 20px 40px;
+        border-bottom: 1px solid #f6f6f6;
+        margin-bottom: 30px;
+    }
 
-  #main-title {
-      border-left: 8px solid #f5c500;
-      padding: 10px 32px;
-  }
+    #main-title {
+        border-left: 8px solid #f5c500;
+        padding: 10px 32px;
+    }
 
-  #main-title h1 {
-      margin: 0;
-      font-size: 24px;
-      font-weight: 400;
-      margin-bottom: 5px;
-  }
+    #main-title h1 {
+        font-size: 24px;
+        font-weight: 400;
+        margin: 0 0 5px;
+    }
 
-  #main-title h2 {
-      margin: 0;
-      font-size: 16px;
-      font-weight: 300;
-  }
+    #main-title h2 {
+        margin: 0;
+        font-size: 16px;
+        font-weight: 300;
+    }
 
-  #main-right {
-      height: 100%;
-      background-color: #f6f6f6;
-      overflow-y: scroll;
-      flex-grow: 1;
-  }
+    #main-right {
+        height: 100%;
+        background-color: #f6f6f6;
+        overflow-y: scroll;
+        flex-grow: 1;
+    }
 
-  #view-map {
-      height: 100%;
-  }
+    #view-map {
+        height: 100%;
+    }
 
-  #view-gallery {
-      margin-top: 100px;
-  }
+    #view-gallery {
+        margin-top: 100px;
+    }
+
+    .bigbutton-content {
+        display: flex;
+        align-items: center;
+    }
+
+    .bigbutton-content img {
+        margin-right: 15px;
+    }
 </style>

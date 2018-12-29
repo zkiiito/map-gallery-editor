@@ -21,8 +21,8 @@
                 <label for="route-mode-walking">WALKING</label>
             </div>
 
-            <BigButton class="big-button" type="empty" cssclass="small" label="Add"/>
-            <BigButton class="big-button" type="empty" cssclass="small" label="Run test!" @click="showRoute"/>
+            <BigButton class="big-button" type="empty" cssclass="small">Add</BigButton>
+            <BigButton class="big-button" type="empty" cssclass="small" @click="showRoute">Run test!</BigButton>
         </form>
     </div>
 </template>

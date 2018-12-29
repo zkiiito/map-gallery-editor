@@ -10,7 +10,7 @@
                     aliquip ex ea commodo consequat.
                 </p>
                 <div class="button-holder">
-                    <BigButton label="New trip" @click="newProject"/>
+                    <BigButton @click="newProject">New Trip</BigButton>
                 </div>
             </div>
             <div id="splash-history">

@@ -15,8 +15,8 @@
                     </label>
                 </p>
                 <p align="right">
-                    <BigButton v-if="$store.state.ui.returnToSplash" type="empty" label="Back" @click="returnToSplash"/>
-                    <BigButton :label="closeLabel" @click="close"/>
+                    <BigButton v-if="$store.state.ui.returnToSplash" type="empty" @click="returnToSplash">Back</BigButton>
+                    <BigButton @click="close">{{ closeLabel }}</BigButton>
                 </p>
             </form>
         </template>

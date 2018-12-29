@@ -1,15 +1,13 @@
 <template>
-    <button :style="style" :class="cssclass" type="button" @click="$emit('click')">{{ label }}</button>
+    <button :style="style" :class="cssclass" type="button" @click="$emit('click')">
+        <slot></slot>
+    </button>
 </template>
 
 <script>
 export default {
     name: 'BigButton',
     props: {
-        label: {
-            type: String,
-            default: 'Label',
-        },
         type: {
             type: String,
             default: 'full',
@@ -57,6 +55,17 @@ export default {
         border-radius: 5px;
         font-size: 14px;
         border-width: 1px;
+    }
+
+    button.huge {
+        width: 300px;
+        height: 120px;
+        font-size: 22px;
+        padding: 15px;
+    }
+
+    button.noborder {
+        border: 0
     }
 
     button:hover {
