@@ -1,22 +1,19 @@
 <template>
     <div>
-        <div :class="cssclass">
+        <div v-if="isMapBlock" class="block block-map" @click="openMap">
             <div class="dot"></div>
-            <div v-if="isMapBlock">
-                <p class="header">Section {{ block.id }}</p>
-                <p>{{ block.slides[0].from }} to {{ block.slides[0].to }}</p>
-            </div>
-
-            <div v-if="!isMapBlock">
-                <div v-for="(slide, idx) in block.slides.slice(0, 6)" :key="idx" class="img"
-                     :style="`background-image: url('${thumbnailUrl(slide)}')`"></div>
-                <br style="clear:both">
-            </div>
+            <p class="header">Section {{ block.id }}</p>
+            <p>{{ block.slides[0].from }} to {{ block.slides[0].to }}</p>
         </div>
-        <GoogleMapForm v-if="isMapBlock
-            && block.slides[0] === $store.state.gallery.currentSlide
-            && $store.state.ui.view === 'map'"
-        />
+
+        <GoogleMapForm v-if="isMapBlock && $store.state.ui.view === 'map'
+            && block.slides[0] === $store.state.gallery.currentSlide"/>
+
+        <div v-if="!isMapBlock" class="block block-gallery">
+            <div v-for="(slide, idx) in block.slides.slice(0, 6)" :key="idx" class="img"
+                 :style="`background-image: url('${thumbnailUrl(slide)}')`"></div>
+            <br style="clear:both">
+        </div>
     </div>
 </template>
 
@@ -34,9 +31,6 @@ export default {
         },
     },
     computed: {
-        cssclass() {
-            return this.isMapBlock ? 'block block-map' : 'block block-gallery';
-        },
         isMapBlock() {
             return this.block.type === 'map';
         },
@@ -49,6 +43,10 @@ export default {
             default:
                 return fileUrl(slide.thumbnail);
             }
+        },
+        openMap() {
+            this.$store.commit('setCurrentSlide', this.block.slides[0]);
+            this.$store.commit('setView', 'map');
         },
     },
 };
@@ -110,5 +108,6 @@ export default {
         top: 50%;
         left: -5px;
         border-radius: 4px;
+        margin-top: -5px;
     }
 </style>

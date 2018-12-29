@@ -1,6 +1,6 @@
 <template>
     <div>
-        <p v-for="error in errors" :key="error">{{ error.toString() }}</p>
+        <p v-for="(error, idx) in errors" :key="idx">{{ error ? error.toString() : 'Error' }}</p>
     </div>
 </template>
 

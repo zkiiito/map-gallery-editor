@@ -74,13 +74,6 @@ export default {
         position: relative;
     }
 
-    .slide.map {
-        display: flex;
-        align-items: center;
-        text-align: center;
-        justify-content: center;
-    }
-
     .slide .imgholder {
         display: flex;
         align-items: center;
@@ -115,5 +108,25 @@ export default {
 
     .slide:hover .menu {
         display: block;
+    }
+
+    dl {
+        overflow: auto;
+        margin: 0;
+        padding: 32px 16px;
+        font-size: 14px;
+    }
+
+    dl dt {
+        float: left;
+        width: 25%;
+    }
+
+    dl dd {
+        float: left;
+        width: 50%;
+        margin: 0;
+        padding-left: 10px;
+        font-weight: 500;
     }
 </style>

@@ -21,7 +21,7 @@
                 <ProjectNavigator v-if="$store.state.gallery.slides.length > 0"/>
                 <!--GoogleMapForm/-->
 
-                <div style="margin-left: 40px">
+                <div style="margin-left: 40px; margin-top: 15px">
                     <BigButton v-if="$store.state.gallery.slides.every(slide => slide.from === undefined)"
                                cssclass="huge" @click="addMapSlide">
                         <div class="bigbutton-content">
@@ -39,6 +39,13 @@
                             ADD PICTURES
                         </div>
                     </BigButton>
+                </div>
+
+                <div v-if="$store.state.gallery.slides.some(slide => slide.from !== undefined)
+                    && $store.state.gallery.slides.some(slide => slide.path !== undefined)
+                " style="text-align:center; font-size: 12px">
+                    <a href="#" @click="addMapSlide">⊕ Add map</a>&nbsp;&nbsp;
+                    <a href="#" @click="addImages">⊕ Add pictures</a>
                 </div>
             </div>
 
