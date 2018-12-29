@@ -23,12 +23,14 @@
             </div>
 
             <div id="main-right">
-                <div v-show="$store.state.ui.mode === 'map'" id="mode-map">
+                <ViewSwitch/>
+
+                <div v-show="$store.state.ui.view === 'map'" id="view-map">
                     <GoogleMap style="height: 100%"/>
                     <!--GoogleMapForm/-->
                 </div>
 
-                <div v-show="$store.state.ui.mode === 'slides'" id="mode-slides">
+                <div v-show="$store.state.ui.view === 'gallery'" id="view-gallery">
                     <div id="slides">
                         <Draggable
                             id="slideholder"
@@ -57,6 +59,7 @@ import AuthPopup from './components/AuthPopup';
 import FlickrPopup from './components/FlickrPopup';
 import ProjectDataPopup from './components/ProjectDataPopup';
 import SplashPopup from './components/SplashPopup';
+import ViewSwitch from './components/ViewSwitch';
 import Controller from './services/Controller';
 
 export default {
@@ -73,6 +76,7 @@ export default {
         FlickrPopup,
         ProjectDataPopup,
         SplashPopup,
+        ViewSwitch,
     },
     computed: {
         slides: {
@@ -199,7 +203,11 @@ export default {
       flex-grow: 1;
   }
 
-  #mode-map {
+  #view-map {
       height: 100%;
+  }
+
+  #view-gallery {
+      margin-top: 100px;
   }
 </style>

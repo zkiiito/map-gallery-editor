@@ -150,7 +150,7 @@ export default new Vuex.Store({
             state: {
                 popups: [],
                 returnToSplash: false,
-                mode: 'slides', // slides, map
+                view: 'gallery', // map, gallery
                 filename: null,
             },
             mutations: {
@@ -172,8 +172,11 @@ export default new Vuex.Store({
                 setCurrentSlide(state, slide) {
                     // TODO: remove
                     if (slide.from) {
-                        state.mode = 'map';
+                        state.view = 'map';
                     }
+                },
+                setView(state, view) {
+                    state.view = view;
                 },
             },
             getters: {
