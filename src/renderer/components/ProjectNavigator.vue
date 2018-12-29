@@ -17,7 +17,7 @@ export default {
             let mapIdx = 1;
 
             this.$store.state.gallery.slides.forEach((slide) => {
-                if (slide.from) {
+                if (slide.hasOwnProperty('from')) {
                     if (curBlock.length) {
                         blocks.push({
                             id: `g${mapIdx}`,

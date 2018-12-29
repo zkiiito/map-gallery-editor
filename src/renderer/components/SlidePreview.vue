@@ -3,8 +3,13 @@
         <div class="menu menu-top">
             <a href="#">:</a>
         </div>
-        <template v-if="slide.from">
-            {{ slide.from }} - {{ slide.to }}
+        <template v-if="slide.hasOwnProperty('from')">
+            <dl>
+                <dt>From:</dt>
+                <dd>{{ slide.from }}</dd>
+                <dt>To:</dt>
+                <dd>{{ slide.to }}</dd>
+            </dl>
         </template>
         <template v-else>
             <div class="imgholder">
@@ -28,7 +33,7 @@ export default {
     computed: {
         classObject() {
             const classes = [];
-            classes.push(this.slide.from ? 'map' : 'image');
+            classes.push(this.slide.hasOwnProperty('from') ? 'map' : 'image');
 
             if (this.slide === this.$store.state.gallery.currentSlide) {
                 classes.push('current');
