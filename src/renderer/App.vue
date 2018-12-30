@@ -19,37 +19,9 @@
                 </div>
 
                 <ProjectNavigator v-if="$store.state.gallery.slides.length > 0"/>
-                <!--GoogleMapForm/-->
 
-                <div style="margin-left: 40px; margin-top: 15px">
-                    <BigButton v-if="$store.state.gallery.slides.every(slide => slide.from === undefined)"
-                               cssclass="huge" @click="addMapSlide"
-                    >
-                        <div class="bigbutton-content">
-                            <img src="static/ui/map-illustration.png" alt="map icon">
-                            ADD MAP
-                        </div>
-                    </BigButton>
-
-                    <div style="margin: 15px"/>
-
-                    <BigButton v-if="$store.state.gallery.slides.every(slide => slide.path === undefined)"
-                               cssclass="huge" @click="addImages"
-                    >
-                        <div class="bigbutton-content">
-                            <img src="static/ui/pic-illustration.png" alt="photo icon">
-                            ADD PICTURES
-                        </div>
-                    </BigButton>
-                </div>
-
-                <div v-if="$store.state.gallery.slides.some(slide => slide.from !== undefined)
-                         && $store.state.gallery.slides.some(slide => slide.path !== undefined)"
-                     style="text-align:center; font-size: 12px"
-                >
-                    <a href="#" @click="addMapSlide"><i class="fas fa-plus-circle"></i> Add map</a>&nbsp;&nbsp;
-                    <a href="#" @click="addImages"><i class="fas fa-plus-circle"></i> Add pictures</a>
-                </div>
+                <AddButtons/>
+                <PersistMenu/>
             </div>
 
             <div id="main-right">
@@ -92,12 +64,14 @@ import SplashPopup from './components/SplashPopup';
 import ViewSwitch from './components/ViewSwitch';
 import ProjectNavigator from './components/ProjectNavigator';
 import Controller from './services/Controller';
-import BigButton from './components/BigButton';
+import AddButtons from './components/AddButtons';
+import PersistMenu from './components/PersistMenu';
 
 export default {
     name: 'App',
     components: {
-        BigButton,
+        PersistMenu,
+        AddButtons,
         ProjectNavigator,
         GoogleMap,
         SlidePreview,
@@ -152,15 +126,6 @@ export default {
         // Controller.openSplash();
     },
     methods: {
-        addMapSlide() {
-            const mapSlide = Controller.addMapSlide();
-            this.$store.commit('setCurrentSlide', mapSlide);
-        },
-        addImages() {
-            Controller.addImages().then(() => {
-                this.$store.commit('setView', 'gallery');
-            });
-        },
         openProjectData() {
             Controller.openProjectData();
         },
@@ -253,6 +218,7 @@ export default {
         background-color: #f6f6f6;
         overflow-y: scroll;
         flex-grow: 1;
+        border-left: 1px solid #dddddd;
     }
 
     #view-map {
@@ -262,14 +228,5 @@ export default {
     #view-gallery {
         margin-top: 100px;
         margin-right: 40px;
-    }
-
-    .bigbutton-content {
-        display: flex;
-        align-items: center;
-    }
-
-    .bigbutton-content img {
-        margin-right: 15px;
     }
 </style>

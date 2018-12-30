@@ -20,6 +20,10 @@ export default {
             type: String,
             default: '',
         },
+        cssstyle: {
+            type: String,
+            default: '',
+        },
     },
     computed: {
         style() {
@@ -29,6 +33,8 @@ export default {
             } else {
                 css += `color: ${this.color};`;
             }
+
+            css += ` ${this.cssstyle}`;
 
             return css;
         },
@@ -62,10 +68,6 @@ export default {
         height: 120px;
         font-size: 22px;
         padding: 15px;
-    }
-
-    button.noborder {
-        border: 0
     }
 
     button:hover {
