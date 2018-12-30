@@ -47,8 +47,8 @@
                          && $store.state.gallery.slides.some(slide => slide.path !== undefined)"
                      style="text-align:center; font-size: 12px"
                 >
-                    <a href="#" @click="addMapSlide">⊕ Add map</a>&nbsp;&nbsp;
-                    <a href="#" @click="addImages">⊕ Add pictures</a>
+                    <a href="#" @click="addMapSlide"><i class="fas fa-plus-circle"></i> Add map</a>&nbsp;&nbsp;
+                    <a href="#" @click="addImages"><i class="fas fa-plus-circle"></i> Add pictures</a>
                 </div>
             </div>
 
@@ -60,6 +60,9 @@
                 </div>
 
                 <div v-show="$store.state.ui.view === 'gallery'" id="view-gallery">
+                    <p align="right">
+                        <a href="#" @click="sortAllImages"><i class="fas fa-sort-amount-down"/> EXIF sort all</a>
+                    </p>
                     <div id="slides">
                         <Draggable
                             id="slideholder"
@@ -161,6 +164,9 @@ export default {
         openProjectData() {
             Controller.openProjectData();
         },
+        sortAllImages() {
+            Controller.orderExif();
+        },
     },
 };
 </script>
@@ -255,6 +261,7 @@ export default {
 
     #view-gallery {
         margin-top: 100px;
+        margin-right: 40px;
     }
 
     .bigbutton-content {

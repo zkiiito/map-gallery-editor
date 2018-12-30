@@ -1,7 +1,7 @@
 <template>
     <div class="slide" :class="classObject" @click="setCurrent">
         <div class="menu menu-top">
-            <a href="#">:</a>
+            <a href="#" class="fas fa-ellipsis-v"/>
         </div>
         <template v-if="Object.prototype.hasOwnProperty.call(slide, 'from')">
             <dl>
@@ -16,7 +16,7 @@
                 <img :src="thumbnailUrl" :title="slide.filename">
             </div>
             <div class="menu menu-bottom">
-                <a href="#">0</a>
+                <a href="#" class="fas fa-undo"/>
             </div>
         </template>
     </div>
@@ -106,12 +106,23 @@ export default {
 
     .menu {
         position: absolute;
-        right: 5px;
+        right: 8px;
+        top: 8px;
         display: none;
     }
 
+    .menu a {
+        color: #333333;
+        font-size: 14px;
+    }
+
+    .slide.current .menu a {
+        color: #f5c500;
+    }
+
     .menu.menu-bottom {
-        bottom: 5px;
+        bottom: 8px;
+        top: unset;
     }
 
     .slide:hover .menu {
