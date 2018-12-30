@@ -24,6 +24,7 @@ Object.defineProperties(Vue.prototype, {
 
 const progressBarOptions = {
     thickness: '5px',
+    position: 'relative',
 };
 
 Vue.use(VueProgressBar, progressBarOptions);

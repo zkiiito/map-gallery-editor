@@ -5,7 +5,6 @@
         <ProjectDataPopup v-if="$store.getters.isPopupOpen('projectData')"/>
         <SplashPopup v-if="$store.getters.isPopupOpen('splash')"/>
         <SplashBackground v-if="$store.state.ui.splashMode"/>
-        <vue-progress-bar/>
         <ErrorBar/>
         <!--FileMenu/-->
 
@@ -13,7 +12,9 @@
             <div id="main-left">
                 <div id="main-logo">
                     <img src="static/ui/logo.png" alt="logo">
+                    <vue-progress-bar/>
                 </div>
+
                 <div id="main-title" @click="openProjectData">
                     <h1>{{ $store.state.gallery.title.length ? $store.state.gallery.title : 'Unnamed trip' }}</h1>
                     <h2>{{ $store.state.gallery.description }}</h2>
@@ -194,9 +195,12 @@ export default {
     }
 
     #main-logo {
-        padding: 20px 40px;
         border-bottom: 1px solid #f6f6f6;
         margin-bottom: 30px;
+    }
+
+    #main-logo img {
+        padding: 20px 40px;
     }
 
     #main-title {
