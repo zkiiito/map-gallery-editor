@@ -33,7 +33,6 @@
             <div class="overlay overlay-bottom">
                 <a href="#" class="fas fa-undo"/>
             </div>
-
         </template>
     </div>
 </template>

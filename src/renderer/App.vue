@@ -4,7 +4,6 @@
         <FlickrPopup v-if="$store.getters.isPopupOpen('flickr')"/>
         <ProjectDataPopup v-if="$store.getters.isPopupOpen('projectData')"/>
         <SplashPopup v-if="$store.getters.isPopupOpen('splash')"/>
-        <SplashBackground v-if="$store.state.ui.splashMode"/>
         <ErrorBar/>
         <!--FileMenu/-->
 
@@ -68,12 +67,10 @@ import ProjectNavigator from './components/ProjectNavigator';
 import Controller from './services/Controller';
 import AddButtons from './components/AddButtons';
 import PersistMenu from './components/PersistMenu';
-import SplashBackground from './components/SplashBackground';
 
 export default {
     name: 'App',
     components: {
-        SplashBackground,
         PersistMenu,
         AddButtons,
         ProjectNavigator,
@@ -185,6 +182,7 @@ export default {
         height: 100%;
         display: flex;
         flex-direction: row;
+        background-color: #ffffff;
     }
 
     #main-left {
