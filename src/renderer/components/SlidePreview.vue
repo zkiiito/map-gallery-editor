@@ -1,9 +1,14 @@
 <template>
     <div class="slide" :class="classObject" @click="setCurrent">
-        <div class="menu menu-top">
-            <a href="#" class="fas fa-ellipsis-v"/>
-        </div>
         <template v-if="Object.prototype.hasOwnProperty.call(slide, 'from')">
+            <div class="overlay overlay-top">
+                <a href="#" class="fas fa-ellipsis-v"/>
+                <ul class="menu">
+                    <li>EXIF sort</li>
+                    <li @click.stop="deleteSlide">Delete section</li>
+                </ul>
+            </div>
+
             <dl>
                 <dt>From:</dt>
                 <dd>{{ slide.from }}</dd>
@@ -12,12 +17,23 @@
             </dl>
         </template>
         <template v-else>
+            <div class="overlay overlay-top">
+                <a href="#" class="fas fa-ellipsis-v"/>
+                <ul class="menu">
+                    <li>Add pictures after</li>
+                    <li>Add map section after</li>
+                    <li>Set as cover picture</li>
+                    <li @click.stop="deleteSlide">Delete picture</li>
+                </ul>
+            </div>
+
             <div class="imgholder">
                 <img :src="thumbnailUrl" :title="slide.filename">
             </div>
-            <div class="menu menu-bottom">
+            <div class="overlay overlay-bottom">
                 <a href="#" class="fas fa-undo"/>
             </div>
+
         </template>
     </div>
 </template>
@@ -67,6 +83,9 @@ export default {
         setCurrent() {
             this.$store.commit('setCurrentSlide', this.slide);
         },
+        deleteSlide() {
+            this.$store.commit('deleteSlide', this.slide);
+        },
     },
 };
 </script>
@@ -104,30 +123,59 @@ export default {
         box-shadow: 0 2px 9px 0 rgba(0, 0, 0, 0.3);
     }
 
-    .menu {
+    .overlay {
         position: absolute;
         right: 8px;
         top: 8px;
         display: none;
     }
 
-    .menu a {
+    .overlay a {
         color: #333333;
         font-size: 14px;
     }
 
-    .slide.current .menu a {
+    .slide.current .overlay a {
         color: #f5c500;
     }
 
-    .menu.menu-bottom {
+    .overlay.overlay-bottom {
         bottom: 8px;
         top: unset;
     }
 
-    .slide:hover .menu {
+    .slide:hover .overlay {
         display: block;
     }
+
+    .overlay-top ul.menu {
+        display: none;
+        position: absolute;
+        width: 130px;
+        top: 0;
+        right: 0;
+        list-style-type: none;
+        background-color: #ffffff;
+        border-radius: 4px;
+        padding: 0;
+        margin: 0;
+    }
+
+    .overlay-top .menu li {
+        cursor: pointer;
+        line-height: 20px;
+        padding-left: 5px;
+        font-size: 12px;
+    }
+
+    .overlay-top .menu li:hover {
+        background-color: #dddddd;
+    }
+
+    .overlay-top:hover .menu {
+        display: block;
+    }
+
 
     dl {
         overflow: auto;

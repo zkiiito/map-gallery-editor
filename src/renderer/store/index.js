@@ -77,18 +77,20 @@ export default new Vuex.Store({
                         state.currentSlide[key] = newValues[key];
                     });
                 },
-                deleteCurrentSlide(state) {
-                    if (state.currentSlide === null) {
+                deleteSlide(state, slide) {
+                    if (!slide) {
                         return;
                     }
 
-                    const idx = state.slides.indexOf(state.currentSlide);
+                    const idx = state.slides.indexOf(slide);
                     state.slides.splice(idx, 1);
 
-                    if (state.slides.length > 0) {
-                        state.currentSlide = state.slides[idx > 0 ? (idx - 1) : 0];
-                    } else {
-                        state.currentSlide = null;
+                    if (slide === state.currentSlide) {
+                        if (state.slides.length > 0) {
+                            state.currentSlide = state.slides[idx > 0 ? (idx - 1) : 0];
+                        } else {
+                            state.currentSlide = null;
+                        }
                     }
                 },
                 orderByExif(state) {
