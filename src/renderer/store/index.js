@@ -215,24 +215,41 @@ export default new Vuex.Store({
         },
         app: {
             state: {
-                galleryHistory: [],
+                projectHistory: [],
+                currentProject: {},
             },
             mutations: {
                 setFilename(state, filename) {
                     if (filename) {
-                        const idx = state.galleryHistory.indexOf(filename);
+                        const idx = state.projectHistory.findIndex(project => project.filename === filename);
                         if (idx > -1) {
-                            state.galleryHistory.splice(idx, 1);
+                            state.projectHistory.splice(idx, 1);
                         }
 
-                        state.galleryHistory.push(filename);
+                        if (state.currentProject.filename) {
+                            state.currentProject = {
+                                filename: filename,
+                            };
+                        } else {
+                            state.currentProject.filename = filename;
+                        }
+
+                        state.projectHistory.push(state.currentProject);
+                    } else {
+                        state.currentProject = {};
                     }
+                },
+                setTitle(state, title) {
+                    state.currentProject.title = title;
+                },
+                setDescription(state, description) {
+                    state.currentProject.description = description;
                 },
             },
         },
     },
     plugins: [createPersistedState({
         key: 'MapGalleryEditor',
-        paths: ['app'],
+        paths: ['app.projectHistory'],
     })],
 });

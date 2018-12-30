@@ -9,25 +9,32 @@ const uuidv4 = require('uuid/v4');
 
 const Controller = {
     newProject() {
-        store.dispatch('resetProject', []);
         store.commit('setFilename', null);
+        store.dispatch('resetProject', []);
         EventBus.$emit('clearErrors');
         Controller.openProjectData();
     },
     openProject() {
-        dialog.showOpenDialog({
-            properties: ['openFile'],
-            filters: [{ name: 'MapGallery Editor files', extensions: ['mapgallery'] }],
-        }, (filename) => {
-            if (filename) {
-                store.commit('setFilename', filename.toString());
-                ProjectHandler.openProject(store.state.ui.filename)
-                    .catch((err) => {
-                        store.commit('setFilename', null);
-                        EventBus.$emit('error', err);
-                    });
-            }
+        return new Promise((resolve, reject) => {
+            dialog.showOpenDialog({
+                properties: ['openFile'],
+                filters: [{ name: 'MapGallery Editor files', extensions: ['mapgallery'] }],
+            }, (filename) => {
+                if (filename) {
+                    this.openProjectFile(filename.toString());
+                    return resolve();
+                }
+                return reject();
+            });
         });
+    },
+    openProjectFile(filename) {
+        store.commit('setFilename', filename);
+        ProjectHandler.openProject(store.state.ui.filename)
+            .catch((err) => {
+                store.commit('setFilename', null);
+                EventBus.$emit('error', err);
+            });
     },
     saveProject() {
         if (!store.state.ui.filename) {
@@ -57,7 +64,7 @@ const Controller = {
         return new Promise((resolve, reject) => {
             dialog.showOpenDialog({
                 properties: ['openFile', 'multiSelections'],
-                filters: [{ name: 'MapGallery Editor files', extensions: ['jpg', 'JPG', 'jpeg', 'JPEG'] }],
+                filters: [{ name: 'Images', extensions: ['jpg', 'JPG', 'jpeg', 'JPEG'] }],
             }, (files) => {
                 if (files) {
                     ImageProcessor.processNewImages(files).then((slides) => {

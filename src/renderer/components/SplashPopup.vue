@@ -16,21 +16,11 @@
             <div id="splash-history">
                 <h2>Recent trips</h2>
 
-                <div class="trip-history">
-                    <h5>Trip title</h5>
-                    <p>Lorem ipsum dolor sit amet</p>
-                </div>
-                <div class="trip-history">
-                    <h5>Trip title</h5>
-                    <p>Lorem ipsum dolor sit amet</p>
-                </div>
-                <div class="trip-history">
-                    <h5>Trip title</h5>
-                    <p>Lorem ipsum dolor sit amet</p>
-                </div>
-                <div class="trip-history">
-                    <h5>Trip title</h5>
-                    <p>Lorem ipsum dolor sit amet</p>
+                <div v-for="(project, idx) in $store.state.app.projectHistory.slice(-6).reverse()"
+                     :key="idx" class="trip-history" @click="openRecentProject(project)"
+                >
+                    <h5>{{ project.title }}</h5>
+                    <p>{{ project.description || project.filename }}</p>
                 </div>
 
                 <div class="button-holder">
@@ -53,14 +43,21 @@ export default {
     },
     methods: {
         openProject() {
-            Controller.openProject();
+            Controller.openProject().then(() => {
+                this.close();
+            });
         },
         newProject() {
-            this.close();
+            this.$store.commit('closePopup', 'splash');
             Controller.openProjectData();
         },
         close() {
             this.$store.commit('closePopup', 'splash');
+            this.$store.commit('setSplashMode', false);
+        },
+        openRecentProject(projectHistory) {
+            Controller.openProjectFile(projectHistory.filename);
+            this.close();
         },
     },
 };
@@ -126,6 +123,7 @@ div.trip-history {
     cursor: pointer;
     padding: 15px 20px;
     margin-left: -20px;
+    overflow: hidden;
 }
 div.trip-history:hover {
     background-color: #eeeeee;

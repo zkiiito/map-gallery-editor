@@ -5,13 +5,13 @@
                 <p>
                     <label>
                         Title<br>
-                        <input ref="inputTitle" v-model="title" type="text">
+                        <input ref="inputTitle" v-model.lazy="title" type="text">
                     </label>
                 </p>
                 <p>
                     <label>
                         Description<br>
-                        <textarea v-model="description"/>
+                        <textarea v-model.lazy="description"/>
                     </label>
                 </p>
                 <p align="right">
