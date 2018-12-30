@@ -15,7 +15,7 @@
                     </label>
                 </p>
                 <p align="right">
-                    <BigButton v-if="$store.state.ui.returnToSplash" type="empty" @click="returnToSplash">
+                    <BigButton v-if="$store.state.ui.splashMode" type="empty" @click="returnToSplash">
                         Back
                     </BigButton>
                     <BigButton @click="close">{{ closeLabel }}</BigButton>
@@ -53,7 +53,7 @@ export default {
             },
         },
         closeLabel() {
-            return this.$store.state.ui.returnToSplash ? 'Create' : 'Save';
+            return this.$store.state.ui.splashMode ? 'Create' : 'Save';
         },
     },
     mounted() {
@@ -61,11 +61,11 @@ export default {
     },
     methods: {
         close() {
-            this.$store.commit('setReturnToSplash', false);
+            this.$store.commit('setSplashMode', false);
             this.$store.commit('closePopup', 'projectData');
         },
         returnToSplash() {
-            this.close();
+            this.$store.commit('closePopup', 'projectData');
             this.$store.commit('openPopup', 'splash');
         },
     },

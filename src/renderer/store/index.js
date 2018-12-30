@@ -151,6 +151,7 @@ export default new Vuex.Store({
         ui: {
             state: {
                 popups: [],
+                splashMode: true,
                 returnToSplash: false,
                 view: 'gallery', // map, gallery
                 filename: null,
@@ -167,6 +168,9 @@ export default new Vuex.Store({
                 setFilename(state, filename) {
                     state.filename = filename;
                     EventBus.$emit('filename', filename);
+                },
+                setSplashMode(state, splashMode) {
+                    state.splashMode = splashMode;
                 },
                 setReturnToSplash(state, returnToSplash) {
                     state.returnToSplash = returnToSplash;

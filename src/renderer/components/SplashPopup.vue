@@ -1,5 +1,5 @@
 <template>
-    <Modal width="650" padding="0">
+    <Modal :width="650" :padding="0">
         <template slot="body">
             <div id="splash-welcome">
                 <h1>MapGallery</h1>
@@ -57,7 +57,7 @@ export default {
         },
         newProject() {
             this.close();
-            Controller.openProjectData(true);
+            Controller.openProjectData();
         },
         close() {
             this.$store.commit('closePopup', 'splash');

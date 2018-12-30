@@ -4,11 +4,12 @@
         <FlickrPopup v-if="$store.getters.isPopupOpen('flickr')"/>
         <ProjectDataPopup v-if="$store.getters.isPopupOpen('projectData')"/>
         <SplashPopup v-if="$store.getters.isPopupOpen('splash')"/>
+        <SplashBackground v-if="$store.state.ui.splashMode"/>
         <vue-progress-bar/>
         <ErrorBar/>
         <!--FileMenu/-->
 
-        <div id="main">
+        <div v-if="!$store.state.ui.splashMode" id="main">
             <div id="main-left">
                 <div id="main-logo">
                     <img src="static/ui/logo.png" alt="logo">
@@ -66,10 +67,12 @@ import ProjectNavigator from './components/ProjectNavigator';
 import Controller from './services/Controller';
 import AddButtons from './components/AddButtons';
 import PersistMenu from './components/PersistMenu';
+import SplashBackground from './components/SplashBackground';
 
 export default {
     name: 'App',
     components: {
+        SplashBackground,
         PersistMenu,
         AddButtons,
         ProjectNavigator,
@@ -123,7 +126,7 @@ export default {
             this.$store.commit('setGoogleUser', user);
         });
 
-        // Controller.openSplash();
+        Controller.openSplash();
     },
     methods: {
         openProjectData() {

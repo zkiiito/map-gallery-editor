@@ -44,6 +44,7 @@ export default {
     left: 50%;
     top: 24px;
     box-shadow: 0 2px 11px 0 rgba(0, 0, 0, 0.25);
+    z-index: 10;
 }
 
 .view-switch {

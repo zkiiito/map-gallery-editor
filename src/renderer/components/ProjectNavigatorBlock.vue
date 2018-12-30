@@ -11,6 +11,7 @@
         />
 
         <div v-if="!isMapBlock" class="block block-gallery">
+            <div class="dot"/>
             <div v-for="(slide, idx) in block.slides.slice(0, 6)" :key="idx" class="img"
                  :style="`background-image: url('${thumbnailUrl(slide)}')`"
             >
@@ -67,6 +68,7 @@ export default {
         padding: 16px;
         margin: 8px 0 8px 40px;
         position: relative;
+        text-align: center;
     }
 
     div.block p.header {
@@ -98,7 +100,6 @@ export default {
     }
 
     div.img span.count {
-        text-align: center;
         line-height: 40px;
         font-size: 16px;
         color: #ffffff;
