@@ -4,7 +4,7 @@
             <div class="overlay overlay-top">
                 <a href="#" class="fas fa-ellipsis-v"/>
                 <ul class="menu">
-                    <li>EXIF sort</li>
+                    <li @click.stop="exifSort">EXIF sort</li>
                     <li @click.stop="deleteSlide">Delete section</li>
                 </ul>
             </div>
@@ -20,9 +20,9 @@
             <div class="overlay overlay-top">
                 <a href="#" class="fas fa-ellipsis-v"/>
                 <ul class="menu">
-                    <li>Add pictures after</li>
-                    <li>Add map section after</li>
-                    <li>Set as cover picture</li>
+                    <li @click.stop="addImages">Add pictures after</li>
+                    <li @click.stop="addMap">Add map section after</li>
+                    <li @click.stop="setAsCover">Set as cover picture</li>
                     <li @click.stop="deleteSlide">Delete picture</li>
                 </ul>
             </div>
@@ -39,6 +39,7 @@
 </template>
 
 <script>
+import Controller from '../services/Controller';
 const fileUrl = require('file-url');
 
 export default {
@@ -85,6 +86,18 @@ export default {
         },
         deleteSlide() {
             this.$store.commit('deleteSlide', this.slide);
+        },
+        exifSort() {
+            this.$store.commit('orderByExifAfter', this.slide);
+        },
+        addImages() {
+            Controller.addImages(this.slide);
+        },
+        addMap() {
+            Controller.addMapSlideAfter(this.slide);
+        },
+        setAsCover() {
+            // TODO
         },
     },
 };

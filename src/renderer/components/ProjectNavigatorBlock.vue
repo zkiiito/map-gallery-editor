@@ -68,7 +68,6 @@ export default {
         padding: 16px;
         margin: 8px 0 8px 40px;
         position: relative;
-        text-align: center;
     }
 
     div.block p.header {
@@ -97,6 +96,7 @@ export default {
         background-position: center;
         float: left;
         border-radius: 4px;
+        text-align: center;
     }
 
     div.img span.count {

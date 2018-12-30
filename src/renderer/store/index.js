@@ -6,6 +6,14 @@ const uuidv4 = require('uuid/v4');
 
 Vue.use(Vuex);
 
+function exifCompare(a, b) {
+    if (a.exif_date && b.exif_date) {
+        return a.exif_date.getTime() - b.exif_date.getTime();
+    }
+
+    return a.exif_date ? 1 : -1;
+}
+
 export default new Vuex.Store({
     modules: {
         gallery: {
@@ -45,6 +53,10 @@ export default new Vuex.Store({
                 },
                 addSlides(state, slides) {
                     state.slides = state.slides.concat(slides);
+                },
+                addSlidesAfter(state, obj) {
+                    const idx = state.slides.indexOf(obj.slide);
+                    state.slides.splice(idx + 1, 0, ...obj.slides);
                 },
                 moveSlide(state, diff) {
                     const slideCount = state.slides.length;
@@ -94,17 +106,21 @@ export default new Vuex.Store({
                     }
                 },
                 orderByExif(state) {
-                    state.slides.sort((a, b) => {
-                        if (a.exif_date && b.exif_date) {
-                            return a.exif_date.getTime() - b.exif_date.getTime();
-                        }
+                    state.slides.sort(exifCompare);
+                },
+                orderByExifAfter(state, prevSlide) {
+                    const startIdx = state.slides.indexOf(prevSlide) + 1;
+                    let endIdx = state.slides.findIndex((slide, idx) => slide.from && idx > startIdx);
 
-                        if (a.exif_date) {
-                            return 1;
-                        }
+                    if (endIdx === -1) {
+                        endIdx = state.slides.length;
+                    }
 
-                        return -1;
-                    });
+                    const slidesToSort = state.slides.slice(startIdx, endIdx);
+
+                    slidesToSort.sort(exifCompare);
+
+                    state.slides.splice(startIdx, endIdx - startIdx, ...slidesToSort);
                 },
                 setTitle(state, title) {
                     state.title = title;

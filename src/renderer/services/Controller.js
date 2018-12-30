@@ -53,7 +53,7 @@ const Controller = {
             }
         });
     },
-    addImages() {
+    addImages(prevSlide) {
         return new Promise((resolve, reject) => {
             dialog.showOpenDialog({
                 properties: ['openFile', 'multiSelections'],
@@ -61,7 +61,14 @@ const Controller = {
             }, (files) => {
                 if (files) {
                     ImageProcessor.processNewImages(files).then((slides) => {
-                        store.commit('addSlides', slides);
+                        if (prevSlide) {
+                            store.commit('addSlidesAfter', {
+                                slide: prevSlide,
+                                slides,
+                            });
+                        } else {
+                            store.commit('addSlides', slides);
+                        }
                         return resolve();
                     }).catch((err) => {
                         EventBus.$emit('error', err);
@@ -72,6 +79,9 @@ const Controller = {
         });
     },
     addMapSlide() {
+        return this.addMapSlideAfter(store.state.gallery.currentSlide);
+    },
+    addMapSlideAfter(prevSlide) {
         const slide = {
             id: uuidv4(),
             from: 'Budapest',
@@ -80,7 +90,10 @@ const Controller = {
             mode: 'DRIVING',
         };
 
-        store.commit('addSlideAfterCurrent', slide);
+        store.commit('addSlidesAfter', {
+            slide: prevSlide,
+            slides: [slide],
+        });
         return slide;
     },
     prevSlide() {
