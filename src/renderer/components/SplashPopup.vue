@@ -45,7 +45,7 @@ export default {
         openProject() {
             Controller.openProject().then(() => {
                 this.close();
-            });
+            }).catch(() => {});
         },
         newProject() {
             this.$store.commit('closePopup', 'splash');

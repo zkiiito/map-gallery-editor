@@ -1,6 +1,6 @@
 <template>
     <div v-if="this.$store.getters.currentSlideType === 'map'" id="map-form">
-        <form>
+        <form ref="google-map-form">
             <dl>
                 <dt><label class="label">From:</label></dt>
                 <dd>
@@ -100,7 +100,9 @@ export default {
     },
     methods: {
         showRoute() {
-            this.$bus.$emit('map-showroute');
+            if (this.$refs['google-map-form'].reportValidity()) {
+                this.$bus.$emit('map-showroute');
+            }
         },
     },
 };

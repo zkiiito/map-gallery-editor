@@ -1,11 +1,11 @@
 <template>
     <Modal>
         <template slot="body">
-            <form>
+            <form ref="project-data-form">
                 <p>
                     <label>
                         Title<br>
-                        <input ref="inputTitle" v-model.lazy="title" type="text">
+                        <input ref="inputTitle" v-model.lazy="title" type="text" required>
                     </label>
                 </p>
                 <p>
@@ -61,8 +61,10 @@ export default {
     },
     methods: {
         close() {
-            this.$store.commit('setSplashMode', false);
-            this.$store.commit('closePopup', 'projectData');
+            if (this.$refs['project-data-form'].reportValidity()) {
+                this.$store.commit('setSplashMode', false);
+                this.$store.commit('closePopup', 'projectData');
+            }
         },
         returnToSplash() {
             this.$store.commit('closePopup', 'projectData');
