@@ -1,22 +1,25 @@
 <template>
     <Modal>
-        <template slot="header">
-            <b>Project Properties</b>
-        </template>
-
         <template slot="body">
-            <form>
-                <label>
-                    Title<br>
-                    <input ref="inputTitle" v-model="title" type="text">
-                </label>
-                <br>
-                <label>
-                    Description<br>
-                    <textarea v-model="description"/>
-                </label>
-                <br>
-                <button type="button" @click="close">Done</button>
+            <form ref="project-data-form">
+                <p>
+                    <label>
+                        Title<br>
+                        <input ref="inputTitle" v-model.lazy="title" type="text" required>
+                    </label>
+                </p>
+                <p>
+                    <label>
+                        Description<br>
+                        <textarea v-model.lazy="description"/>
+                    </label>
+                </p>
+                <p align="right">
+                    <BigButton v-if="$store.state.ui.splashMode" type="empty" @click="returnToSplash">
+                        Back
+                    </BigButton>
+                    <BigButton @click="close">{{ closeLabel }}</BigButton>
+                </p>
             </form>
         </template>
     </Modal>
@@ -24,10 +27,12 @@
 
 <script>
 import Modal from './Modal';
+import BigButton from './BigButton';
 
 export default {
     name: 'ProjectDataPopup',
     components: {
+        BigButton,
         Modal,
     },
     computed: {
@@ -47,20 +52,47 @@ export default {
                 this.$store.commit('setDescription', value);
             },
         },
+        closeLabel() {
+            return this.$store.state.ui.splashMode ? 'Create' : 'Save';
+        },
     },
     mounted() {
         this.$refs.inputTitle.focus();
     },
     methods: {
         close() {
+            if (this.$refs['project-data-form'].reportValidity()) {
+                this.$store.commit('setSplashMode', false);
+                this.$store.commit('closePopup', 'projectData');
+            }
+        },
+        returnToSplash() {
             this.$store.commit('closePopup', 'projectData');
+            this.$store.commit('openPopup', 'splash');
         },
     },
 };
 </script>
 
 <style scoped>
-    form {
-        height: 280px;
+    label {
+        font-size: 18px;
+        color: #9c9c9c;
+    }
+
+    input, textarea {
+        width: 388px;
+        height: 40px;
+        border-radius: 5px;
+        background-color: #f6f6f6;
+        color: #404041;
+        line-height: 1.2;
+        font-size: 20px;
+        border: 0 none;
+        padding: 8px 16px;
+    }
+
+    textarea {
+        height: 190px;
     }
 </style>

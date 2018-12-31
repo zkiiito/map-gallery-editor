@@ -19,7 +19,7 @@ const menu = Menu.buildFromTemplate([
     {
         label: 'Project',
         submenu: [
-            { label: 'Properties', click: Controller.openProjectData },
+            { label: 'Properties', click: () => Controller.openProjectData() },
             { type: 'separator' },
             { label: 'Add Images', click: Controller.addImages },
             { label: 'Add Map Slide', click: Controller.addMapSlide },
@@ -119,7 +119,8 @@ let filename = '';
 let projectTitle = '';
 
 function setWindowTitle() {
-    const title = `${projectTitle || ''}${filename ? ' [' + filename + ']' : ''} - MapGallery Editor`;
+    const titleFilename = filename ? ` [${filename}]` : '';
+    const title = `${projectTitle || ''}${titleFilename} - MapGallery Editor`;
 
     remote.getCurrentWindow().setTitle(title);
 }

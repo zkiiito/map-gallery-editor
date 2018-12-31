@@ -40,5 +40,8 @@ module.exports = {
             'endTag': 'never',
             'selfClosingTag': 'never'
         }],
+        'vue/component-name-in-template-casing': ["warn", "PascalCase", {
+            'ignores': ['webview', 'vue-progress-bar']
+        }],
     }
 };

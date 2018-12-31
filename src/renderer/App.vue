@@ -3,31 +3,51 @@
         <AuthPopup v-if="$store.getters.isPopupOpen('auth')"/>
         <FlickrPopup v-if="$store.getters.isPopupOpen('flickr')"/>
         <ProjectDataPopup v-if="$store.getters.isPopupOpen('projectData')"/>
-        <vue-progress-bar/>
+        <SplashPopup v-if="$store.getters.isPopupOpen('splash')"/>
         <ErrorBar/>
-        <FileMenu/>
-        <div v-show="$store.getters.currentSlideType === 'map'" id="editor">
-            <GoogleMap class="flexgrow"/>
-            <GoogleMapForm/>
-        </div>
-        <div v-show="$store.getters.currentSlideType === 'image'" id="imageviewer">
-            <ImageView class="flexgrow"/>
-        </div>
-        <div id="slides">
-            <Draggable
-                id="slideholder"
-                v-model="slides"
-                :options="{group: 'slides', draggable: '.draggable'}"
-                :class="$store.getters.currentSlideType !== null ? 'small' : 'big'"
-            >
-                <SlidePreview v-for="slide in slides" :key="slide.id" :slide="slide" class="draggable"/>
-                <div class="addSlide">
-                    <label @click="addMapSlide">+ add map slide</label>
+        <!--FileMenu/-->
+
+        <div v-if="!$store.state.ui.splashMode" id="main">
+            <div id="main-left">
+                <div id="main-logo">
+                    <img src="static/ui/logo.png" alt="logo">
+                    <vue-progress-bar/>
                 </div>
-                <div class="addSlide">
-                    <label id="addImages" @click="addImages">+ add images</label>
+
+                <div id="main-title" @click="openProjectData">
+                    <h1>{{ $store.state.gallery.title.length ? $store.state.gallery.title : 'Unnamed trip' }}</h1>
+                    <h2>{{ $store.state.gallery.description }}</h2>
                 </div>
-            </Draggable>
+
+                <ProjectNavigator v-if="$store.state.gallery.slides.length > 0"/>
+
+                <AddButtons/>
+                <PersistMenu/>
+            </div>
+
+            <div id="main-right">
+                <ViewSwitch/>
+
+                <div v-show="$store.state.ui.view === 'map'" id="view-map">
+                    <GoogleMap style="height: 100%"/>
+                </div>
+
+                <div v-show="$store.state.ui.view === 'gallery'" id="view-gallery">
+                    <p align="right">
+                        <a href="#" @click="sortAllImages"><i class="fas fa-sort-amount-down"/> EXIF sort all</a>
+                    </p>
+                    <div id="slides">
+                        <Draggable
+                            id="slideholder"
+                            v-model="slides"
+                            :options="{group: 'slides', draggable: '.draggable'}"
+                            :class="$store.getters.currentSlideType !== null ? 'small' : 'big'"
+                        >
+                            <SlidePreview v-for="slide in slides" :key="slide.id" :slide="slide" class="draggable"/>
+                        </Draggable>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -35,29 +55,35 @@
 <script>
 import Draggable from 'vuedraggable';
 import GoogleMap from './components/GoogleMapWebview.vue';
-import GoogleMapForm from './components/GoogleMapForm.vue';
-import ImageView from './components/ImageView.vue';
 import SlidePreview from './components/SlidePreview.vue';
-import FileMenu from './components/FileMenu.vue';
+// import FileMenu from './components/FileMenu.vue';
 import ErrorBar from './components/ErrorBar';
 import AuthPopup from './components/AuthPopup';
 import FlickrPopup from './components/FlickrPopup';
 import ProjectDataPopup from './components/ProjectDataPopup';
+import SplashPopup from './components/SplashPopup';
+import ViewSwitch from './components/ViewSwitch';
+import ProjectNavigator from './components/ProjectNavigator';
 import Controller from './services/Controller';
+import AddButtons from './components/AddButtons';
+import PersistMenu from './components/PersistMenu';
 
 export default {
     name: 'App',
     components: {
+        PersistMenu,
+        AddButtons,
+        ProjectNavigator,
         GoogleMap,
-        GoogleMapForm,
-        ImageView,
         SlidePreview,
         Draggable,
-        FileMenu,
+        // FileMenu,
         ErrorBar,
         AuthPopup,
         FlickrPopup,
         ProjectDataPopup,
+        SplashPopup,
+        ViewSwitch,
     },
     computed: {
         slides: {
@@ -70,12 +96,6 @@ export default {
         },
     },
     mounted() {
-        document.getElementById('slides').addEventListener('wheel', (evt) => {
-            if (evt.currentTarget.className.indexOf('small')) {
-                evt.currentTarget.scrollLeft += evt.deltaY;
-            }
-        });
-
         this.$bus.$on('progress', (percent) => {
             if (percent === 0) {
                 this.$Progress.start();
@@ -104,14 +124,14 @@ export default {
             this.$store.commit('setGoogleUser', user);
         });
 
-        // Controller.openProjectData();
+        Controller.openSplash();
     },
     methods: {
-        addMapSlide() {
-            Controller.addMapSlide();
+        openProjectData() {
+            Controller.openProjectData();
         },
-        addImages() {
-            Controller.addImages();
+        sortAllImages() {
+            Controller.orderExif();
         },
     },
 };
@@ -124,60 +144,94 @@ export default {
     padding: 0;
   }
 
+  p {
+      margin: 0;
+  }
+
+  a {
+      text-decoration: none;
+      color: #23abad;
+  }
+
+  input, textarea {
+      border-radius: 5px;
+      background-color: #f6f6f6;
+      color: #404041;
+      line-height: 1.2;
+      border: 0 none;
+      padding: 8px;
+  }
+
   body,
   button,
   input,
   select,
   textarea {
-    font-family: BlinkMacSystemFont, -apple-system, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+    font-family: 'Roboto', sans-serif;
+    color: #404041;
   }
+</style>
 
-  #app {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-  }
+<style scoped>
+    #app {
+        width: 100%;
+        height: 100%;
+    }
 
-  #editor, #imageviewer {
-    display: flex;
-    flex-grow: 1;
-  }
+    #main {
+        height: 100%;
+        display: flex;
+        flex-direction: row;
+        background-color: #ffffff;
+    }
 
-  #slides {
-    overflow-x: auto;
-  }
+    #main-left {
+        height: 100%;
+        width: 380px;
+        flex-shrink: 0;
+        overflow-y: auto;
+    }
 
-  #slideholder.big {
-    width: 100%;
-  }
+    #main-logo {
+        border-bottom: 1px solid #f6f6f6;
+        margin-bottom: 30px;
+    }
 
-  #slideholder.small {
-    width: 900000px;
-  }
+    #main-logo img {
+        padding: 20px 40px;
+    }
 
-  .flexgrow {
-    flex-grow: 1;
-  }
+    #main-title {
+        border-left: 8px solid #f5c500;
+        padding: 10px 32px;
+    }
 
-  .addSlide {
-    width: 150px;
-    height: 120px;
-    margin: 10px;
-    float: left;
+    #main-title h1 {
+        font-size: 24px;
+        font-weight: 400;
+        margin: 0 0 5px;
+    }
 
-    display: flex;
-    align-items: center;
-    text-align: center;
-    justify-content: center;
-    background-color: aliceblue;
-  }
+    #main-title h2 {
+        margin: 0;
+        font-size: 16px;
+        font-weight: 300;
+    }
 
-  .addSlide label {
-    padding: 4px;
-    font-size: 0.8em;
-    font-weight: bold;
-    background-color: #ffffff;
-    box-shadow: 0 2px 5px 0 rgba(0,0,0,0.75);
-    cursor: pointer;
-  }
+    #main-right {
+        height: 100%;
+        background-color: #f6f6f6;
+        overflow-y: scroll;
+        flex-grow: 1;
+        border-left: 1px solid #dddddd;
+    }
+
+    #view-map {
+        height: 100%;
+    }
+
+    #view-gallery {
+        margin-top: 100px;
+        margin-right: 40px;
+    }
 </style>

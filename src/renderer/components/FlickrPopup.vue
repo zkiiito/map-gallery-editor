@@ -7,8 +7,10 @@
         </template>
 
         <template slot="body">
-            <!--webview ref="webview" src="https://mapgallery.online/flickr/" httpreferrer="https://editor.mapgallery.online"/-->
-            <webview v-if="this.$store.state.user.flickrUser === null" ref="webview" src="https://mapgallery-216911.firebaseapp.com/flickr/auth" httpreferrer="https://editor.mapgallery.online"/>
+            <webview v-if="this.$store.state.user.flickrUser === null" ref="webview"
+                     src="https://mapgallery-216911.firebaseapp.com/flickr/auth"
+                     httpreferrer="https://editor.mapgallery.online"
+            />
             <div v-if="this.$store.state.user.flickrUser !== null" id="flickr-photosets">
                 <ul id="flickr-photoset-list">
                     <li v-for="photoset in photosets" :key="photoset.id">

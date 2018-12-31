@@ -6,6 +6,14 @@ const uuidv4 = require('uuid/v4');
 
 Vue.use(Vuex);
 
+function exifCompare(a, b) {
+    if (a.exif_date && b.exif_date) {
+        return a.exif_date.getTime() - b.exif_date.getTime();
+    }
+
+    return a.exif_date ? 1 : -1;
+}
+
 export default new Vuex.Store({
     modules: {
         gallery: {
@@ -46,6 +54,10 @@ export default new Vuex.Store({
                 addSlides(state, slides) {
                     state.slides = state.slides.concat(slides);
                 },
+                addSlidesAfter(state, obj) {
+                    const idx = state.slides.indexOf(obj.slide);
+                    state.slides.splice(idx + 1, 0, ...obj.slides);
+                },
                 moveSlide(state, diff) {
                     const slideCount = state.slides.length;
 
@@ -77,32 +89,38 @@ export default new Vuex.Store({
                         state.currentSlide[key] = newValues[key];
                     });
                 },
-                deleteCurrentSlide(state) {
-                    if (state.currentSlide === null) {
+                deleteSlide(state, slide) {
+                    if (!slide) {
                         return;
                     }
 
-                    const idx = state.slides.indexOf(state.currentSlide);
+                    const idx = state.slides.indexOf(slide);
                     state.slides.splice(idx, 1);
 
-                    if (state.slides.length > 0) {
-                        state.currentSlide = state.slides[idx > 0 ? (idx - 1) : 0];
-                    } else {
-                        state.currentSlide = null;
+                    if (slide === state.currentSlide) {
+                        if (state.slides.length > 0) {
+                            state.currentSlide = state.slides[idx > 0 ? (idx - 1) : 0];
+                        } else {
+                            state.currentSlide = null;
+                        }
                     }
                 },
                 orderByExif(state) {
-                    state.slides.sort((a, b) => {
-                        if (a.exif_date && b.exif_date) {
-                            return a.exif_date.getTime() - b.exif_date.getTime();
-                        }
+                    state.slides.sort(exifCompare);
+                },
+                orderByExifAfter(state, prevSlide) {
+                    const startIdx = state.slides.indexOf(prevSlide) + 1;
+                    let endIdx = state.slides.findIndex((slide, idx) => slide.from && idx > startIdx);
 
-                        if (a.exif_date) {
-                            return 1;
-                        }
+                    if (endIdx === -1) {
+                        endIdx = state.slides.length;
+                    }
 
-                        return -1;
-                    });
+                    const slidesToSort = state.slides.slice(startIdx, endIdx);
+
+                    slidesToSort.sort(exifCompare);
+
+                    state.slides.splice(startIdx, endIdx - startIdx, ...slidesToSort);
                 },
                 setTitle(state, title) {
                     state.title = title;
@@ -149,6 +167,9 @@ export default new Vuex.Store({
         ui: {
             state: {
                 popups: [],
+                splashMode: true,
+                returnToSplash: false,
+                view: 'gallery', // map, gallery
                 filename: null,
             },
             mutations: {
@@ -163,6 +184,15 @@ export default new Vuex.Store({
                 setFilename(state, filename) {
                     state.filename = filename;
                     EventBus.$emit('filename', filename);
+                },
+                setSplashMode(state, splashMode) {
+                    state.splashMode = splashMode;
+                },
+                setReturnToSplash(state, returnToSplash) {
+                    state.returnToSplash = returnToSplash;
+                },
+                setView(state, view) {
+                    state.view = view;
                 },
             },
             getters: {
@@ -185,24 +215,41 @@ export default new Vuex.Store({
         },
         app: {
             state: {
-                galleryHistory: [],
+                projectHistory: [],
+                currentProject: {},
             },
             mutations: {
                 setFilename(state, filename) {
                     if (filename) {
-                        const idx = state.galleryHistory.indexOf(filename);
+                        const idx = state.projectHistory.findIndex(project => project.filename === filename);
                         if (idx > -1) {
-                            state.galleryHistory.splice(idx, 1);
+                            state.projectHistory.splice(idx, 1);
                         }
 
-                        state.galleryHistory.push(filename);
+                        if (state.currentProject.filename) {
+                            state.currentProject = {
+                                filename: filename,
+                            };
+                        } else {
+                            state.currentProject.filename = filename;
+                        }
+
+                        state.projectHistory.push(state.currentProject);
+                    } else {
+                        state.currentProject = {};
                     }
+                },
+                setTitle(state, title) {
+                    state.currentProject.title = title;
+                },
+                setDescription(state, description) {
+                    state.currentProject.description = description;
                 },
             },
         },
     },
     plugins: [createPersistedState({
         key: 'MapGalleryEditor',
-        paths: ['app'],
+        paths: ['app.projectHistory'],
     })],
 });

@@ -1,28 +1,58 @@
 <template>
     <div class="slide" :class="classObject" @click="setCurrent">
-        <template v-if="slide.from">
-            {{ slide.from }} - {{ slide.to }}
+        <template v-if="Object.prototype.hasOwnProperty.call(slide, 'from')">
+            <div class="overlay overlay-top">
+                <a href="#" class="fas fa-ellipsis-v"/>
+                <ul class="menu">
+                    <li @click.stop="exifSort">EXIF sort</li>
+                    <li @click.stop="deleteSlide">Delete section</li>
+                </ul>
+            </div>
+
+            <dl>
+                <dt>From:</dt>
+                <dd>{{ slide.from }}</dd>
+                <dt>To:</dt>
+                <dd>{{ slide.to }}</dd>
+            </dl>
         </template>
         <template v-else>
+            <div class="overlay overlay-top">
+                <a href="#" class="fas fa-ellipsis-v"/>
+                <ul class="menu">
+                    <li @click.stop="addImages">Add pictures after</li>
+                    <li @click.stop="addMap">Add map section after</li>
+                    <li @click.stop="setAsCover">Set as cover picture</li>
+                    <li @click.stop="deleteSlide">Delete picture</li>
+                </ul>
+            </div>
+
             <div class="imgholder">
                 <img :src="thumbnailUrl" :title="slide.filename">
+            </div>
+            <div class="overlay overlay-bottom">
+                <a href="#" class="fas fa-undo"/>
             </div>
         </template>
     </div>
 </template>
 
 <script>
+import Controller from '../services/Controller';
 const fileUrl = require('file-url');
 
 export default {
     name: 'SlidePreview',
     props: {
-        slide: Object,
+        slide: {
+            type: Object,
+            default: () => {},
+        },
     },
     computed: {
         classObject() {
             const classes = [];
-            classes.push(this.slide.from ? 'map' : 'image');
+            classes.push(Object.prototype.hasOwnProperty.call(this.slide, 'from') ? 'map' : 'image');
 
             if (this.slide === this.$store.state.gallery.currentSlide) {
                 classes.push('current');
@@ -53,25 +83,34 @@ export default {
         setCurrent() {
             this.$store.commit('setCurrentSlide', this.slide);
         },
+        deleteSlide() {
+            this.$store.commit('deleteSlide', this.slide);
+        },
+        exifSort() {
+            this.$store.commit('orderByExifAfter', this.slide);
+        },
+        addImages() {
+            Controller.addImages(this.slide);
+        },
+        addMap() {
+            Controller.addMapSlideAfter(this.slide);
+        },
+        setAsCover() {
+            // TODO
+        },
     },
 };
 </script>
 
 <style scoped>
     .slide {
-        width: 150px;
-        height: 120px;
+        width: 165px;
+        height: 165px;
         margin: 10px;
         float: left;
         cursor: move;
-    }
-
-    .slide.map {
-        display: flex;
-        align-items: center;
-        text-align: center;
-        justify-content: center;
-        background-color: aliceblue;
+        background-color: #ffffff;
+        position: relative;
     }
 
     .slide .imgholder {
@@ -82,16 +121,91 @@ export default {
     }
 
     .slide img {
-        max-height: 120px;
+        max-height: 150px;
         max-width: 150px;
-        box-shadow: 0 2px 5px 0 rgba(0,0,0,0.75);
+        border-radius: 4px;
     }
 
-    .slide.image.current img {
-        box-shadow: 0 2px 5px 0 rgba(255,0,0,0.75);
+    .slide.current {
+        outline: 4px solid #f5c500;
+        outline-offset: -4px;
     }
 
-    .slide.map.current {
-        box-shadow: 0 2px 5px 0 rgba(255,0,0,0.75);
+    .slide:hover {
+        box-shadow: 0 2px 9px 0 rgba(0, 0, 0, 0.3);
+    }
+
+    .overlay {
+        position: absolute;
+        right: 8px;
+        top: 8px;
+        display: none;
+    }
+
+    .overlay a {
+        color: #333333;
+        font-size: 14px;
+    }
+
+    .slide.current .overlay a {
+        color: #f5c500;
+    }
+
+    .overlay.overlay-bottom {
+        bottom: 8px;
+        top: unset;
+    }
+
+    .slide:hover .overlay {
+        display: block;
+    }
+
+    .overlay-top ul.menu {
+        display: none;
+        position: absolute;
+        width: 130px;
+        top: 0;
+        right: 0;
+        list-style-type: none;
+        background-color: #ffffff;
+        border-radius: 4px;
+        padding: 0;
+        margin: 0;
+    }
+
+    .overlay-top .menu li {
+        cursor: pointer;
+        line-height: 20px;
+        padding-left: 5px;
+        font-size: 12px;
+    }
+
+    .overlay-top .menu li:hover {
+        background-color: #dddddd;
+    }
+
+    .overlay-top:hover .menu {
+        display: block;
+    }
+
+
+    dl {
+        overflow: auto;
+        margin: 0;
+        padding: 32px 16px;
+        font-size: 14px;
+    }
+
+    dl dt {
+        float: left;
+        width: 25%;
+    }
+
+    dl dd {
+        float: left;
+        width: 50%;
+        margin: 0;
+        padding-left: 10px;
+        font-weight: 500;
     }
 </style>
