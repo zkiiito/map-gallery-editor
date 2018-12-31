@@ -11,14 +11,39 @@ describe('Launch', function () {
             });
     });
 
-    it('should display 2 add slides', async function () {
-        const addSlides = await this.app.client.elements('.addSlide');
-        // eventually?
-        expect(addSlides.value.length).to.equal(2);
+    it('should display splash screen', async function () {
+        const splashPopup = await this.app.client.elements('div#splash-welcome');
+        expect(splashPopup.value.length).to.equal(1);
+    });
+
+    it('should go to project details, show 2 buttons', async function () {
+        return this.app.client.click('div#splash-welcome div.button-holder button').waitForVisible('form');
+    });
+
+    it('should show 2 buttons on details', async function () {
+        const buttons = await this.app.client.elements('form button');
+        expect(buttons.value.length).to.equal(2);
+    });
+
+    it('should save project details', async function () {
+        this.app.client.keys('Weekend in Austria');
+        this.app.client.setValue('form textarea', 'Salzburg, Wien, Linz, and other adventures');
+
+        return this.app.client.click('form button:nth-of-type(2)')
+            .waitForVisible('#main')
+            .getText('#main-title h1')
+            .then((text) => {
+                expect(text).to.eq('Weekend in Austria');
+            });
+    });
+
+    it('should display 2 huge buttons', async function () {
+        const buttons = await this.app.client.elements('button.huge');
+        expect(buttons.value.length).to.equal(2);
     });
 
     it('should load 2 images', async function () {
-        this.app.client.click('label#addImages');
+        this.app.client.click('button.huge:nth-of-type(2)');
         await this.app.client.waitForExist('div.slide.image:nth-child(2)', 5000);
 
         // ?
@@ -26,22 +51,19 @@ describe('Launch', function () {
         expect(imageSlides.value.length).to.equal(2);
     });
 
-    it('should open image preview', async function () {
-        return this.app.client.click('div.slide.image img').waitForVisible('#imageviewer');
-    });
-
     it('should add a new map slide', async function () {
-        return this.app.client.click('.addSlide label')
+        return this.app.client.click('button.huge:nth-of-type(1)')
             .waitForExist('div.slide.map');
     });
 
+/*
     it('should load google maps', async function () {
         this.timeout(30000);
         await this.app.client.click('div.slide.map').waitForVisible('#editor');
         expect(await this.app.client.waitUntilWindowLoaded().getWindowCount()).to.equal(2);
         // await this.app.client.windowByIndex(1).waitForExist('.gm-style', 30000); // only class in google maps
     });
-/*
+
     it('should save map edits', async function () {
 
     });
