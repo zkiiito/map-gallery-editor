@@ -34,7 +34,8 @@
     "extraResources": [
       {
         "from": "./node_modules/MapGallery/",
-        "to": "MapGallery"
+        "to": "MapGallery",
+        "filter": ["**/*.js", "**/*.html", "**/*.css", "**/*.png"]
       }
     ],
     "productName": "MapGallery Editor",
