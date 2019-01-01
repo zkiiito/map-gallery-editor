@@ -11,9 +11,8 @@ describe('Launch', function () {
             });
     });
 
-    it('should display splash screen', async function () {
-        const splashPopup = await this.app.client.elements('div#splash-welcome');
-        expect(splashPopup.value.length).to.equal(1);
+    it('should display splash screen', function () {
+        return this.app.client.waitForVisible('div#splash-welcome');
     });
 
     it('should go to project details, show 2 buttons', async function () {
