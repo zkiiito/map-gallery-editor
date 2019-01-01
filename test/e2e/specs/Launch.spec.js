@@ -12,7 +12,8 @@ describe('Launch', function () {
     });
 
     it('should display splash screen', function () {
-        return this.app.client.waitForVisible('div#splash-welcome');
+        this.timeout(10000);
+        return this.app.client.waitForVisible('div#splash-welcome', 10000);
     });
 
     it('should go to project details, show 2 buttons', async function () {
