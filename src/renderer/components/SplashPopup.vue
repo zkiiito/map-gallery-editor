@@ -3,7 +3,7 @@
         <template slot="body">
             <div id="splash-welcome">
                 <h1>MapGallery</h1>
-                <h3>version 0.1.0</h3>
+                <h3>version 0.2.0</h3>
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
                     et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
