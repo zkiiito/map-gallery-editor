@@ -21,7 +21,7 @@ const Controller = {
                 filters: [{ name: 'MapGallery Editor files', extensions: ['mapgallery'] }],
             }, (filename) => {
                 if (filename) {
-                    this.openProjectFile(filename.toString());
+                    Controller.openProjectFile(filename.toString());
                     return resolve();
                 }
                 return reject();
@@ -31,6 +31,10 @@ const Controller = {
     openProjectFile(filename) {
         store.commit('setFilename', filename);
         ProjectHandler.openProject(store.state.ui.filename)
+            .then(() => {
+                store.commit('setView', 'gallery');
+                EventBus.$emit(EventBus.events.PROJECT_OPENED);
+            })
             .catch((err) => {
                 store.commit('setFilename', null);
                 EventBus.$emit('error', err);
@@ -86,7 +90,7 @@ const Controller = {
         });
     },
     addMapSlide() {
-        return this.addMapSlideAfter(store.state.gallery.currentSlide);
+        return Controller.addMapSlideAfter(store.state.gallery.currentSlide);
     },
     addMapSlideAfter(prevSlide) {
         const slide = {

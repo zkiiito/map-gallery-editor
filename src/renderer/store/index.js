@@ -169,7 +169,7 @@ export default new Vuex.Store({
                 popups: [],
                 splashMode: true,
                 returnToSplash: false,
-                view: 'gallery', // map, gallery
+                view: 'map', // map, gallery
                 filename: null,
             },
             mutations: {
