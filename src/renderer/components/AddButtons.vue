@@ -20,11 +20,13 @@
                     ADD PICTURES
                 </div>
             </BigButton>
+
+            <div style="margin: 15px"/>
         </div>
 
         <div v-if="$store.state.gallery.slides.some(slide => slide.from !== undefined)
-                 && $store.state.gallery.slides.some(slide => slide.path !== undefined)"
-             style="text-align:center; font-size: 12px"
+                 || $store.state.gallery.slides.some(slide => slide.path !== undefined)"
+             style="text-align:center; font-size: 12px;"
         >
             <a href="#" @click="addMapSlide"><i class="fas fa-plus-circle"/> Add map</a>&nbsp;&nbsp;
             <a href="#" @click="addImages"><i class="fas fa-plus-circle"/> Add pictures</a>
