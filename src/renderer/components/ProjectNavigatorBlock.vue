@@ -6,7 +6,7 @@
             <p>{{ block.slides[0].from }} to {{ block.slides[0].to }}</p>
         </div>
 
-        <div class="block block-map-form" v-if="isMapBlock && editMode">
+        <div v-if="isMapBlock && editMode" class="block block-map-form">
             <div class="dot"/>
             <p class="header">Section {{ block.id }}</p>
 
@@ -93,7 +93,7 @@ export default {
         font-size: 14px;
         line-height: 20px;
         padding: 16px;
-        margin: 8px 0 8px 40px;
+        margin: 8px 0;
         position: relative;
     }
 
