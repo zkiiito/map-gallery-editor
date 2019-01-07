@@ -1,5 +1,5 @@
 <template>
-    <button :style="style" :class="cssclass" type="button" @click="$emit('click')">
+    <button :class="cssclass" :style="cssstyle" type="button" @click="$emit('click')">
         <slot/>
     </button>
 </template>
@@ -12,10 +12,6 @@ export default {
             type: String,
             default: 'full',
         },
-        color: {
-            type: String,
-            default: '#23abad',
-        },
         cssclass: {
             type: String,
             default: '',
@@ -23,20 +19,6 @@ export default {
         cssstyle: {
             type: String,
             default: '',
-        },
-    },
-    computed: {
-        style() {
-            let css = `border-color: ${this.color};`;
-            if (this.type === 'full') {
-                css += `background-color: ${this.color};`;
-            } else {
-                css += `color: ${this.color};`;
-            }
-
-            css += ` ${this.cssstyle}`;
-
-            return css;
         },
     },
 };
@@ -48,11 +30,30 @@ export default {
         height: 52px;
         border-radius: 10px;
         font-size: 22px;
-        background-color: transparent;
         border-width: 2px;
         border-style: solid;
         cursor: pointer;
         color: #ffffff;
+        border-color: #23abad;
+        background-color: #23abad;
+    }
+
+    button.empty, button.link {
+        background-color: transparent;
+        color: #23abad;
+    }
+
+    button.link, button.link:hover {
+        border-color: rgba(0, 0, 0, 0);
+    }
+
+    button.empty:hover, button.link:hover {
+        background-color: transparent;
+        color: #1d8c8e;
+    }
+
+    button.empty:hover {
+        border-color: #1d8c8e;
     }
 
     button.small {
@@ -72,6 +73,8 @@ export default {
 
     button:hover {
         box-shadow: 0 1px 10px 0 rgba(0, 0, 0, 0.25);
+        background-color: #1d8c8e;
+        border-color: #1d8c8e;
     }
 
     button:focus {

@@ -153,6 +153,10 @@ export default {
       color: #23abad;
   }
 
+  a:hover {
+      color: #1d8c8e;
+  }
+
   input, textarea {
       border-radius: 5px;
       background-color: #f6f6f6;
