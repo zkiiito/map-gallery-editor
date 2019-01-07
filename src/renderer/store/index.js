@@ -32,7 +32,7 @@ export default new Vuex.Store({
                 },
                 setCurrentSlide(state, slide) {
                     state.currentSlide = slide;
-                    EventBus.$emit('currentSlide', slide);
+                    EventBus.$emit(EventBus.events.CURRENT_SLIDE_CHANGED, slide);
                 },
                 updateOrder(state, ids) {
                     state.slides = ids.reduce((newSlides, id) => {
@@ -77,6 +77,7 @@ export default new Vuex.Store({
                             }
 
                             state.currentSlide = state.slides[idx];
+                            EventBus.$emit(EventBus.events.CURRENT_SLIDE_CHANGED, state.currentSlide);
                         }
                     }
                 },
@@ -87,6 +88,13 @@ export default new Vuex.Store({
 
                     Object.keys(newValues).forEach((key) => {
                         state.currentSlide[key] = newValues[key];
+                    });
+                },
+                updateSlide(state, obj) {
+                    const idx = state.slides.indexOf(obj.slide);
+
+                    Object.keys(obj.newValues).forEach((key) => {
+                        state.slides[idx][key] = obj.newValues[key];
                     });
                 },
                 deleteSlide(state, slide) {

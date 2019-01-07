@@ -1,14 +1,21 @@
 <template>
     <div>
-        <div v-if="isMapBlock" class="block block-map" @click="openMap">
+        <div v-if="isMapBlock && !editMode" class="block block-map" @click="openMap">
             <div class="dot"/>
             <p class="header">Section {{ block.id }}</p>
             <p>{{ block.slides[0].from }} to {{ block.slides[0].to }}</p>
         </div>
 
-        <GoogleMapForm v-if="isMapBlock && $store.state.ui.view === 'map'
-            && block.slides[0] === $store.state.gallery.currentSlide"
-        />
+        <div class="block block-map-form" v-if="isMapBlock && editMode">
+            <div class="dot"/>
+            <p class="header">Section {{ block.id }}</p>
+
+            <GoogleMapForm ref="mapForm" :slide="block.slides[0]"/>
+
+            <BigButton class="big-button" cssclass="small empty">Add</BigButton>
+            <BigButton class="big-button" cssclass="small link" @click="showRoute">Run test!</BigButton>
+            <br style="clear: both">
+        </div>
 
         <div v-if="!isMapBlock" class="block block-gallery">
             <div class="dot"/>
@@ -24,21 +31,37 @@
 
 <script>
 import GoogleMapForm from './GoogleMapForm';
+import BigButton from './BigButton';
+
 const fileUrl = require('file-url');
 
 export default {
     name: 'ProjectNavigatorBlock',
-    components: { GoogleMapForm },
+    components: { GoogleMapForm, BigButton },
     props: {
         block: {
             type: Object,
             default: () => {},
         },
     },
+    data: () => ({
+        editMode: false,
+    }),
     computed: {
         isMapBlock() {
             return this.block.type === 'map';
         },
+    },
+    mounted() {
+        const that = this;
+
+        this.$bus.$on(this.$bus.events.CURRENT_SLIDE_CHANGED, () => {
+            that.editMode = false;
+        });
+
+        if (this.block.slides[0] === this.$store.state.gallery.currentSlide) {
+            this.openMap();
+        }
     },
     methods: {
         thumbnailUrl(slide) {
@@ -52,6 +75,10 @@ export default {
         openMap() {
             this.$store.commit('setCurrentSlide', this.block.slides[0]);
             this.$store.commit('setView', 'map');
+            this.editMode = true;
+        },
+        showRoute() {
+            this.$refs.mapForm.showRoute();
         },
     },
 };
@@ -75,10 +102,14 @@ export default {
         margin-bottom: 8px;
     }
 
+    div.block.block-map-form {
+        background-color: transparent;
+        clear: both;
+    }
+
     div.block.block-gallery {
         width: 290px;
         padding: 4px;
-        /*overflow: auto;*/
         clear: both;
     }
 
@@ -114,5 +145,10 @@ export default {
         left: -5px;
         border-radius: 4px;
         margin-top: -5px;
+    }
+
+    .big-button {
+        float: right;
+        margin: 20px 0 0 10px;
     }
 </style>

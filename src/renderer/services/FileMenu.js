@@ -105,7 +105,7 @@ EventBus.$on('user', (user) => {
     }
 });
 
-EventBus.$on('currentSlide', (slide) => {
+EventBus.$on(EventBus.events.CURRENT_SLIDE_CHANGED, (slide) => {
     if (slide) {
         menu.getMenuItemById('close').enabled = true;
         menu.getMenuItemById('delete').enabled = true;
