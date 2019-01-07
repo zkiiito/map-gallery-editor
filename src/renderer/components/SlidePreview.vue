@@ -2,8 +2,8 @@
     <div class="slide" :class="classObject" @click="setCurrent">
         <template v-if="Object.prototype.hasOwnProperty.call(slide, 'from')">
             <div class="overlay overlay-top">
-                <a href="#" class="fas fa-ellipsis-v"/>
-                <ul class="menu">
+                <a href="#" class="fas fa-ellipsis-v" @click.stop="showMenu"/>
+                <ul v-if="menuVisible" class="menu" @mouseleave="hideMenu">
                     <li @click.stop="exifSort">EXIF sort</li>
                     <li @click.stop="deleteSlide">Delete section</li>
                 </ul>
@@ -18,8 +18,8 @@
         </template>
         <template v-else>
             <div class="overlay overlay-top">
-                <a href="#" class="fas fa-ellipsis-v"/>
-                <ul class="menu">
+                <a href="#" class="fas fa-ellipsis-v" @click.stop="showMenu"/>
+                <ul v-if="menuVisible" class="menu" @mouseleave="hideMenu">
                     <li @click.stop="addImages">Add pictures after</li>
                     <li @click.stop="addMap">Add map section after</li>
                     <li @click.stop="setAsCover">Set as cover picture</li>
@@ -28,7 +28,7 @@
             </div>
 
             <div class="imgholder">
-                <img :src="thumbnailUrl" :title="slide.filename">
+                <img :src="thumbnailUrl" :title="slide.filename" :alt="slide.filename">
             </div>
             <div class="overlay overlay-bottom">
                 <a href="#" class="fas fa-undo"/>
@@ -49,6 +49,9 @@ export default {
             default: () => {},
         },
     },
+    data: () => ({
+        menuVisible: false,
+    }),
     computed: {
         classObject() {
             const classes = [];
@@ -97,6 +100,12 @@ export default {
         },
         setAsCover() {
             // TODO
+        },
+        showMenu() {
+            this.menuVisible = true;
+        },
+        hideMenu() {
+            this.menuVisible = false;
         },
     },
 };
@@ -161,33 +170,28 @@ export default {
     }
 
     .overlay-top ul.menu {
-        display: none;
         position: absolute;
-        width: 130px;
-        top: 0;
-        right: 0;
+        width: 140px;
+        top: -6px;
+        right: -6px;
         list-style-type: none;
-        background-color: #ffffff;
+        background-color: #fafafa;
         border-radius: 4px;
-        padding: 0;
+        padding: 8px 0;
         margin: 0;
+        box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2), 0 3px 14px 2px rgba(0, 0, 0, 0.12), 0 8px 10px 1px rgba(0, 0, 0, 0.14);
     }
 
     .overlay-top .menu li {
         cursor: pointer;
-        line-height: 20px;
+        line-height: 28px;
         padding-left: 5px;
-        font-size: 12px;
+        font-size: 13px;
     }
 
     .overlay-top .menu li:hover {
         background-color: #dddddd;
     }
-
-    .overlay-top:hover .menu {
-        display: block;
-    }
-
 
     dl {
         overflow: auto;
