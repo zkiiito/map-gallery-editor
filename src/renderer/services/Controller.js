@@ -99,6 +99,7 @@ const Controller = {
             to: 'Vienna',
             speed: 5000,
             mode: 'DRIVING',
+            waypoints: [],
         };
 
         store.commit('addSlidesAfter', {

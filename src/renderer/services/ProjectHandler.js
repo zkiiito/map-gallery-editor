@@ -29,6 +29,10 @@ async function openProject(path) {
             slide.modified_at = new Date(slide.modified_at);
         }
 
+        if (slide.from && slide.waypoints === undefined) {
+            slide.waypoints = [];
+        }
+
         return slide;
     });
 

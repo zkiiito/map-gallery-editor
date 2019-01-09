@@ -62,7 +62,7 @@ export default {
         // "waypoints":[{"location":"Istanbul"}]
         routeWaypoints: {
             get() {
-                const { waypoints } = this.$store.state.gallery.currentSlide;
+                const { waypoints } = this.slide;
                 if (waypoints) {
                     return waypoints.map(waypoint => waypoint.location).join('\n');
                 }
