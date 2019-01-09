@@ -3,9 +3,10 @@ import ImageProcessor from './ImageProcessor';
 import store from '../store';
 import AppServer from './AppServer';
 
+const Ajv = require('ajv');
+const fileUrl = require('file-url');
 const fse = require('fs-extra');
 const path = require('path');
-const Ajv = require('ajv');
 const Queue = require('promise-queue');
 
 const ajv = new Ajv();
@@ -75,13 +76,15 @@ async function exportProject(dir) {
         path.join(dir, 'scripts', 'demo.js'),
         `MapGallery.initialize(${JSON.stringify(data)});`,
     );
+
+    return fileUrl(path.join(dir, 'index.html'));
 }
 
 function publishProject() {
     const data = store.getters.fileData;
 
     return AppServer.uploadGalleryData(data)
-        .then(() => {
+        .then(() => new Promise((resolve, reject) => {
             const { slides } = store.state.gallery;
             const queue = new Queue(5, Infinity);
             let filesAll = 0;
@@ -102,6 +105,10 @@ function publishProject() {
                     .then(() => {
                         filesUploaded += 1;
                         EventBus.$emit('progress', filesUploaded / filesAll * 100);
+
+                        if (queue.getPendingLength() === 0 && queue.getQueueLength() === 0) {
+                            resolve(AppServer.getPublishedUrl(data));
+                        }
                     })
                     .catch((err) => {
                         // console.log(err);// TODO: test, [Object object]
@@ -111,8 +118,10 @@ function publishProject() {
                 filesAll += 1;
             });
 
-            return AppServer.getPublishedUrl(data);
-        });
+            if (queue.getPendingLength() === 0 && queue.getQueueLength() === 0) {
+                resolve(AppServer.getPublishedUrl(data));
+            }
+        }));
 }
 
 export default {

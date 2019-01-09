@@ -4,7 +4,7 @@ import AppServer from './AppServer';
 import ImageProcessor from './ImageProcessor';
 import ProjectHandler from './ProjectHandler';
 
-const { dialog } = require('electron').remote; // eslint-disable-line
+const { dialog, shell } = require('electron').remote; // eslint-disable-line
 const uuidv4 = require('uuid/v4');
 
 const Controller = {
@@ -127,6 +127,9 @@ const Controller = {
         dialog.showOpenDialog({ properties: ['openDirectory', 'createDirectory'] }, (dir) => {
             if (dir) {
                 ProjectHandler.exportProject(dir.toString())
+                    .then((url) => {
+                        shell.openExternal(url);
+                    })
                     .catch((err) => {
                         EventBus.$emit('error', err);
                     });
@@ -139,7 +142,7 @@ const Controller = {
     publish() {
         ProjectHandler.publishProject()
             .then((url) => {
-                EventBus.$emit('error', `project url: ${url}`);
+                shell.openExternal(url);
             })
             .catch((err) => {
                 EventBus.$emit('error', err);
