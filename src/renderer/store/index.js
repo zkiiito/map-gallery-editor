@@ -236,7 +236,7 @@ export default new Vuex.Store({
 
                         if (state.currentProject.filename) {
                             state.currentProject = {
-                                filename: filename,
+                                filename,
                             };
                         } else {
                             state.currentProject.filename = filename;
