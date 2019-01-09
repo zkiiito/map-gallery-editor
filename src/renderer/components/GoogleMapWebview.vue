@@ -40,7 +40,14 @@ export default {
         });
 
         this.$refs.webview.addEventListener('ipc-message', (msg) => {
-            this.$bus.$emit('error', msg.channel);
+            let error = msg.channel;
+            if (error === 'NOT_FOUND') {
+                error = 'Locations not found';
+            } else if (error === 'ZERO_RESULTS') {
+                error = 'No route found.';
+            }
+
+            this.$bus.$emit('error', error);
         });
     },
 };
