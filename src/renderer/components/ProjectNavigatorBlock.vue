@@ -9,11 +9,12 @@
         <div v-if="isMapBlock && editMode" class="block block-map-form">
             <div class="dot"/>
             <p class="header">Section {{ block.id }}</p>
+            <a href="#" class="close fas fa-times" @click="closeForm"/>
 
             <GoogleMapForm ref="mapForm" :slide="block.slides[0]"/>
 
-            <BigButton class="big-button" cssclass="small empty">Add</BigButton>
-            <BigButton class="big-button" cssclass="small link" @click="showRoute">Run test!</BigButton>
+            <!--BigButton class="big-button" cssclass="small empty">Add</BigButton-->
+            <BigButton class="big-button" cssclass="small empty" @click="showRoute">Run test!</BigButton>
             <br style="clear: both">
         </div>
 
@@ -80,6 +81,9 @@ export default {
         showRoute() {
             this.$refs.mapForm.showRoute();
         },
+        closeForm() {
+            this.editMode = false;
+        },
     },
 };
 </script>
@@ -100,6 +104,17 @@ export default {
     div.block p.header {
         color: #b0b0b0;
         margin-bottom: 8px;
+    }
+
+    div.block a.close {
+        position: absolute;
+        right: 16px;
+        top: 16px;
+        font-size: 16px;
+    }
+
+    div.block.block-map {
+        cursor: text;
     }
 
     div.block.block-map-form {
