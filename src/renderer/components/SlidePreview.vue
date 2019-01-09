@@ -4,6 +4,7 @@
             <div class="overlay overlay-top">
                 <a href="#" class="fas fa-ellipsis-v" @click.stop="showMenu"/>
                 <ul v-if="menuVisible" class="menu" @mouseleave="hideMenu">
+                    <li @click.stop="addImages">Add pictures after</li>
                     <li @click.stop="exifSort">EXIF sort</li>
                     <li @click.stop="deleteSlide">Delete section</li>
                 </ul>
@@ -22,7 +23,7 @@
                 <ul v-if="menuVisible" class="menu" @mouseleave="hideMenu">
                     <li @click.stop="addImages">Add pictures after</li>
                     <li @click.stop="addMap">Add map section after</li>
-                    <li @click.stop="setAsCover">Set as cover picture</li>
+                    <!--li @click.stop="setAsCover">Set as cover picture</li-->
                     <li @click.stop="deleteSlide">Delete picture</li>
                 </ul>
             </div>
@@ -179,7 +180,9 @@ export default {
         border-radius: 4px;
         padding: 8px 0;
         margin: 0;
-        box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2), 0 3px 14px 2px rgba(0, 0, 0, 0.12), 0 8px 10px 1px rgba(0, 0, 0, 0.14);
+        box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
+                    0 3px 14px 2px rgba(0, 0, 0, 0.12),
+                    0 8px 10px 1px rgba(0, 0, 0, 0.14);
     }
 
     .overlay-top .menu li {
