@@ -1,13 +1,11 @@
 <template>
     <Modal>
         <template slot="header">
-            <button class="modal-default-button" @click="close">
-                Close
-            </button>
+            <a href="#" class="close fas fa-times" @click="close"/>
         </template>
 
         <template slot="body">
-            <webview ref="webview" src="https://mapgallery.online/auth/"
+            <webview ref="webview" src="https://mapgallery.online/auth/google"
                      httpreferrer="https://editor.mapgallery.online"
             />
         </template>
@@ -45,5 +43,9 @@ export default {
 <style scoped>
     webview {
         height: 580px;
+    }
+
+    a.close {
+        float: right;
     }
 </style>

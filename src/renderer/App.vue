@@ -27,6 +27,7 @@
 
             <div id="main-right">
                 <ViewSwitch/>
+                <UserCircle/>
 
                 <div v-show="$store.state.ui.view === 'map'" id="view-map">
                     <GoogleMap style="height: 100%"/>
@@ -67,10 +68,12 @@ import ProjectNavigator from './components/ProjectNavigator';
 import Controller from './services/Controller';
 import AddButtons from './components/AddButtons';
 import PersistMenu from './components/PersistMenu';
+import UserCircle from './components/UserCircle';
 
 export default {
     name: 'App',
     components: {
+        UserCircle,
         PersistMenu,
         AddButtons,
         ProjectNavigator,
