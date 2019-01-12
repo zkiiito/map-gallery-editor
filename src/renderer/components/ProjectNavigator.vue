@@ -3,8 +3,7 @@
         <div v-for="(block, idx) in blocks" :key="idx" :class="`${getClass(idx)}`">
             <ProjectNavigatorBlock :block="block" class="section-inner"/>
         </div>
-
-        <ProjectNavigatorBlock v-for="block in blocks" :key="block.id" :block="block"/>
+        <div/>
     </div>
 </template>
 
@@ -70,49 +69,43 @@ export default {
 
 <style scoped>
 div#projectNavigator {
-    margin-left: 40px;
-    position: absolute;
+    margin-left: 34px;
 }
 
 .section {
-    padding: 0 0 25px 16px;
+    padding: 0 0 16px 8px;
     position: relative;
 }
 
 .section:last-of-type {
-    padding: 0 0 0 16px;
+    padding: 0 0 0 8px;
 }
 
 .section-inner {
-    background: #f6f6f6;
-    border: 1px solid #ddd;
-    border-radius: 15px;
     position: relative;
 }
 
 .section::before {
     content: '';
     background: #F5C500;
-    width: 2px;
+    width: 1px;
     height: 100%;
     position: absolute;
     top: 0;
-    left: -1px;
+    left: -2px;
 }
 
 .section.group-first::before {
     content: '';
-    transform: scaleY(.5);
+    top: unset;
     bottom: 0;
-    transform-origin: bottom;
+    height: calc(50% + 5px)
 }
 
 .section.group-last::before {
     content: '';
-    transform: scaleY(1);
     top: 0;
-    transform-origin: top;
-    height: calc(50% - 16px);
+    height: calc(50% - 20px);
 }
 
 .section.group-middle::before {
@@ -131,8 +124,8 @@ div#projectNavigator {
 .section.group-middle .section-inner::before,
 .section.group-middle .section-inner::after,
 .section.group-last .section-inner::after {
-    width: 16px;
-    height: 16px;
+    width: 8px;
+    height: 8px;
     background: transparent;
 
     content: '';
@@ -145,16 +138,16 @@ div#projectNavigator {
 .section.group-first .section-inner::before,
 .section.group-middle .section-inner::before,
 .section.group-first .section-inner::after {
-    border-top-left-radius: 32px;
-    box-shadow: -1px -1px 0 1px #F5C500;
-    margin: 1px 0 0 -16px;
+    border-top-left-radius: 8px;
+    box-shadow: -1px -1px 0 0 #F5C500;
+    margin: -4px 0 0 -9px;
 }
 
 .section.group-middle .section-inner::after,
 .section.group-last .section-inner::after {
-    border-bottom-left-radius: 32px;
-    box-shadow: -1px 1px 0 1px #F5C500;
-    margin: -16px 0 0 -16px;
+    border-bottom-left-radius: 8px;
+    box-shadow: -1px 1px 0 0 #F5C500;
+    margin: -14px 0 0 -9px;
 }
 
 .section.group-first::after,
@@ -162,17 +155,17 @@ div#projectNavigator {
 .section.group-middle::after {
     content: '';
     position: absolute;
-    top: calc(calc(100% - 25px) / 2);
-    left: 17px;
+    top: calc(calc(100% - 24px) / 2);
+    left: 9px;
 
-    width: 12px;
-    height: 12px;
+    width: 9px;
+    height: 9px;
     background: #F5C500;
-    border-radius: 12px;
-    margin: -6px 0 0 -5px;
+    border-radius: 9px;
+    margin: -5px 0 0 -5px;
 }
 
 .section.group-last::after {
-    top: 50%;
+    /*top: 50%;*/
 }
 </style>

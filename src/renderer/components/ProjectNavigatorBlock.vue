@@ -1,13 +1,11 @@
 <template>
     <div>
         <div v-if="isMapBlock && !editMode" class="block block-map" @click="openMap">
-            <div class="dot"/>
             <p class="header">Section {{ block.id }}</p>
             <p>{{ block.slides[0].from }} to {{ block.slides[0].to }}</p>
         </div>
 
         <div v-if="isMapBlock && editMode" class="block block-map-form">
-            <div class="dot"/>
             <p class="header">Section {{ block.id }}</p>
 
             <GoogleMapForm ref="mapForm" :slide="block.slides[0]"/>
@@ -93,7 +91,6 @@ export default {
         font-size: 14px;
         line-height: 20px;
         padding: 16px;
-        margin: 8px 0;
         position: relative;
     }
 
@@ -134,17 +131,6 @@ export default {
         line-height: 40px;
         font-size: 16px;
         color: #ffffff;
-    }
-
-    div.dot {
-        position: absolute;
-        width: 9px;
-        height: 9px;
-        background-color: #f5c500;
-        top: 50%;
-        left: -5px;
-        border-radius: 4px;
-        margin-top: -5px;
     }
 
     .big-button {
