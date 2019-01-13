@@ -3,7 +3,10 @@
         <a href="#" @click="exportProject"><i class="fas fa-download"/>Offline export</a>
         <a href="#" @click="saveProject"><i class="fas fa-save"/>Save</a>
         <br>
-        <BigButton cssstyle="width: 300px" @click="publishProject">
+        <BigButton cssstyle="width: 300px"
+                   :class="`${this.$store.state.user.googleUser === null ? 'disabled' : ''}`"
+                   @click="publishProject"
+        >
             <i class="fas fa-cloud-upload-alt"/>Publish
         </BigButton>
     </div>
@@ -26,7 +29,9 @@ export default {
             Controller.saveProject();
         },
         publishProject() {
-            Controller.publish();
+            if (this.$store.state.user.googleUser !== null) {
+                Controller.publish();
+            }
         },
     },
 };

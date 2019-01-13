@@ -52,8 +52,17 @@ export default {
         color: #1d8c8e;
     }
 
+    button.empty.disabled:hover, button.link.disabled:hover {
+        background-color: transparent;
+        color: #b0b0b0;
+    }
+
     button.empty:hover {
         border-color: #1d8c8e;
+    }
+
+    button.empty.disabled:hover {
+        border-color: #b0b0b0;
     }
 
     button.small {
@@ -69,6 +78,13 @@ export default {
         height: 120px;
         font-size: 22px;
         padding: 15px;
+    }
+
+    button.disabled, button.disabled:hover {
+        background-color: #b0b0b0;
+        border-color: #b0b0b0;
+        cursor: not-allowed;
+        box-shadow: none;
     }
 
     button:hover {
