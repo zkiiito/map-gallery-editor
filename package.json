@@ -85,7 +85,7 @@
     "firebase": "^5.7.2",
     "fs-extra": "^7.0.1",
     "promise-queue": "^2.2.5",
-    "sharp": "^0.21.1",
+    "sharp": "^0.22.0",
     "uuid": "^3.3.2",
     "vue": "^2.5.20",
     "vue-electron": "^1.0.6",
