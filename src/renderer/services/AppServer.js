@@ -16,10 +16,6 @@ function init() {
         messagingSenderId: '1046834610547',
     });
 
-    firebase.firestore().settings({
-        timestampsInSnapshots: true,
-    });
-
     firebase.auth().onAuthStateChanged((user) => {
         EventBus.$emit('user', user);
     });
