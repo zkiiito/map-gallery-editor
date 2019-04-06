@@ -79,7 +79,7 @@ export default {
     watch: {
         currentSlide(newSlide) {
             if (newSlide === this.slide) {
-                // TODO: scrollTo
+                this.$nextTick(() => this.$el.scrollIntoView());
             }
         },
     },

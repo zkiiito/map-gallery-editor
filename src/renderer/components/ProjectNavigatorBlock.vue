@@ -18,7 +18,8 @@
 
         <div v-if="!isMapBlock" class="block block-gallery">
             <div class="dot"/>
-            <div v-for="(slide, idx) in block.slides.slice(0, 6)" :key="idx" class="img"
+            <div v-for="(slide, idx) in block.slides.slice(0, 6)" :key="idx" @click="scrollToSection"
+                 class="img"
                  :style="`background-image: url('${thumbnailUrl(slide)}')`"
             >
                 <span v-if="idx === 0" class="count">{{ block.slides.length }}</span>
@@ -81,6 +82,10 @@ export default {
         },
         closeForm() {
             this.editMode = false;
+        },
+        scrollToSection() {
+            this.$store.commit('setCurrentSlide', this.block.slides[0]);
+            this.$store.commit('setView', 'gallery');
         },
     },
 };
