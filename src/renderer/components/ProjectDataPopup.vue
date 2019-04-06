@@ -1,7 +1,7 @@
 <template>
     <Modal>
         <template slot="body">
-            <form ref="project-data-form">
+            <form ref="project-data-form" @submit.prevent="close">
                 <p>
                     <label>
                         Title<br>
