@@ -197,6 +197,8 @@ export default {
         width: 380px;
         flex-shrink: 0;
         overflow-y: auto;
+        display: flex;
+        flex-direction: column;
     }
 
     #main-logo {

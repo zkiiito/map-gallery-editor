@@ -39,13 +39,10 @@ export default {
 
 <style scoped>
     #persist-menu {
-        position: absolute;
-        left: 0;
-        bottom: 0;
         padding: 24px 40px;
         background-color: #f6f6f6;
         border-top: 1px solid #dddddd;
-        width: 300px;
+        margin-top: 30px;
     }
 
     #persist-menu a {

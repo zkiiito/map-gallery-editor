@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div id="addButtons">
         <div style="margin-left: 40px; margin-top: 15px">
             <BigButton v-if="$store.state.gallery.slides.every(slide => slide.from === undefined)"
                        cssclass="huge" @click="addMapSlide"
@@ -57,6 +57,10 @@ export default {
 </script>
 
 <style scoped>
+    #addButtons {
+        flex-grow: 1;
+    }
+
     .bigbutton-content {
         display: flex;
         align-items: center;
