@@ -151,6 +151,7 @@ export default {
         line-height: 40px;
         font-size: 16px;
         color: #ffffff;
+        cursor: pointer;
     }
 
     .big-button {
