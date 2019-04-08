@@ -19,7 +19,7 @@ export default {
             if (!oldSlide || !newSlide || newSlide.id !== oldSlide.id) {
                 this.$refs.webview.executeJavaScript('MapAnimator.stopAnimation();');
                 if (newSlide && newSlide.from) {
-                    this.$refs.webview.executeJavaScript(`showRoute(${JSON.stringify(newSlide)});`);
+                    this.$refs.webview.executeJavaScript(`displayRoute(${JSON.stringify(newSlide)});`);
                 }
             }
         },
@@ -31,8 +31,11 @@ export default {
         this.$refs.webview.addEventListener('did-stop-loading', function webviewLoaded() {
             that.$refs.webview.removeEventListener('did-stop-loading', webviewLoaded);
             that.$refs.webview.executeJavaScript('worldViewFit()');
-            that.$bus.$on('map-showroute', () => {
+            that.$bus.$on(that.$bus.events.MAP_ANIMATE_ROUTE, () => {
                 that.$refs.webview.executeJavaScript(`showRoute(${JSON.stringify(that.currentSlide)});`);
+            });
+            that.$bus.$on(that.$bus.events.MAP_DISPLAY_ROUTE, () => {
+                that.$refs.webview.executeJavaScript(`displayRoute(${JSON.stringify(that.currentSlide)});`);
             });
             that.$bus.$on(that.$bus.events.PROJECT_OPENED, () => {
                 that.$refs.webview.executeJavaScript('worldViewFit()');

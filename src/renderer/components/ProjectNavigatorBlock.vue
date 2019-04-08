@@ -78,7 +78,7 @@ export default {
             this.editMode = true;
         },
         showRoute() {
-            this.$refs.mapForm.showRoute();
+            this.$refs.mapForm.animateRoute();
         },
         closeForm() {
             this.editMode = false;

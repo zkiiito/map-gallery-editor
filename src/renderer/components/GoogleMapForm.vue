@@ -99,9 +99,14 @@ export default {
         },
     },
     methods: {
-        showRoute() {
+        displayRoute() {
             if (this.$refs['google-map-form'].reportValidity()) {
-                this.$bus.$emit('map-showroute');
+                this.$bus.$emit(this.$bus.events.MAP_DISPLAY_ROUTE);
+            }
+        },
+        animateRoute() {
+            if (this.$refs['google-map-form'].reportValidity()) {
+                this.$bus.$emit(this.$bus.events.MAP_ANIMATE_ROUTE);
             }
         },
         updateSlide(data) {
