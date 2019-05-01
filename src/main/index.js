@@ -25,6 +25,8 @@ function createWindow() {
         width: 1000,
         webPreferences: {
             webSecurity: process.env.NODE_ENV !== 'development',
+            nodeIntegration: true,
+            webviewTag: true,
         },
     });
 
