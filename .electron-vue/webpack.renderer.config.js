@@ -56,7 +56,7 @@ let rendererConfig = {
       },
       {
         test: /\.html$/,
-        use: 'vue-html-loader'
+        use: 'html-loader'
       },
       {
         test: /\.js$/,
