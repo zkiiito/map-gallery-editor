@@ -63,7 +63,8 @@ export default new Vuex.Store({
 
                     if (slideCount > 0) {
                         if (state.currentSlide === null) {
-                            state.currentSlide = state.slides[0]; // eslint-disable-line
+                            // eslint-disable-next-line prefer-destructuring
+                            state.currentSlide = state.slides[0];
                         } else {
                             let idx = state.slides.indexOf(state.currentSlide);
                             idx += diff;

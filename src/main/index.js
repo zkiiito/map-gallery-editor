@@ -1,4 +1,5 @@
-import { app, BrowserWindow } from 'electron' // eslint-disable-line
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { app, BrowserWindow } from 'electron';
 const unhandled = require('electron-unhandled');
 unhandled();
 
@@ -7,7 +8,8 @@ unhandled();
  * https://simulatedgreg.gitbooks.io/electron-vue/content/en/using-static-assets.html
  */
 if (process.env.NODE_ENV !== 'development') {
-  global.__static = require('path').join(__dirname, '/static').replace(/\\/g, '\\\\') // eslint-disable-line
+    // eslint-disable-next-line no-underscore-dangle
+    global.__static = require('path').join(__dirname, '/static').replace(/\\/g, '\\\\');
 }
 
 let mainWindow;

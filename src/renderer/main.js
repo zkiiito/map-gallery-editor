@@ -29,7 +29,6 @@ const progressBarOptions = {
 
 Vue.use(VueProgressBar, progressBarOptions);
 
-/* eslint-disable no-new */
 new Vue({
     components: { App },
     store,
