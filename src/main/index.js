@@ -40,8 +40,6 @@ function createWindow() {
     });
 }
 
-app.on('ready', createWindow);
-
 app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') {
         app.quit();
@@ -51,6 +49,35 @@ app.on('window-all-closed', () => {
 app.on('activate', () => {
     if (mainWindow === null) {
         createWindow();
+    }
+});
+
+let initOpenFile = null;
+
+// Attempt to bind file opening
+app.on('will-finish-launching', () => {
+    // Event fired When someone drags files onto the icon while your app is running
+    app.on('open-file', (event, file) => {
+        if (app.isReady() === false) {
+            initOpenFile = file;
+        } else {
+            mainWindow.send('file-opened', file);
+        }
+        event.preventDefault();
+    });
+});
+
+
+app.on('ready', () => {
+    createWindow();
+
+    if (initOpenFile !== null) {
+        mainWindow.send('file-opened', initOpenFile);
+    }
+
+    if (process.platform === 'win32' && process.argv.length >= 2) {
+        // eslint-disable-next-line prefer-destructuring
+        mainWindow.send('file-opened', process.argv[1]);
     }
 });
 

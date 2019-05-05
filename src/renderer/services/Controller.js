@@ -164,4 +164,6 @@ const Controller = {
     },
 };
 
+ipcRenderer.on('file-opened', Controller.openProjectFile);
+
 export default Controller;
