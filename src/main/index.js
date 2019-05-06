@@ -1,6 +1,7 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { app, BrowserWindow } from 'electron';
+import { app, BrowserWindow, ipcMain } from 'electron';
 const unhandled = require('electron-unhandled');
+const fse = require('fs-extra');
 unhandled();
 
 /**
@@ -52,14 +53,19 @@ app.on('activate', () => {
     }
 });
 
-let initOpenFile = null;
+let openedFile = null;
+
+if (process.platform === 'win32' && process.argv.length >= 2) {
+    // eslint-disable-next-line prefer-destructuring
+    openedFile = fse.pathExistsSync(process.argv[1]) ? process.argv[1] : null;
+}
 
 // Attempt to bind file opening
 app.on('will-finish-launching', () => {
     // Event fired When someone drags files onto the icon while your app is running
     app.on('open-file', (event, file) => {
         if (app.isReady() === false) {
-            initOpenFile = file;
+            openedFile = file;
         } else {
             mainWindow.send('file-opened', file);
         }
@@ -67,18 +73,12 @@ app.on('will-finish-launching', () => {
     });
 });
 
-
 app.on('ready', () => {
     createWindow();
+});
 
-    if (initOpenFile !== null) {
-        mainWindow.send('file-opened', initOpenFile);
-    }
-
-    if (process.platform === 'win32' && process.argv.length >= 2) {
-        // eslint-disable-next-line prefer-destructuring
-        mainWindow.send('file-opened', process.argv[1]);
-    }
+ipcMain.on('get-opened-file', (event) => {
+    event.returnValue = openedFile;
 });
 
 /**

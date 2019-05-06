@@ -127,7 +127,7 @@ export default {
             this.$store.commit('setGoogleUser', user);
         });
 
-        Controller.openSplash();
+        Controller.init();
     },
     methods: {
         openProjectData() {

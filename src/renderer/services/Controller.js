@@ -162,8 +162,21 @@ const Controller = {
     openSplash() {
         store.commit('openPopup', 'splash');
     },
+    init() {
+        const fileName = ipcRenderer.sendSync('get-opened-file');
+        if (fileName === null) {
+            this.openSplash();
+        } else {
+            this.openProjectFromOS(fileName);
+        }
+    },
+    openProjectFromOS(fileName) {
+        store.commit('setSplashMode', false);
+        store.commit('closePopups');
+        this.openProjectFile(fileName);
+    },
 };
 
-ipcRenderer.on('file-opened', Controller.openProjectFile);
+ipcRenderer.on('file-opened', Controller.openProjectFromOS);
 
 export default Controller;

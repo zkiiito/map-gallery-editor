@@ -190,6 +190,12 @@ export default new Vuex.Store({
                     state.popups = state.popups.filter(openpopup => popup !== openpopup);
                     EventBus.$emit(EventBus.events.POPUP_CLOSED, popup, state.popups.length);
                 },
+                closePopups(state) {
+                    state.popups.forEach((popup) => {
+                        EventBus.$emit(EventBus.events.POPUP_CLOSED, popup, 0);
+                    });
+                    state.popups = [];
+                },
                 setFilename(state, filename) {
                     state.filename = filename;
                     EventBus.$emit('filename', filename);
