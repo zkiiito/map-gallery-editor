@@ -23,7 +23,7 @@ function init() {
 
 function loginByToken(token) {
     const credential = firebase.auth.GoogleAuthProvider.credential(null, token);
-    firebase.auth().signInAndRetrieveDataWithCredential(credential)
+    firebase.auth().signInWithCredential(credential)
         .catch((error) => {
             EventBus.$emit('error', error);
         });
