@@ -1,5 +1,7 @@
-import { app, BrowserWindow } from 'electron' // eslint-disable-line
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { app, BrowserWindow, ipcMain } from 'electron';
 const unhandled = require('electron-unhandled');
+const fse = require('fs-extra');
 unhandled();
 
 /**
@@ -7,7 +9,8 @@ unhandled();
  * https://simulatedgreg.gitbooks.io/electron-vue/content/en/using-static-assets.html
  */
 if (process.env.NODE_ENV !== 'development') {
-  global.__static = require('path').join(__dirname, '/static').replace(/\\/g, '\\\\') // eslint-disable-line
+    // eslint-disable-next-line no-underscore-dangle
+    global.__static = require('path').join(__dirname, '/static').replace(/\\/g, '\\\\');
 }
 
 let mainWindow;
@@ -38,8 +41,6 @@ function createWindow() {
     });
 }
 
-app.on('ready', createWindow);
-
 app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') {
         app.quit();
@@ -50,6 +51,34 @@ app.on('activate', () => {
     if (mainWindow === null) {
         createWindow();
     }
+});
+
+let openedFile = null;
+
+if (process.platform === 'win32' && process.argv.length >= 2) {
+    // eslint-disable-next-line prefer-destructuring
+    openedFile = fse.pathExistsSync(process.argv[1]) ? process.argv[1] : null;
+}
+
+// Attempt to bind file opening
+app.on('will-finish-launching', () => {
+    // Event fired When someone drags files onto the icon while your app is running
+    app.on('open-file', (event, file) => {
+        if (app.isReady() === false) {
+            openedFile = file;
+        } else {
+            mainWindow.send('file-opened', file);
+        }
+        event.preventDefault();
+    });
+});
+
+app.on('ready', () => {
+    createWindow();
+});
+
+ipcMain.on('get-opened-file', (event) => {
+    event.returnValue = openedFile;
 });
 
 /**

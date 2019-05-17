@@ -63,7 +63,8 @@ export default new Vuex.Store({
 
                     if (slideCount > 0) {
                         if (state.currentSlide === null) {
-                            state.currentSlide = state.slides[0]; // eslint-disable-line
+                            // eslint-disable-next-line prefer-destructuring
+                            state.currentSlide = state.slides[0];
                         } else {
                             let idx = state.slides.indexOf(state.currentSlide);
                             idx += diff;
@@ -188,6 +189,12 @@ export default new Vuex.Store({
                 closePopup(state, popup) {
                     state.popups = state.popups.filter(openpopup => popup !== openpopup);
                     EventBus.$emit(EventBus.events.POPUP_CLOSED, popup, state.popups.length);
+                },
+                closePopups(state) {
+                    state.popups.forEach((popup) => {
+                        EventBus.$emit(EventBus.events.POPUP_CLOSED, popup, 0);
+                    });
+                    state.popups = [];
                 },
                 setFilename(state, filename) {
                     state.filename = filename;

@@ -1,4 +1,5 @@
-import { remote, shell } from 'electron'; // eslint-disable-line
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { remote, shell } from 'electron';
 
 import Controller from './Controller';
 import EventBus from './EventBus';

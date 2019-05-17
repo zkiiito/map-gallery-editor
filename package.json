@@ -74,6 +74,12 @@
     },
     "linux": {
       "icon": "build/icons"
+    },
+    "fileAssociations": {
+      "ext": "mapgallery",
+      "name": "MapGallery Project",
+      "role": "Editor",
+      "icon": "build/icons/icon.ico"
     }
   },
   "dependencies": {

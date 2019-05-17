@@ -5,7 +5,8 @@ const exifReader = require('exif-reader');
 const uuidv4 = require('uuid/v4');
 const path = require('path');
 const Queue = require('promise-queue');
-const { remote } = require('electron'); // eslint-disable-line
+// eslint-disable-next-line import/no-extraneous-dependencies
+const { remote } = require('electron');
 
 const imageSlideTemplate = {
     filename: 'lol.jpg',
