@@ -78,7 +78,8 @@
     "fileAssociations": {
       "ext": "mapgallery",
       "name": "MapGallery Project",
-      "role": "Editor"
+      "role": "Editor",
+      "icon": "build/icons/icon.ico"
     }
   },
   "dependencies": {
