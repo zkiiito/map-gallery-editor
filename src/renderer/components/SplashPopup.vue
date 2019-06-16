@@ -5,9 +5,7 @@
                 <h1>MapGallery</h1>
                 <h3>version 0.2.0</h3>
                 <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
-                    et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-                    aliquip ex ea commodo consequat.
+                    MapGallery is a smart lightweight tool to present your trips to your friends or colleagues. Show your journey in the map and upload images. You can publish it online, and start the presentation. Easy peasy!
                 </p>
                 <div class="button-holder">
                     <BigButton @click="newProject">New Trip</BigButton>
