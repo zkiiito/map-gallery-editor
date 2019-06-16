@@ -29,7 +29,7 @@
             </div>
 
             <div class="imgholder">
-                <img :src="thumbnailUrl" :title="slide.filename" :alt="slide.filename">
+                <img :src="thumbnailUrl" :title="slide.filename" :alt="slide.filename" @click="showImage">
             </div>
             <div class="overlay overlay-bottom">
                 <a href="#" class="fas fa-undo"/>
@@ -107,6 +107,10 @@ export default {
         },
         hideMenu() {
             this.menuVisible = false;
+        },
+        showImage() {
+            this.$store.commit('setCurrentSlide', this.slide);
+            this.$store.commit('setView', 'image');
         },
     },
 };

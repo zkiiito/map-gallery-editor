@@ -26,8 +26,14 @@
             </div>
 
             <div id="main-right">
-                <ViewSwitch/>
-                <UserCircle/>
+                <div v-show="$store.state.ui.view !== 'image'">
+                    <ViewSwitch/>
+                    <UserCircle/>
+                </div>
+
+                <div v-show="$store.state.ui.view === 'image'" id="view-image">
+                    <ImageView style="height: 100%"/>
+                </div>
 
                 <div v-show="$store.state.ui.view === 'map'" id="view-map">
                     <GoogleMap style="height: 100%"/>
@@ -69,10 +75,12 @@ import Controller from './services/Controller';
 import AddButtons from './components/AddButtons';
 import PersistMenu from './components/PersistMenu';
 import UserCircle from './components/UserCircle';
+import ImageView from './components/ImageView';
 
 export default {
     name: 'App',
     components: {
+        ImageView,
         UserCircle,
         PersistMenu,
         AddButtons,
@@ -235,7 +243,7 @@ export default {
         border-left: 1px solid #dddddd;
     }
 
-    #view-map {
+    #view-map, #view-image {
         height: 100%;
     }
 
