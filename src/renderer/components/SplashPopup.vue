@@ -3,7 +3,7 @@
         <template slot="body">
             <div id="splash-welcome">
                 <h1>MapGallery</h1>
-                <h3>version 0.2.0</h3>
+                <h3>version 0.2.3</h3>
                 <p>
                     MapGallery is a smart lightweight tool to present your trips to your friends or colleagues.
                     Show your journey in the map and upload images. You can publish it online, and start

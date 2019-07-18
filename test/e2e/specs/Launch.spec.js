@@ -25,10 +25,13 @@ describe('Launch', function () {
         expect(buttons.value.length).to.equal(2);
     });
 
-    it('should save project details', async function () {
+    it('should input project details', function () {
         this.app.client.keys('Weekend in Austria');
         this.app.client.setValue('form textarea', 'Salzburg, Wien, Linz, and other adventures');
+    });
 
+    it('should save project details', async function () {
+        this.app.client.saveScreenshot('lol.png');
         return this.app.client.click('form button:nth-of-type(2)')
             .waitForVisible('#main')
             .getText('#main-title h1')
@@ -43,8 +46,9 @@ describe('Launch', function () {
     });
 
     it('should load 2 images', async function () {
-        this.app.client.click('button.huge:nth-of-type(2)');
-        await this.app.client.waitForExist('div.slide.image:nth-child(2)', 5000);
+        this.timeout(100000);
+        this.app.client.click('#addButtons > button.huge:nth-of-type(2)');
+        await this.app.client.waitForExist('div.slide.image:nth-child(2)', 100000);
 
         // ?
         const imageSlides = await this.app.client.elements('div.slide.image');
