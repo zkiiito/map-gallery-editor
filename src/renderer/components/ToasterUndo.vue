@@ -1,7 +1,7 @@
 <template>
     <div id="toaster" v-show="show">
         <p class="text">Slide deleted</p>
-        <a href="#" @click="undo">UNDO</a>
+        <a @click="undo" href="#">UNDO</a>
     </div>
 </template>
 

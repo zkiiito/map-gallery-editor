@@ -1,23 +1,21 @@
 <template>
     <div class="holder">
-        <div class="imageview" :style="styleObject"/>
-        <a href="#" class="close fas fa-times" @click="close"/>
+        <div :style="styleObject" class="imageview"/>
+        <a @click="close" href="#" class="close fas fa-times"/>
         <div class="buttons">
-            <a href="#" @click="deleteImage"><i class="fas fa-trash"/> Delete</a>
-            <a href="#" @click="rotateImage"><i class="fas fa-undo"/> Rotate</a>
+            <a @click="deleteImage" href="#"><i class="fas fa-trash"/> Delete</a>
+            <a @click="rotateImage" href="#"><i class="fas fa-undo"/> Rotate</a>
         </div>
     </div>
 </template>
 
 <script>
 import Controller from '../services/Controller';
-import BigButton from './BigButton';
 
 const fileUrl = require('file-url');
 
 export default {
     name: 'ImageView',
-    components: { BigButton },
     computed: {
         src() {
             if (this.$store.getters.currentSlideType === 'image') {
@@ -54,8 +52,7 @@ export default {
             Controller.deleteSlide();
         },
         rotateImage() {
-            return;
-        }
+        },
     },
 };
 </script>

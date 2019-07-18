@@ -1,7 +1,7 @@
 <template>
     <Modal>
         <template slot="header">
-            <a href="#" class="close fas fa-times" @click="close"/>
+            <a @click="close" href="#" class="close fas fa-times"/>
         </template>
 
         <template slot="body">

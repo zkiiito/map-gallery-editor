@@ -1,7 +1,9 @@
 <template>
     <div>
         <div v-if="!editMode" class="block block-map">
-            <p class="header" @click="openMap"><span class="light">Section {{ block.id }}: </span>{{ block.mapslide.from }} to {{ block.mapslide.to }}</p>
+            <p @click="openMap" class="header">
+                <span class="light">Section {{ block.id }}: </span>{{ block.mapslide.from }} to {{ block.mapslide.to }}
+            </p>
 
             <div v-for="(slide, idx) in block.slides.slice(0, 6)" :key="idx" @click="scrollToSection"
                  :style="`background-image: url('${thumbnailUrl(slide)}')`"
@@ -9,7 +11,13 @@
             >
                 <span v-if="idx === 0" class="count">{{ block.slides.length }}</span>
             </div>
-            <BigButton v-if="block.slides.length === 0" @click="addImages" style="width: 170px" cssclass="small empty">Add pictures!</BigButton>
+            <BigButton v-if="block.slides.length === 0"
+                       @click="addImages"
+                       style="width: 170px"
+                       cssclass="small empty"
+            >
+                Add pictures!
+            </BigButton>
             <br style="clear:both">
         </div>
 

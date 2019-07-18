@@ -1,11 +1,12 @@
 <template>
     <div id="user-circle">
-        <a v-if="this.$store.state.user.googleUser === null" href="#" title="Log in" @click="login">
+        <a v-if="this.$store.state.user.googleUser === null" @click="login" href="#" title="Log in">
             <i class="fas fa-user"/>
         </a>
-        <a v-if="this.$store.state.user.googleUser !== null" href="#"
+        <a v-if="this.$store.state.user.googleUser !== null"
            :title="`Log out ${this.$store.state.user.googleUser.email}`"
            @click="logout"
+           href="#"
         >
             <img :src="this.$store.state.user.googleUser.photoURL" alt="profile">
         </a>
