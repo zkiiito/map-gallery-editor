@@ -17,7 +17,7 @@
             <p class="header"><span class="light">Section {{ block.id }}</span></p>
             <a @click="closeForm" href="#" class="close fas fa-times"/>
 
-            <GoogleMapForm ref="mapForm" :slide="block.slides[0]"/>
+            <GoogleMapForm ref="mapForm" :slide="block.mapslide"/>
 
             <!--BigButton class="big-button" cssclass="small empty">Add</BigButton-->
             <BigButton @click="showRoute" class="big-button" cssclass="small empty">Run test!</BigButton>
