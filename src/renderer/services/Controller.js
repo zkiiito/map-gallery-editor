@@ -120,6 +120,9 @@ const Controller = {
     deleteSlide() {
         store.commit('deleteSlide', store.state.gallery.currentSlide);
     },
+    undoDeleteSlide() {
+        store.commit('undoDeleteSlide');
+    },
     orderExif() {
         store.commit('orderByExif');
     },

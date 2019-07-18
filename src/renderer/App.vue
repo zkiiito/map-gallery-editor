@@ -54,6 +54,8 @@
                         </Draggable>
                     </div>
                 </div>
+
+                <ToasterUndo/>
             </div>
         </div>
     </div>
@@ -76,10 +78,12 @@ import AddButtons from './components/AddButtons';
 import PersistMenu from './components/PersistMenu';
 import UserCircle from './components/UserCircle';
 import ImageView from './components/ImageView';
+import ToasterUndo from './components/ToasterUndo';
 
 export default {
     name: 'App',
     components: {
+        ToasterUndo,
         ImageView,
         UserCircle,
         PersistMenu,
