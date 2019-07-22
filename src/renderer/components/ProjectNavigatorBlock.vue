@@ -1,30 +1,35 @@
 <template>
     <div>
-        <div v-if="isMapBlock && !editMode" class="block block-map" @click="openMap">
-            <p class="header">Section {{ block.id }}</p>
-            <p>{{ block.slides[0].from }} to {{ block.slides[0].to }}</p>
-        </div>
+        <div v-if="!editMode" class="block block-map">
+            <p @click="openMap" class="header">
+                <span class="light">Section {{ block.id }}: </span>{{ block.mapslide.from }} to {{ block.mapslide.to }}
+            </p>
 
-        <div v-if="isMapBlock && editMode" class="block block-map-form">
-            <p class="header">Section {{ block.id }}</p>
-            <a href="#" class="close fas fa-times" @click="closeForm"/>
-
-            <GoogleMapForm ref="mapForm" :slide="block.slides[0]"/>
-
-            <!--BigButton class="big-button" cssclass="small empty">Add</BigButton-->
-            <BigButton class="big-button" cssclass="small empty" @click="showRoute">Run test!</BigButton>
-            <br style="clear: both">
-        </div>
-
-        <div v-if="!isMapBlock" class="block block-gallery">
-            <div class="dot"/>
             <div v-for="(slide, idx) in block.slides.slice(0, 6)" :key="idx" @click="scrollToSection"
-                 class="img"
                  :style="`background-image: url('${thumbnailUrl(slide)}')`"
+                 class="img"
             >
                 <span v-if="idx === 0" class="count">{{ block.slides.length }}</span>
             </div>
+            <BigButton v-if="block.slides.length === 0"
+                       @click="addImages"
+                       style="width: 170px"
+                       cssclass="small empty"
+            >
+                Add pictures!
+            </BigButton>
             <br style="clear:both">
+        </div>
+
+        <div v-if="editMode" class="block block-map-form">
+            <p class="header"><span class="light">Section {{ block.id }}</span></p>
+            <a @click="closeForm" href="#" class="close fas fa-times"/>
+
+            <GoogleMapForm ref="mapForm" :slide="block.mapslide"/>
+
+            <!--BigButton class="big-button" cssclass="small empty">Add</BigButton-->
+            <BigButton @click="showRoute" class="big-button" cssclass="small empty">Run test!</BigButton>
+            <br style="clear: both">
         </div>
     </div>
 </template>
@@ -32,6 +37,7 @@
 <script>
 import GoogleMapForm from './GoogleMapForm';
 import BigButton from './BigButton';
+import Controller from '../services/Controller';
 
 const fileUrl = require('file-url');
 
@@ -47,11 +53,6 @@ export default {
     data: () => ({
         editMode: false,
     }),
-    computed: {
-        isMapBlock() {
-            return this.block.type === 'map';
-        },
-    },
     mounted() {
         const that = this;
 
@@ -59,7 +60,7 @@ export default {
             that.editMode = false;
         });
 
-        if (this.block.slides[0] === this.$store.state.gallery.currentSlide) {
+        if (this.block.mapslide === this.$store.state.gallery.currentSlide) {
             this.openMap();
         }
     },
@@ -73,7 +74,7 @@ export default {
             }
         },
         openMap() {
-            this.$store.commit('setCurrentSlide', this.block.slides[0]);
+            this.$store.commit('setCurrentSlide', this.block.mapslide);
             this.$store.commit('setView', 'map');
             this.editMode = true;
         },
@@ -84,8 +85,12 @@ export default {
             this.editMode = false;
         },
         scrollToSection() {
-            this.$store.commit('setCurrentSlide', this.block.slides[0]);
+            this.$store.commit('setCurrentSlide', this.block.mapslide);
             this.$store.commit('setView', 'gallery');
+        },
+        addImages() {
+            this.$store.commit('setCurrentSlide', this.block.mapslide);
+            Controller.addImages(this.block.mapslide);
         },
     },
 };
@@ -93,19 +98,24 @@ export default {
 
 <style scoped>
     div.block {
-        width: 266px; /*  300 - 2 - 32 */
+        width: 290px;
         border-radius: 10px;
         background-color: #f6f6f6;
         border: 1px solid #dddddd;
         font-size: 14px;
         line-height: 20px;
-        padding: 16px;
+        padding: 10px;
         position: relative;
+        margin-bottom: 14px;
     }
 
     div.block p.header {
-        color: #b0b0b0;
         margin-bottom: 8px;
+        cursor: text;
+    }
+
+    div.block p.header span.light {
+        color: #b0b0b0;
     }
 
     div.block a.close {
@@ -115,23 +125,9 @@ export default {
         font-size: 16px;
     }
 
-    div.block.block-map {
-        cursor: text;
-    }
-
     div.block.block-map-form {
         background-color: transparent;
         clear: both;
-    }
-
-    div.block.block-gallery {
-        width: 290px;
-        padding: 4px;
-        clear: both;
-    }
-
-    div.block.block-gallery img {
-        margin: 4px;
     }
 
     div.img {

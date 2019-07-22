@@ -2,7 +2,7 @@
     <div id="addButtons">
         <div style="margin-left: 40px; margin-top: 15px">
             <BigButton v-if="$store.state.gallery.slides.every(slide => slide.from === undefined)"
-                       cssclass="huge" @click="addMapSlide"
+                       @click="addMapSlide" cssclass="huge"
             >
                 <div class="bigbutton-content">
                     <img src="static/ui/map-illustration.png" alt="map icon">
@@ -13,7 +13,7 @@
             <div style="margin: 15px"/>
 
             <BigButton v-if="$store.state.gallery.slides.every(slide => slide.path === undefined)"
-                       cssclass="huge" @click="addImages"
+                       @click="addImages" cssclass="huge"
             >
                 <div class="bigbutton-content">
                     <img src="static/ui/pic-illustration.png" alt="photo icon">
@@ -28,8 +28,8 @@
                  || $store.state.gallery.slides.some(slide => slide.path !== undefined)"
              style="text-align:center; font-size: 12px;"
         >
-            <a href="#" @click="addMapSlide"><i class="fas fa-plus-circle"/> Add map</a>&nbsp;&nbsp;
-            <a href="#" @click="addImages"><i class="fas fa-plus-circle"/> Add pictures</a>
+            <a @click="addMapSlide" href="#"><i class="fas fa-plus-circle"/> Add map</a>&nbsp;&nbsp;
+            <a @click="addImages" href="#"><i class="fas fa-plus-circle"/> Add pictures</a>
         </div>
     </div>
 </template>

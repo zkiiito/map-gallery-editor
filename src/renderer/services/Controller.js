@@ -117,10 +117,13 @@ const Controller = {
         store.commit('moveSlide', 1);
     },
     closeSlide() {
-        store.commit('setCurrentSlide', null);
+        store.commit('setView', 'gallery');
     },
     deleteSlide() {
         store.commit('deleteSlide', store.state.gallery.currentSlide);
+    },
+    undoDeleteSlide() {
+        store.commit('undoDeleteSlide');
     },
     orderExif() {
         store.commit('orderByExif');

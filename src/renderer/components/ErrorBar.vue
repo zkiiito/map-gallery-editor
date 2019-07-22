@@ -2,7 +2,7 @@
     <div id="errorHolder">
         <div v-for="(error, idx) in errors" :key="idx" class="error">
             {{ error ? error.toString() : 'Error' }}
-            <a href="#" class="close fas fa-times" @click="closeError(idx)"/>
+            <a @click="closeError(idx)" href="#" class="close fas fa-times"/>
         </div>
     </div>
 </template>

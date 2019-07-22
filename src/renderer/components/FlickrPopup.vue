@@ -1,21 +1,21 @@
 <template>
     <Modal>
         <template slot="header">
-            <button class="modal-default-button" @click="close">
+            <button @click="close" class="modal-default-button">
                 Close
             </button>
         </template>
 
         <template slot="body">
-            <webview v-if="this.$store.state.user.flickrUser === null" ref="webview"
+            <webview ref="webview" v-if="this.$store.state.user.flickrUser === null"
                      src="https://mapgallery-216911.firebaseapp.com/flickr/auth"
                      httpreferrer="https://editor.mapgallery.online"
             />
-            <div v-if="this.$store.state.user.flickrUser !== null" id="flickr-photosets">
+            <div id="flickr-photosets" v-if="this.$store.state.user.flickrUser !== null">
                 <ul id="flickr-photoset-list">
                     <li v-for="photoset in photosets" :key="photoset.id">
                         <label>
-                            <input v-model="selectedPhotoset" type="radio" :value="photoset.id" name="photoset">
+                            <input :value="photoset.id" v-model="selectedPhotoset" type="radio" name="photoset">
                             {{ photoset.title }} ({{ photoset.photos }})
                         </label>
                     </li>

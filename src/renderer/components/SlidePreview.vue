@@ -1,9 +1,9 @@
 <template>
-    <div class="slide" :class="classObject" @click="setCurrent">
+    <div @click="setCurrent" :class="classObject" class="slide">
         <template v-if="Object.prototype.hasOwnProperty.call(slide, 'from')">
             <div class="overlay overlay-top">
-                <a href="#" class="fas fa-ellipsis-v" @click.stop="showMenu"/>
-                <ul v-if="menuVisible" class="menu" @mouseleave="hideMenu">
+                <a @click.stop="showMenu" href="#" class="fas fa-ellipsis-v"/>
+                <ul v-if="menuVisible" @mouseleave="hideMenu" class="menu">
                     <li @click.stop="addImages">Add pictures after</li>
                     <li @click.stop="exifSort">EXIF sort</li>
                     <li @click.stop="deleteSlide">Delete section</li>
@@ -19,8 +19,8 @@
         </template>
         <template v-else>
             <div class="overlay overlay-top">
-                <a href="#" class="fas fa-ellipsis-v" @click.stop="showMenu"/>
-                <ul v-if="menuVisible" class="menu" @mouseleave="hideMenu">
+                <a @click.stop="showMenu" href="#" class="fas fa-ellipsis-v"/>
+                <ul @mouseleave="hideMenu" v-if="menuVisible" class="menu">
                     <li @click.stop="addImages">Add pictures after</li>
                     <li @click.stop="addMap">Add map section after</li>
                     <!--li @click.stop="setAsCover">Set as cover picture</li-->
@@ -29,7 +29,7 @@
             </div>
 
             <div class="imgholder">
-                <img :src="thumbnailUrl" :title="slide.filename" :alt="slide.filename">
+                <img :src="thumbnailUrl" :title="slide.filename" :alt="slide.filename" @click="showImage">
             </div>
             <div class="overlay overlay-bottom">
                 <a href="#" class="fas fa-undo"/>
@@ -107,6 +107,10 @@ export default {
         },
         hideMenu() {
             this.menuVisible = false;
+        },
+        showImage() {
+            this.$store.commit('setCurrentSlide', this.slide);
+            this.$store.commit('setView', 'image');
         },
     },
 };

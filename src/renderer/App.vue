@@ -7,7 +7,7 @@
         <ErrorBar/>
         <!--FileMenu/-->
 
-        <div v-if="!$store.state.ui.splashMode" id="main">
+        <div id="main" v-if="!$store.state.ui.splashMode">
             <div id="main-left">
                 <div id="main-logo">
                     <img src="static/ui/logo.png" alt="logo">
@@ -26,16 +26,22 @@
             </div>
 
             <div id="main-right">
-                <ViewSwitch/>
-                <UserCircle/>
+                <div v-show="$store.state.ui.view !== 'image'">
+                    <ViewSwitch/>
+                    <UserCircle/>
+                </div>
 
-                <div v-show="$store.state.ui.view === 'map'" id="view-map">
+                <div id="view-image" v-show="$store.state.ui.view === 'image'">
+                    <ImageView style="height: 100%"/>
+                </div>
+
+                <div id="view-map" v-show="$store.state.ui.view === 'map'">
                     <GoogleMap style="height: 100%"/>
                 </div>
 
-                <div v-show="$store.state.ui.view === 'gallery'" id="view-gallery">
+                <div id="view-gallery" v-show="$store.state.ui.view === 'gallery'">
                     <p align="right">
-                        <a href="#" @click="sortAllImages"><i class="fas fa-sort-amount-down"/> EXIF sort all</a>
+                        <a @click="sortAllImages" href="#"><i class="fas fa-sort-amount-down"/> EXIF sort all</a>
                     </p>
                     <div id="slides">
                         <Draggable
@@ -48,6 +54,8 @@
                         </Draggable>
                     </div>
                 </div>
+
+                <ToasterUndo/>
             </div>
         </div>
     </div>
@@ -69,10 +77,14 @@ import Controller from './services/Controller';
 import AddButtons from './components/AddButtons';
 import PersistMenu from './components/PersistMenu';
 import UserCircle from './components/UserCircle';
+import ImageView from './components/ImageView';
+import ToasterUndo from './components/ToasterUndo';
 
 export default {
     name: 'App',
     components: {
+        ToasterUndo,
+        ImageView,
         UserCircle,
         PersistMenu,
         AddButtons,
@@ -235,7 +247,7 @@ export default {
         border-left: 1px solid #dddddd;
     }
 
-    #view-map {
+    #view-map, #view-image {
         height: 100%;
     }
 

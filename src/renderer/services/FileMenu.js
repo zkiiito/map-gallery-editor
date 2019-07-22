@@ -52,6 +52,14 @@ const menu = Menu.buildFromTemplate([
                 enablded: false,
                 id: 'delete',
             },
+            {
+                label: 'Undo Delete',
+                click: Controller.undoDeleteSlide,
+                accelerator: 'CmdOrCtrl+Z',
+                enablded: true,
+                id: 'undoDelete',
+            },
+
         ],
     },
     {

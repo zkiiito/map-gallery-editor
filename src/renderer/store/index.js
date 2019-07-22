@@ -24,6 +24,8 @@ export default new Vuex.Store({
                 slides: [],
                 currentSlide: null,
                 user: null,
+                deletedSlide: null,
+                deletedSlideIdx: null,
             },
             mutations: {
                 setSlides(state, slides) {
@@ -113,6 +115,21 @@ export default new Vuex.Store({
                             state.currentSlide = null;
                         }
                     }
+
+                    state.deletedSlide = slide;
+                    state.deletedSlideIdx = idx;
+                    EventBus.$emit(EventBus.events.SLIDE_DELETED);
+                },
+                undoDeleteSlide(state) {
+                    if (!state.deletedSlide) {
+                        return;
+                    }
+
+                    state.slides.splice(state.deletedSlideIdx, 0, state.deletedSlide);
+
+                    state.deletedSlide = null;
+                    state.deletedSlideIdx = null;
+                    EventBus.$emit(EventBus.events.SLIDE_DELETED_UNDO);
                 },
                 orderByExif(state) {
                     state.slides.sort(exifCompare);
@@ -178,7 +195,7 @@ export default new Vuex.Store({
                 popups: [],
                 splashMode: true,
                 returnToSplash: false,
-                view: 'map', // map, gallery
+                view: 'map', // map, gallery, image
                 filename: null,
             },
             mutations: {

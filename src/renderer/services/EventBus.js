@@ -11,6 +11,8 @@ EventBus.events = {
     PROJECT_TITLE_CHANGED: 'project_title_changed',
     POPUP_OPENED: 'popup_opened',
     POPUP_CLOSED: 'popup_closed',
+    SLIDE_DELETED: 'slide_deleted',
+    SLIDE_DELETED_UNDO: 'slide_deleted_undo',
 };
 
 export default EventBus;

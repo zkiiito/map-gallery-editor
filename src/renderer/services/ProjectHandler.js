@@ -84,7 +84,7 @@ function publishProject() {
     const data = store.getters.fileData;
 
     return AppServer.uploadGalleryData(data)
-        .then(() => new Promise((resolve, reject) => {
+        .then(() => new Promise((resolve) => {
             const { slides } = store.state.gallery;
             const queue = new Queue(5, Infinity);
             let filesAll = 0;

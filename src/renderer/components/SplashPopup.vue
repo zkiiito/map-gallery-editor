@@ -3,11 +3,11 @@
         <template slot="body">
             <div id="splash-welcome">
                 <h1>MapGallery</h1>
-                <h3>version 0.2.0</h3>
+                <h3>version 0.2.3</h3>
                 <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
-                    et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-                    aliquip ex ea commodo consequat.
+                    MapGallery is a smart lightweight tool to present your trips to your friends or colleagues.
+                    Show your journey in the map and upload images. You can publish it online, and start
+                    the presentation. Easy peasy!
                 </p>
                 <div class="button-holder">
                     <BigButton @click="newProject">New Trip</BigButton>
@@ -17,14 +17,14 @@
                 <h2>Recent trips</h2>
 
                 <div v-for="(project, idx) in $store.state.app.projectHistory.slice(-6).reverse()"
-                     :key="idx" class="trip-history" @click="openRecentProject(project)"
+                     :key="idx" @click="openRecentProject(project)" class="trip-history"
                 >
                     <h5>{{ project.title }}</h5>
                     <p>{{ project.description || project.filename }}</p>
                 </div>
 
                 <div class="button-holder">
-                    <a href="#" @click="openProject">Open other trip</a>
+                    <a @click="openProject" href="#">Open other trip</a>
                 </div>
             </div>
         </template>
