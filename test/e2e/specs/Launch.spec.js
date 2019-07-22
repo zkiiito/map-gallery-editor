@@ -47,7 +47,7 @@ describe('Launch', function () {
 
     it('should load 2 images', async function () {
         this.timeout(100000);
-        this.app.client.click('#addButtons > button.huge:nth-of-type(2)');
+        this.app.client.$('button.huge:nth-of-type(2)').click();
         await this.app.client.waitForExist('div.slide.image:nth-child(2)', 100000);
 
         // ?
