@@ -148,7 +148,7 @@
     "multispinner": "^0.2.1",
     "node-loader": "^0.6.0",
     "require-dir": "^1.2.0",
-    "spectron": "^7.0.0",
+    "spectron": "^8.0.0",
     "spectron-fake-dialog": "0.0.1",
     "style-loader": "^0.23.1",
     "url-loader": "^2.1.0",
