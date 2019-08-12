@@ -86,7 +86,7 @@
     "MapGallery": "github:zkiiito/MapGallery",
     "ajv": "^6.10.2",
     "del": "^5.0.0",
-    "electron-unhandled": "^2.2.0",
+    "electron-unhandled": "^3.0.0",
     "exif-reader": "^1.0.2",
     "file-url": "^3.0.0",
     "firebase": "^6.3.0",
