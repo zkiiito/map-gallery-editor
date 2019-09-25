@@ -89,7 +89,7 @@
     "electron-unhandled": "^2.2.0",
     "exif-reader": "^1.0.2",
     "file-url": "^3.0.0",
-    "firebase": "^6.3.0",
+    "firebase": "^7.0.0",
     "fs-extra": "^8.1.0",
     "promise-queue": "^2.2.5",
     "sharp": "^0.23.0",
