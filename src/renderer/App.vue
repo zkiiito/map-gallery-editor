@@ -5,7 +5,6 @@
         <ProjectDataPopup v-if="$store.getters.isPopupOpen('projectData')"/>
         <SplashPopup v-if="$store.getters.isPopupOpen('splash')"/>
         <ErrorBar/>
-        <!--FileMenu/-->
 
         <div id="main" v-if="!$store.state.ui.splashMode">
             <div id="main-left">
@@ -65,7 +64,6 @@
 import Draggable from 'vuedraggable';
 import GoogleMap from './components/web/GoogleMap.vue';
 import SlidePreview from './components/SlidePreview.vue';
-// import FileMenu from './components/FileMenu.vue';
 import ErrorBar from './components/ErrorBar';
 import AuthPopup from './components/AuthPopup';
 import FlickrPopup from './components/FlickrPopup';
@@ -92,7 +90,6 @@ export default {
         GoogleMap,
         SlidePreview,
         Draggable,
-        // FileMenu,
         ErrorBar,
         AuthPopup,
         FlickrPopup,
