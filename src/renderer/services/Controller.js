@@ -154,7 +154,8 @@ const Controller = {
             });
     },
     login() {
-        store.commit('openPopup', 'auth');
+        AppServer.login();
+        // store.commit('openPopup', 'auth');
     },
     openFlickr() {
         store.commit('openPopup', 'flickr');

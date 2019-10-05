@@ -1,3 +1,4 @@
+/* global firebase */
 import EventBus from './EventBus';
 /*
 const firebase = require('firebase/app');
@@ -9,8 +10,6 @@ require('firebase/firestore');
 let imageIndex = {};
 
 function init() {
-    return;
-
     firebase.initializeApp({
         apiKey: 'AIzaSyBxJ2a3cME3l1zGkq5seDV_Czt4XBezg20',
         authDomain: 'mapgallery-216911.firebaseapp.com',
@@ -23,6 +22,11 @@ function init() {
     firebase.auth().onAuthStateChanged((user) => {
         EventBus.$emit('user', user);
     });
+}
+
+function login() {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    firebase.auth().signInWithPopup(provider);
 }
 
 function loginByToken(token) {
@@ -88,6 +92,7 @@ init();
 
 export default {
     loginByToken,
+    login,
     logout,
     uploadFile,
     uploadGalleryData,
