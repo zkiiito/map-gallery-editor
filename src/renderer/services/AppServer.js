@@ -1,12 +1,16 @@
 import EventBus from './EventBus';
+/*
 const firebase = require('firebase/app');
 require('firebase/auth');
 require('firebase/storage');
 require('firebase/firestore');
+ */
 
 let imageIndex = {};
 
 function init() {
+    return;
+
     firebase.initializeApp({
         apiKey: 'AIzaSyBxJ2a3cME3l1zGkq5seDV_Czt4XBezg20',
         authDomain: 'mapgallery-216911.firebaseapp.com',

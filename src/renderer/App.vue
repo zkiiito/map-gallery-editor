@@ -63,7 +63,7 @@
 
 <script>
 import Draggable from 'vuedraggable';
-import GoogleMap from './components/GoogleMapWebview.vue';
+import GoogleMap from './components/web/GoogleMap.vue';
 import SlidePreview from './components/SlidePreview.vue';
 // import FileMenu from './components/FileMenu.vue';
 import ErrorBar from './components/ErrorBar';

@@ -38,8 +38,7 @@
 import GoogleMapForm from './GoogleMapForm';
 import BigButton from './BigButton';
 import Controller from '../services/Controller';
-
-const fileUrl = require('file-url');
+import SlideUrl from '../services/SlideUrl';
 
 export default {
     name: 'ProjectNavigatorBlock',
@@ -66,12 +65,7 @@ export default {
     },
     methods: {
         thumbnailUrl(slide) {
-            switch (slide.source) {
-            case 'flickr':
-                return slide.thumbnail;
-            default:
-                return fileUrl(slide.thumbnail);
-            }
+            return SlideUrl.getThumbnailUrl(slide);
         },
         openMap() {
             this.$store.commit('setCurrentSlide', this.block.mapslide);

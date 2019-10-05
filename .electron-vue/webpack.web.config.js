@@ -18,7 +18,7 @@ let webConfig = {
   },
   module: {
     rules: [
-      {
+      /* {
         test: /\.(js|vue)$/,
         enforce: 'pre',
         exclude: /node_modules/,
@@ -28,7 +28,7 @@ let webConfig = {
             formatter: require('eslint-friendly-formatter')
           }
         }
-      },
+      },*/
       {
         test: /\.less$/,
         use: ['vue-style-loader', 'css-loader', 'less-loader']
@@ -88,7 +88,7 @@ let webConfig = {
     new MiniCssExtractPlugin({filename: 'styles.css'}),
     new HtmlWebpackPlugin({
       filename: 'index.html',
-      template: path.resolve(__dirname, '../src/index.ejs'),
+      template: path.resolve(__dirname, '../src/web.ejs'),
       minify: {
         collapseWhitespace: true,
         removeAttributeQuotes: true,

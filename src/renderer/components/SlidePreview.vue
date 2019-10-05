@@ -40,7 +40,7 @@
 
 <script>
 import Controller from '../services/Controller';
-const fileUrl = require('file-url');
+import SlideUrl from '../services/SlideUrl';
 
 export default {
     name: 'SlidePreview',
@@ -68,12 +68,7 @@ export default {
             return this.$store.state.gallery.currentSlide;
         },
         thumbnailUrl() {
-            switch (this.slide.source) {
-            case 'flickr':
-                return this.slide.thumbnail;
-            default:
-                return fileUrl(this.slide.thumbnail);
-            }
+            return SlideUrl.getThumbnailUrl(this.slide);
         },
     },
     watch: {

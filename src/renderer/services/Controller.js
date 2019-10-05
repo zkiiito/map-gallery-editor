@@ -1,12 +1,12 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { remote, ipcRenderer } from 'electron';
+// import { remote, ipcRenderer } from 'electron';
 import store from '../store';
 import EventBus from './EventBus';
 import AppServer from './AppServer';
-import ImageProcessor from './ImageProcessor';
-import ProjectHandler from './ProjectHandler';
+// import ImageProcessor from './ImageProcessor';
+// import ProjectHandler from './ProjectHandler';
 
-const { dialog, shell } = remote;
+// const { dialog, shell } = remote;
 const uuidv4 = require('uuid/v4');
 
 const Controller = {
@@ -166,7 +166,8 @@ const Controller = {
         store.commit('openPopup', 'splash');
     },
     init() {
-        const fileName = ipcRenderer.sendSync('get-opened-file');
+        const fileName = null;
+        // const fileName = ipcRenderer.sendSync('get-opened-file');
         if (fileName === null) {
             this.openSplash();
         } else {
@@ -180,6 +181,6 @@ const Controller = {
     },
 };
 
-ipcRenderer.on('file-opened', Controller.openProjectFromOS);
+// ipcRenderer.on('file-opened', Controller.openProjectFromOS);
 
 export default Controller;
