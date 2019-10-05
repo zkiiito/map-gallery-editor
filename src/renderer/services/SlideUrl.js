@@ -3,6 +3,7 @@
 function getThumbnailUrl(slide) {
     switch (slide.source) {
     case 'flickr':
+    case 'web':
         return slide.thumbnail;
     default:
         return fileUrl(slide.thumbnail);
@@ -12,6 +13,7 @@ function getThumbnailUrl(slide) {
 function getFullsizeUrl(slide) {
     switch (slide.source) {
     case 'flickr':
+    case 'web':
         return slide.path;
     default:
         return fileUrl(slide.path);

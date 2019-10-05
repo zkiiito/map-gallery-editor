@@ -114,21 +114,21 @@ export default {
                 this.$Progress.pause();
             }
 
-            const currentWindow = this.$electron.remote.getCurrentWindow();
-            currentWindow.setProgressBar(percent / 100);
+            // const currentWindow = this.$electron.remote.getCurrentWindow();
+            // currentWindow.setProgressBar(percent / 100);
             this.$Progress.set(percent);
 
             if (percent === 100) {
                 setTimeout(() => {
-                    currentWindow.setProgressBar(-1);
+                    // currentWindow.setProgressBar(-1);
                     this.$Progress.finish();
                 }, 500);
             }
         });
 
         this.$bus.$on('error', () => {
-            const currentWindow = this.$electron.remote.getCurrentWindow();
-            currentWindow.setProgressBar(-1);
+            // const currentWindow = this.$electron.remote.getCurrentWindow();
+            // currentWindow.setProgressBar(-1);
             this.$Progress.fail();
         });
 

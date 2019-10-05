@@ -1,9 +1,9 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 // import { remote, ipcRenderer } from 'electron';
+import ImageProcessor from './web/ImageProcessor';
 import store from '../store';
 import EventBus from './EventBus';
 import AppServer from './AppServer';
-// import ImageProcessor from './ImageProcessor';
 // import ProjectHandler from './ProjectHandler';
 
 // const { dialog, shell } = remote;
@@ -67,29 +67,29 @@ const Controller = {
         });
     },
     addImages(prevSlide) {
-        return new Promise((resolve, reject) => {
-            dialog.showOpenDialog({
-                properties: ['openFile', 'multiSelections'],
-                filters: [{ name: 'Images', extensions: ['jpg', 'JPG', 'jpeg', 'JPEG'] }],
-            }, (files) => {
-                if (files) {
-                    ImageProcessor.processNewImages(files).then((slides) => {
-                        if (prevSlide) {
-                            store.commit('addSlidesAfter', {
-                                slide: prevSlide,
-                                slides,
-                            });
-                        } else {
-                            store.commit('addSlides', slides);
-                        }
-                        return resolve();
-                    }).catch((err) => {
-                        EventBus.$emit('error', err);
-                        reject(err);
-                    });
-                }
-            });
-        });
+        const inputElement = document.getElementById('fileselector');
+        const listenerFunction = (e) => {
+            inputElement.removeEventListener('change', listenerFunction, false);
+            const files = [...e.target.files];
+            ImageProcessor.processNewImages(files)
+                .then((slides) => {
+                    if (prevSlide) {
+                        store.commit('addSlidesAfter', {
+                            slide: prevSlide,
+                            slides,
+                        });
+                    } else {
+                        store.commit('addSlides', slides);
+                    }
+                })
+                .catch((err) => {
+                    EventBus.$emit('error', err);
+                });
+        };
+
+        inputElement.addEventListener('change', listenerFunction, false);
+        inputElement.click();
+        return Promise.resolve();
     },
     addMapSlide() {
         return Controller.addMapSlideAfter(store.state.gallery.currentSlide);
