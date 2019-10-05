@@ -3,16 +3,15 @@ import VueProgressBar from 'vue-progressbar';
 import App from './App';
 import store from './store';
 import EventBus from './services/EventBus';
-/*
-import './services/FileMenu';
-const unhandled = require('electron-unhandled');
-
-unhandled();
+// import './services/FileMenu';
 
 if (!process.env.IS_WEB) {
+    const unhandled = require('electron-unhandled');
+    unhandled();
+
     Vue.use(require('vue-electron'));
 }
- */
+
 Vue.config.productionTip = false;
 Vue.config.performance = true;
 
