@@ -106,7 +106,7 @@ export default {
                 return this.$store.state.gallery.slides;
             },
             set(value) {
-                this.$store.commit('updateOrder', value.map(el => el.id));
+                this.$store.commit('updateOrder', value.map((el) => el.id));
             },
         },
     },

@@ -142,7 +142,7 @@ function allProgressGenerators(promiseGenerators) {
                 .then((result) => {
                     done += 1;
                     results.push(result);
-                    reportProgress(done / all * 100);
+                    reportProgress((done / all) * 100);
                     if (done === all) {
                         resolve(results);
                     }
@@ -152,17 +152,17 @@ function allProgressGenerators(promiseGenerators) {
 }
 
 function processNewImages(files) {
-    const promiseGenerators = files.map(file => () => generateSlideData(file));
+    const promiseGenerators = files.map((file) => () => generateSlideData(file));
     return allProgressGenerators(promiseGenerators);
 }
 
 function exportSlides(slides, dir) {
-    const promiseGenerators = slides.map(slide => () => generateExport(slide, dir));
+    const promiseGenerators = slides.map((slide) => () => generateExport(slide, dir));
     return allProgressGenerators(promiseGenerators);
 }
 
 function updateSlides(slides) {
-    const promiseGenerators = slides.map(slide => () => updateSlide(slide));
+    const promiseGenerators = slides.map((slide) => () => updateSlide(slide));
     return allProgressGenerators(promiseGenerators);
 }
 

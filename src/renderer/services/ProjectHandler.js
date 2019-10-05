@@ -96,7 +96,7 @@ function publishProject() {
                 }
 
                 queue.add(() => ImageProcessor.getImageExport(slide.path))
-                    .then(buffer => AppServer.uploadFile(
+                    .then((buffer) => AppServer.uploadFile(
                         getExportedFilename(slide),
                         buffer,
                         store.state.gallery.id,
@@ -104,7 +104,7 @@ function publishProject() {
                     ))
                     .then(() => {
                         filesUploaded += 1;
-                        EventBus.$emit('progress', filesUploaded / filesAll * 100);
+                        EventBus.$emit('progress', (filesUploaded / filesAll) * 100);
 
                         if (queue.getPendingLength() === 0 && queue.getQueueLength() === 0) {
                             resolve(AppServer.getPublishedUrl(data));

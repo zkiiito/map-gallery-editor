@@ -64,7 +64,7 @@ export default {
             get() {
                 const { waypoints } = this.slide;
                 if (waypoints) {
-                    return waypoints.map(waypoint => waypoint.location).join('\n');
+                    return waypoints.map((waypoint) => waypoint.location).join('\n');
                 }
 
                 return '';
