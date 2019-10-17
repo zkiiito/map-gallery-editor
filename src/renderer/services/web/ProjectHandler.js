@@ -67,7 +67,7 @@ function publishProject() {
                     return;
                 }
 
-                queue.add(() => ImageProcessor.getImageExport(slide.path))
+                queue.add(() => ImageProcessor.getImageExport(slide))
                     .then((buffer) => AppServer.uploadFile(
                         getExportedFilename(slide),
                         buffer,

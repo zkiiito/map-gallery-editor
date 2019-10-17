@@ -126,17 +126,7 @@ const Controller = {
         store.commit('orderByExif');
     },
     exportProject() {
-        dialog.showOpenDialog({ properties: ['openDirectory', 'createDirectory'] }, (dir) => {
-            if (dir) {
-                ProjectHandler.exportProject(dir.toString())
-                    .then((url) => {
-                        shell.openExternal(url);
-                    })
-                    .catch((err) => {
-                        EventBus.$emit('error', err);
-                    });
-            }
-        });
+        EventBus.$emit('error', 'Export not supported');
     },
     logout() {
         AppServer.logout();
@@ -144,7 +134,7 @@ const Controller = {
     publish() {
         ProjectHandler.publishProject()
             .then((url) => {
-                shell.openExternal(url);
+                console.log(url);
             })
             .catch((err) => {
                 EventBus.$emit('error', err);

@@ -61,8 +61,8 @@ function generateSlideData(filepath) {
     });
 }
 
-async function getImageExport(path) {
-    const simg = sharp(path);
+async function getImageExport(slide) {
+    const simg = sharp(slide.path);
 
     return simg
         .resize(1920, 1080)
@@ -80,7 +80,7 @@ function generateExport(slide, dir) {
             const filepath = path.join(dir, 'images', `export_${slide.id}_${slide.filename}`);
 
             if (!fse.existsSync(filepath) || fse.statSync(filepath).mtime < slide.modified_at.getTime()) {
-                const imageData = await getImageExport(slide.path);
+                const imageData = await getImageExport(slide);
                 await fse.outputFile(filepath, imageData);
             }
 

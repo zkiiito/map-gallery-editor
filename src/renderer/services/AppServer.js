@@ -1,11 +1,12 @@
 /* global firebase */
 import EventBus from './EventBus';
-/*
-const firebase = require('firebase/app');
-require('firebase/auth');
-require('firebase/storage');
-require('firebase/firestore');
- */
+
+if (!process.env.IS_WEB) {
+    const firebase = require('firebase/app');
+    require('firebase/auth');
+    require('firebase/storage');
+    require('firebase/firestore');
+}
 
 let imageIndex = {};
 
