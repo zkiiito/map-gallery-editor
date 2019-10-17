@@ -1,4 +1,8 @@
-// const fileUrl = require('file-url');
+let fileUrl = (url) => url;
+
+if (!process.env.IS_WEB) {
+    fileUrl = require('file-url');
+}
 
 function getThumbnailUrl(slide) {
     switch (slide.source) {

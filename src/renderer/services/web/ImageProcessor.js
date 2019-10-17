@@ -1,4 +1,4 @@
-import EventBus from '../EventBus';
+import EventBus from '@/services/EventBus';
 const exifReader = require('exif-reader');
 const uuidv4 = require('uuid/v4');
 const Queue = require('promise-queue');

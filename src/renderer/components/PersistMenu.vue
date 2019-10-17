@@ -13,8 +13,8 @@
 </template>
 
 <script>
+import Controller from 'EnvServices/Controller';
 import BigButton from './BigButton';
-import Controller from '../services/Controller';
 
 export default {
     name: 'PersistMenu',

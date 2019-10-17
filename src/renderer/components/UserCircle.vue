@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import Controller from '../services/Controller';
+import Controller from 'EnvServices/Controller';
 
 export default {
     name: 'UserCircle',

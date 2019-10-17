@@ -1,12 +1,9 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
-import { remote, ipcRenderer } from 'electron';
 import ImageProcessor from 'EnvServices/ImageProcessor';
-import store from '../store';
-import EventBus from './EventBus';
-import AppServer from './AppServer';
-import ProjectHandler from './ProjectHandler';
+import ProjectHandler from 'EnvServices/ProjectHandler';
+import store from '@/store';
+import EventBus from '@/services/EventBus';
+import AppServer from '@/services/AppServer';
 
-const { dialog, shell } = remote;
 const uuidv4 = require('uuid/v4');
 
 const Controller = {
@@ -14,7 +11,7 @@ const Controller = {
         store.commit('setFilename', null);
         store.dispatch('resetProject', []);
         EventBus.$emit('clearErrors');
-        Controller.openProjectData();
+        this.openProjectData();
     },
     openProject() {
         return new Promise((resolve, reject) => {
@@ -44,7 +41,7 @@ const Controller = {
     },
     saveProject() {
         if (!store.state.ui.filename) {
-            Controller.saveProjectAs();
+            this.saveProjectAs();
             return;
         }
 
@@ -67,29 +64,29 @@ const Controller = {
         });
     },
     addImages(prevSlide) {
-        return new Promise((resolve, reject) => {
-            dialog.showOpenDialog({
-                properties: ['openFile', 'multiSelections'],
-                filters: [{ name: 'Images', extensions: ['jpg', 'JPG', 'jpeg', 'JPEG'] }],
-            }, (files) => {
-                if (files) {
-                    ImageProcessor.processNewImages(files).then((slides) => {
-                        if (prevSlide) {
-                            store.commit('addSlidesAfter', {
-                                slide: prevSlide,
-                                slides,
-                            });
-                        } else {
-                            store.commit('addSlides', slides);
-                        }
-                        return resolve();
-                    }).catch((err) => {
-                        EventBus.$emit('error', err);
-                        reject(err);
-                    });
-                }
-            });
-        });
+        const inputElement = document.getElementById('fileselector');
+        const listenerFunction = (e) => {
+            inputElement.removeEventListener('change', listenerFunction, false);
+            const files = [...e.target.files];
+            ImageProcessor.processNewImages(files)
+                .then((slides) => {
+                    if (prevSlide) {
+                        store.commit('addSlidesAfter', {
+                            slide: prevSlide,
+                            slides,
+                        });
+                    } else {
+                        store.commit('addSlides', slides);
+                    }
+                })
+                .catch((err) => {
+                    EventBus.$emit('error', err);
+                });
+        };
+
+        inputElement.addEventListener('change', listenerFunction, false);
+        inputElement.click();
+        return Promise.resolve();
     },
     addMapSlide() {
         return Controller.addMapSlideAfter(store.state.gallery.currentSlide);
@@ -154,7 +151,7 @@ const Controller = {
             });
     },
     login() {
-        store.commit('openPopup', 'auth');
+        AppServer.login();
     },
     openFlickr() {
         store.commit('openPopup', 'flickr');
@@ -166,12 +163,7 @@ const Controller = {
         store.commit('openPopup', 'splash');
     },
     init() {
-        const fileName = ipcRenderer.sendSync('get-opened-file');
-        if (fileName === null) {
-            this.openSplash();
-        } else {
-            this.openProjectFromOS(fileName);
-        }
+        this.openSplash();
     },
     openProjectFromOS(fileName) {
         store.commit('setSplashMode', false);
@@ -179,7 +171,5 @@ const Controller = {
         this.openProjectFile(fileName);
     },
 };
-
-ipcRenderer.on('file-opened', Controller.openProjectFromOS);
 
 export default Controller;

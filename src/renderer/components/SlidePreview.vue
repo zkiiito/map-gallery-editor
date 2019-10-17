@@ -39,7 +39,7 @@
 </template>
 
 <script>
-import Controller from '../services/Controller';
+import Controller from 'EnvServices/Controller';
 import SlideUrl from '../services/SlideUrl';
 
 export default {

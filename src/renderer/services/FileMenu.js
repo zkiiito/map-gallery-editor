@@ -1,7 +1,7 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { remote, shell } from 'electron';
 
-import Controller from './Controller';
+import Controller from 'EnvServices/Controller';
 import EventBus from './EventBus';
 const { Menu } = remote;
 

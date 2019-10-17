@@ -4,9 +4,6 @@ import store from '@/store';
 import AppServer from '@/services/AppServer';
 import Validator from '@/services/SchemaValidator';
 
-const fileUrl = require('file-url');
-const fse = require('fs-extra');
-const path = require('path');
 const Queue = require('promise-queue');
 
 async function openProject(path) {
@@ -53,27 +50,6 @@ function getExportedFilename(slide) {
 }
 
 async function exportProject(dir) {
-    const { slides } = store.state.gallery;
-
-    await ImageProcessor.exportSlides(slides, dir);
-
-    const mapGalleryRoot = process.env.NODE_ENV !== 'development' ? process.resourcesPath : __static;
-
-    await fse.copy(path.join(mapGalleryRoot, 'MapGallery'), dir);
-
-    const data = slides.map((slide) => {
-        if (slide.from) {
-            return slide;
-        }
-        return getExportedFilename(slide);
-    });
-
-    await fse.outputFile(
-        path.join(dir, 'scripts', 'demo.js'),
-        `MapGallery.initialize(${JSON.stringify(data)});`,
-    );
-
-    return fileUrl(path.join(dir, 'index.html'));
 }
 
 function publishProject() {

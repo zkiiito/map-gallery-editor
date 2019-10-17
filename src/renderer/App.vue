@@ -62,7 +62,7 @@
 
 <script>
 import Draggable from 'vuedraggable';
-import GoogleMap from './components/web/GoogleMap.vue';
+import GoogleMap from 'EnvComponents/GoogleMap.vue';
 import SlidePreview from './components/SlidePreview.vue';
 import ErrorBar from './components/ErrorBar';
 import AuthPopup from './components/AuthPopup';
@@ -71,7 +71,7 @@ import ProjectDataPopup from './components/ProjectDataPopup';
 import SplashPopup from './components/SplashPopup';
 import ViewSwitch from './components/ViewSwitch';
 import ProjectNavigator from './components/ProjectNavigator';
-import Controller from './services/Controller';
+import Controller from 'EnvServices/Controller';
 import AddButtons from './components/AddButtons';
 import PersistMenu from './components/PersistMenu';
 import UserCircle from './components/UserCircle';

@@ -35,9 +35,9 @@
 </template>
 
 <script>
+import Controller from 'EnvServices/Controller';
 import GoogleMapForm from './GoogleMapForm';
 import BigButton from './BigButton';
-import Controller from '../services/Controller';
 import SlideUrl from '../services/SlideUrl';
 
 export default {
