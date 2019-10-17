@@ -5,6 +5,7 @@
         <ProjectDataPopup v-if="$store.getters.isPopupOpen('projectData')"/>
         <SplashPopup v-if="$store.getters.isPopupOpen('splash')"/>
         <ErrorBar/>
+        <WindowProgressbar/>
 
         <div id="main" v-if="!$store.state.ui.splashMode">
             <div id="main-left">
@@ -62,7 +63,9 @@
 
 <script>
 import Draggable from 'vuedraggable';
+import Controller from 'EnvServices/Controller';
 import GoogleMap from 'EnvComponents/GoogleMap.vue';
+import WindowProgressbar from 'EnvComponents/WindowProgressbar';
 import SlidePreview from './components/SlidePreview.vue';
 import ErrorBar from './components/ErrorBar';
 import AuthPopup from './components/AuthPopup';
@@ -71,7 +74,6 @@ import ProjectDataPopup from './components/ProjectDataPopup';
 import SplashPopup from './components/SplashPopup';
 import ViewSwitch from './components/ViewSwitch';
 import ProjectNavigator from './components/ProjectNavigator';
-import Controller from 'EnvServices/Controller';
 import AddButtons from './components/AddButtons';
 import PersistMenu from './components/PersistMenu';
 import UserCircle from './components/UserCircle';
@@ -96,6 +98,7 @@ export default {
         ProjectDataPopup,
         SplashPopup,
         ViewSwitch,
+        WindowProgressbar,
     },
     computed: {
         slides: {
@@ -114,21 +117,16 @@ export default {
                 this.$Progress.pause();
             }
 
-            // const currentWindow = this.$electron.remote.getCurrentWindow();
-            // currentWindow.setProgressBar(percent / 100);
             this.$Progress.set(percent);
 
             if (percent === 100) {
                 setTimeout(() => {
-                    // currentWindow.setProgressBar(-1);
                     this.$Progress.finish();
                 }, 500);
             }
         });
 
         this.$bus.$on('error', () => {
-            // const currentWindow = this.$electron.remote.getCurrentWindow();
-            // currentWindow.setProgressBar(-1);
             this.$Progress.fail();
         });
 

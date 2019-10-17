@@ -2,7 +2,7 @@
 import EventBus from './EventBus';
 
 if (!process.env.IS_WEB) {
-    const firebase = require('firebase/app');
+    firebase = require('firebase/app');
     require('firebase/auth');
     require('firebase/storage');
     require('firebase/firestore');
