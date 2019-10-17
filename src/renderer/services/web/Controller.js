@@ -68,17 +68,17 @@ const Controller = {
         const listenerFunction = (e) => {
             inputElement.removeEventListener('change', listenerFunction, false);
             const files = [...e.target.files];
-            ImageProcessor.processNewImages(files)
-                .then((slides) => {
-                    if (prevSlide) {
-                        store.commit('addSlidesAfter', {
-                            slide: prevSlide,
-                            slides,
-                        });
-                    } else {
-                        store.commit('addSlides', slides);
-                    }
-                })
+            ImageProcessor.processNewImages(files, (slide) => {
+                if (prevSlide) {
+                    store.commit('addSlidesAfter', {
+                        slide: prevSlide,
+                        slides: [slide],
+                    });
+                    prevSlide = slide;
+                } else {
+                    store.commit('addSlides', [slide]);
+                }
+            })
                 .catch((err) => {
                     EventBus.$emit('error', err);
                 });

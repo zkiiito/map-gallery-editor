@@ -92,6 +92,7 @@
     "file-url": "^3.0.0",
     "firebase": "^7.1.0",
     "fs-extra": "^8.1.0",
+    "pica": "^5.1.0",
     "promise-queue": "^2.2.5",
     "sharp": "^0.23.1",
     "uuid": "^3.3.3",
