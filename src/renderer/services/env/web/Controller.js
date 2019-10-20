@@ -50,6 +50,12 @@ const Controller = Object.assign(BaseController, {
         AppServer.login();
     },
     init() {
+        EventBus.$on(EventBus.events.USER_CHANGED, () => {
+            AppServer.getGalleries().then((galleries) => {
+                store.commit('setHistory', galleries);
+            });
+        });
+
         this.openSplash();
     },
 });

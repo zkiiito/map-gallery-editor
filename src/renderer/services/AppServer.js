@@ -1,4 +1,5 @@
 import EventBus from './EventBus';
+import SlideUrl from '@/services/SlideUrl';
 
 let firebaseApp;
 
@@ -93,6 +94,43 @@ function getPublishedUrl(galleryData) {
     return `https://mapgallery.online/gallery/${uid}/${galleryData.id}`;
 }
 
+function getGalleries() {
+    const { uid } = firebaseApp.auth().currentUser;
+    const db = firebaseApp.firestore();
+
+    return db.collection('users').doc(uid).collection('galleries').get()
+        .then((querySnapshot) => {
+            const res = [];
+
+            querySnapshot.forEach((doc) => {
+                const data = doc.data();
+
+                data.slided = data.slides.map((slide) => {
+                    slide.modified_at = slide.modified_at ? slide.modified_at.toDate().toString() : null;
+                    slide.exif_date = slide.exif_date ? slide.exif_date.toDate().toString() : null;
+
+                    return slide;
+                });
+
+                res.push(data);
+            });
+
+            return res;
+        });
+}
+
+function getSlideUrl(slide, galleryId) {
+    const baseUrl = 'https://firebasestorage.googleapis.com/v0/b/mapgallery-216911.appspot.com/o/';
+    const { uid } = firebaseApp.auth().currentUser;
+
+    if (slide.source === 'web') {
+        const dataPath = `users/${uid}/galleries/${galleryId}`;
+        return `${baseUrl + encodeURIComponent(`${dataPath}/${SlideUrl.getExportedFilename(slide)}`)}?alt=media`;
+    }
+
+    return '';
+}
+
 init();
 
 export default {
@@ -102,4 +140,6 @@ export default {
     uploadFile,
     uploadGalleryData,
     getPublishedUrl,
+    getGalleries,
+    getSlideUrl,
 };

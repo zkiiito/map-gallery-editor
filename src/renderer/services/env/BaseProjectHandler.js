@@ -2,26 +2,23 @@ import ImageProcessor from 'EnvServices/ImageProcessor';
 import EventBus from '@/services/EventBus';
 import store from '@/store';
 import AppServer from '@/services/AppServer';
+import SlideUrl from '@/services/SlideUrl';
 
 const Queue = require('promise-queue');
 
+// eslint-disable-next-line no-unused-vars
 async function openProject(path) {
-    // TODO
+    throw new Error('implement');
 }
 
+// eslint-disable-next-line no-unused-vars
 async function saveProject(path) {
-    // TODO
+    throw new Error('implement');
 }
 
-function getExportedFilename(slide) {
-    if (slide.source === 'flickr') {
-        return slide.path;
-    }
-    return `export_${slide.id}_${slide.filename}`;
-}
-
+// eslint-disable-next-line no-unused-vars
 async function exportProject(dir) {
-    // TODO
+    throw new Error('implement');
 }
 
 function publishProject() {
@@ -35,13 +32,13 @@ function publishProject() {
             let filesUploaded = 0;
 
             slides.forEach((slide) => {
-                if (slide.from || slide.source === 'flickr') {
+                if (slide.from || slide.source === 'flickr' || (slide.source === 'web' && slide.uploaded)) {
                     return;
                 }
 
                 queue.add(() => ImageProcessor.getImageExport(slide))
                     .then((buffer) => AppServer.uploadFile(
-                        getExportedFilename(slide),
+                        SlideUrl.getExportedFilename(slide),
                         buffer,
                         store.state.gallery.id,
                         slide.modified_at,
@@ -73,5 +70,4 @@ export default {
     saveProject,
     exportProject,
     publishProject,
-    getExportedFilename,
 };

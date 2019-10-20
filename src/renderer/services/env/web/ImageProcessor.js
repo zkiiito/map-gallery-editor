@@ -1,8 +1,8 @@
 import EventBus from '@/services/EventBus';
-const exifReader = require('exif-reader');
+// const exifReader = require('exif-reader');
 const uuidv4 = require('uuid/v4');
 const Queue = require('promise-queue');
-const pica = require('pica')();
+// const pica = require('pica')();
 
 const imageSlideTemplate = {
     filename: 'lol.jpg',
@@ -61,9 +61,10 @@ function generateSlideData(file) {
             filename: file.name,
             thumbnail: '',
             path: URL.createObjectURL(file),
-            exif_date: 0, // TODO
-            modified_at: file.lastModified,
+            // exif_date: new Date('2016-01-01 01:11:23'), // TODO
+            modified_at: new Date(file.lastModified),
             source: 'web',
+            uploaded: false,
         },
     };
 
@@ -88,55 +89,20 @@ async function getImageExport(slide) {
     return fetch(slide.path).then((r) => r.blob());
 }
 
+// eslint-disable-next-line no-unused-vars
 function generateExport(slide, dir) {
-    return new Promise(async (resolve, reject) => {
-        if (slide.path === undefined || slide.source === 'flickr') {
-            return resolve();
-        }
-
-        try {
-            const filepath = path.join(dir, 'images', `export_${slide.id}_${slide.filename}`);
-
-            if (!fse.existsSync(filepath) || fse.statSync(filepath).mtime < slide.modified_at.getTime()) {
-                const imageData = await getImageExport(slide);
-                await fse.outputFile(filepath, imageData);
-            }
-
-            return resolve();
-        } catch (err) {
-            return reject(err);
-        }
-    });
+    throw new Error('implement');
 }
 
 function updateSlide(slide) {
-    return new Promise(async (resolve, reject) => {
+    return new Promise((resolve) => {
         if (slide.path === undefined || slide.source === 'flickr') {
             resolve(slide);
             return;
         }
 
-        let imageStat = null;
-        let thumbStat = null;
-
-        try {
-            imageStat = await fse.stat(slide.path);
-        } catch (err) {
-            reject(new Error(`Image not found: ${slide.path}`));
-            return;
-        }
-
-        try {
-            thumbStat = await fse.stat(slide.thumbnail);
-        } catch (err) {
-            thumbStat = null;
-        }
-
-        if (thumbStat === null || thumbStat.mtimeMs < imageStat.mtimeMs || slide.modified_at < imageStat.mtime) {
-            const { id } = slide;
-            const newSlide = await generateSlideData(slide.path);
-            slide = { ...slide, ...newSlide };
-            slide.id = id;
+        if (slide.source === 'web') {
+            slide.uploaded = true;
         }
 
         resolve(slide);
@@ -190,6 +156,6 @@ function updateSlides(slides) {
 export default {
     processNewImages,
     // exportSlides,
-    // updateSlides,
+    updateSlides,
     getImageExport,
 };

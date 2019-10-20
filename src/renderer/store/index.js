@@ -277,6 +277,13 @@ export default new Vuex.Store({
                 setDescription(state, description) {
                     state.currentProject.description = description;
                 },
+                setHistory(state, projects) {
+                    projects = projects.map((project) => {
+                        project.filename = project.id;
+                        return project;
+                    });
+                    state.projectHistory = projects;
+                },
             },
         },
     },

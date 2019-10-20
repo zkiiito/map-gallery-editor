@@ -13,7 +13,7 @@ const Controller = {
         Controller.openProjectData();
     },
     openProject() {
-        // implement
+        throw new Error('implement');
     },
     openProjectFile(filename) {
         store.commit('setFilename', filename);
@@ -40,10 +40,11 @@ const Controller = {
             });
     },
     saveProjectAs() {
-        // implement
+        throw new Error('implement');
     },
+    // eslint-disable-next-line no-unused-vars
     addImages(prevSlide) {
-        // implement
+        throw new Error('implement');
     },
     addMapSlide() {
         return Controller.addMapSlideAfter(store.state.gallery.currentSlide);
@@ -83,16 +84,16 @@ const Controller = {
         store.commit('orderByExif');
     },
     exportProject() {
-        // implement
+        throw new Error('implement');
     },
     logout() {
         AppServer.logout();
     },
     publish() {
-        // implement
+        throw new Error('implement');
     },
     login() {
-        // implement
+        throw new Error('implement');
     },
     openFlickr() {
         store.commit('openPopup', 'flickr');
@@ -104,7 +105,7 @@ const Controller = {
         store.commit('openPopup', 'splash');
     },
     init() {
-        // implement
+        throw new Error('implement');
     },
 };
 

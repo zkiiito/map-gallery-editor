@@ -2,6 +2,7 @@ import ImageProcessor from 'EnvServices/ImageProcessor';
 import store from '@/store';
 import Validator from '@/services/SchemaValidator';
 import BaseProjectHandler from '@/services/env/BaseProjectHandler';
+import SlideUrl from '@/services/SlideUrl';
 
 const fileUrl = require('file-url');
 const fse = require('fs-extra');
@@ -56,7 +57,7 @@ async function exportProject(dir) {
         if (slide.from) {
             return slide;
         }
-        return BaseProjectHandler.getExportedFilename(slide);
+        return SlideUrl.getExportedFilename(slide);
     });
 
     await fse.outputFile(

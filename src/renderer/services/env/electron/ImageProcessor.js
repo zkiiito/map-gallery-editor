@@ -1,4 +1,5 @@
 import EventBus from '@/services/EventBus';
+import SlideUrl from '@/services/SlideUrl';
 const fse = require('fs-extra');
 const sharp = require('sharp');
 const exifReader = require('exif-reader');
@@ -77,7 +78,7 @@ function generateExport(slide, dir) {
         }
 
         try {
-            const filepath = path.join(dir, 'images', `export_${slide.id}_${slide.filename}`);
+            const filepath = path.join(dir, 'images', SlideUrl.getExportedFilename(slide));
 
             if (!fse.existsSync(filepath) || fse.statSync(filepath).mtime < slide.modified_at.getTime()) {
                 const imageData = await getImageExport(slide);
