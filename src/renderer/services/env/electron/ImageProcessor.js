@@ -1,4 +1,4 @@
-import EventBus from './EventBus';
+import EventBus from '@/services/EventBus';
 const fse = require('fs-extra');
 const sharp = require('sharp');
 const exifReader = require('exif-reader');

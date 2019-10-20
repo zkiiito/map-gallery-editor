@@ -1,10 +1,10 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { remote, ipcRenderer } from 'electron';
 import ImageProcessor from 'EnvServices/ImageProcessor';
-import store from '../store';
-import EventBus from './EventBus';
-import AppServer from './AppServer';
-import ProjectHandler from './ProjectHandler';
+import ProjectHandler from 'EnvServices/ProjectHandler';
+import store from '@/store';
+import EventBus from '@/services/EventBus';
+import AppServer from '@/services/AppServer';
 
 const { dialog, shell } = remote;
 const uuidv4 = require('uuid/v4');

@@ -2,7 +2,7 @@
 import { remote, shell } from 'electron';
 
 import Controller from 'EnvServices/Controller';
-import EventBus from './EventBus';
+import EventBus from '@/services/EventBus';
 const { Menu } = remote;
 
 const menu = Menu.buildFromTemplate([
