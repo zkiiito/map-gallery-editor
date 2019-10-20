@@ -55,6 +55,7 @@ div.error {
     line-height: 43px;
     text-align: center;
     margin-bottom: 20px;
+    z-index: 10;
 }
 
 a.close {
