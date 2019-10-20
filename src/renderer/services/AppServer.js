@@ -25,7 +25,7 @@ function init() {
     });
 
     firebaseApp.auth().onAuthStateChanged((user) => {
-        EventBus.$emit('user', user);
+        EventBus.$emit(EventBus.events.USER_CHANGED, user);
     });
 }
 

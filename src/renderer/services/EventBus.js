@@ -13,6 +13,7 @@ EventBus.events = {
     POPUP_CLOSED: 'popup_closed',
     SLIDE_DELETED: 'slide_deleted',
     SLIDE_DELETED_UNDO: 'slide_deleted_undo',
+    USER_CHANGED: 'user_changed',
 };
 
 export default EventBus;

@@ -79,6 +79,7 @@ import PersistMenu from './components/PersistMenu';
 import UserCircle from './components/UserCircle';
 import ImageView from './components/ImageView';
 import ToasterUndo from './components/ToasterUndo';
+import EventBus from '@/services/EventBus';
 
 export default {
     name: 'App',
@@ -130,7 +131,7 @@ export default {
             this.$Progress.fail();
         });
 
-        this.$bus.$on('user', (user) => {
+        this.$bus.$on(EventBus.events.USER_CHANGED, (user) => {
             this.$store.commit('setGoogleUser', user);
         });
 

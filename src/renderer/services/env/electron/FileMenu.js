@@ -101,7 +101,7 @@ const menu = Menu.buildFromTemplate([
     },
 ]);
 
-EventBus.$on('user', (user) => {
+EventBus.$on(EventBus.events.USER_CHANGED, (user) => {
     if (user) {
         menu.getMenuItemById('login').enabled = false;
         menu.getMenuItemById('logout').enabled = true;
