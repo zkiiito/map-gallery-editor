@@ -1,8 +1,8 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { remote, shell } from 'electron';
 
-import Controller from './Controller';
-import EventBus from './EventBus';
+import Controller from 'EnvServices/Controller';
+import EventBus from '@/services/EventBus';
 const { Menu } = remote;
 
 const menu = Menu.buildFromTemplate([
@@ -101,7 +101,7 @@ const menu = Menu.buildFromTemplate([
     },
 ]);
 
-EventBus.$on('user', (user) => {
+EventBus.$on(EventBus.events.USER_CHANGED, (user) => {
     if (user) {
         menu.getMenuItemById('login').enabled = false;
         menu.getMenuItemById('logout').enabled = true;

@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import Controller from '../services/Controller';
+import Controller from 'EnvServices/Controller';
 
 export default {
     name: 'UserCircle',
@@ -44,6 +44,7 @@ div#user-circle {
     font-size: 30px;
     border: 4px solid #23abad;
     overflow: hidden;
+    z-index: 10;
 }
 
 a {

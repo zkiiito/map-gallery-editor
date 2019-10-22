@@ -5,7 +5,7 @@
         <ProjectDataPopup v-if="$store.getters.isPopupOpen('projectData')"/>
         <SplashPopup v-if="$store.getters.isPopupOpen('splash')"/>
         <ErrorBar/>
-        <!--FileMenu/-->
+        <WindowProgressbar/>
 
         <div id="main" v-if="!$store.state.ui.splashMode">
             <div id="main-left">
@@ -47,7 +47,8 @@
                         <Draggable
                             id="slideholder"
                             v-model="slides"
-                            :options="{group: 'slides', draggable: '.draggable'}"
+                            group="slides"
+                            draggable=".draggable"
                             :class="$store.getters.currentSlideType !== null ? 'small' : 'big'"
                         >
                             <SlidePreview v-for="slide in slides" :key="slide.id" :slide="slide" class="draggable"/>
@@ -63,9 +64,11 @@
 
 <script>
 import Draggable from 'vuedraggable';
-import GoogleMap from './components/GoogleMapWebview.vue';
+import Controller from 'EnvServices/Controller';
+import GoogleMap from 'EnvComponents/GoogleMap.vue';
+import PersistMenu from 'EnvComponents/PersistMenu';
+import WindowProgressbar from 'EnvComponents/WindowProgressbar';
 import SlidePreview from './components/SlidePreview.vue';
-// import FileMenu from './components/FileMenu.vue';
 import ErrorBar from './components/ErrorBar';
 import AuthPopup from './components/AuthPopup';
 import FlickrPopup from './components/FlickrPopup';
@@ -73,12 +76,11 @@ import ProjectDataPopup from './components/ProjectDataPopup';
 import SplashPopup from './components/SplashPopup';
 import ViewSwitch from './components/ViewSwitch';
 import ProjectNavigator from './components/ProjectNavigator';
-import Controller from './services/Controller';
 import AddButtons from './components/AddButtons';
-import PersistMenu from './components/PersistMenu';
 import UserCircle from './components/UserCircle';
 import ImageView from './components/ImageView';
 import ToasterUndo from './components/ToasterUndo';
+import EventBus from '@/services/EventBus';
 
 export default {
     name: 'App',
@@ -92,13 +94,13 @@ export default {
         GoogleMap,
         SlidePreview,
         Draggable,
-        // FileMenu,
         ErrorBar,
         AuthPopup,
         FlickrPopup,
         ProjectDataPopup,
         SplashPopup,
         ViewSwitch,
+        WindowProgressbar,
     },
     computed: {
         slides: {
@@ -106,7 +108,7 @@ export default {
                 return this.$store.state.gallery.slides;
             },
             set(value) {
-                this.$store.commit('updateOrder', value.map(el => el.id));
+                this.$store.commit('updateOrder', value.map((el) => el.id));
             },
         },
     },
@@ -117,25 +119,20 @@ export default {
                 this.$Progress.pause();
             }
 
-            const currentWindow = this.$electron.remote.getCurrentWindow();
-            currentWindow.setProgressBar(percent / 100);
             this.$Progress.set(percent);
 
             if (percent === 100) {
                 setTimeout(() => {
-                    currentWindow.setProgressBar(-1);
                     this.$Progress.finish();
                 }, 500);
             }
         });
 
         this.$bus.$on('error', () => {
-            const currentWindow = this.$electron.remote.getCurrentWindow();
-            currentWindow.setProgressBar(-1);
             this.$Progress.fail();
         });
 
-        this.$bus.$on('user', (user) => {
+        this.$bus.$on(EventBus.events.USER_CHANGED, (user) => {
             this.$store.commit('setGoogleUser', user);
         });
 

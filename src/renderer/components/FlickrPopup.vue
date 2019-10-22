@@ -70,7 +70,7 @@ export default {
         importPhotos() {
             if (this.selectedPhotoset) {
                 FlickrServer.getPhotosFromPhotoset(this.selectedPhotoset).then((photos) => {
-                    this.$store.commit('addSlides', photos.map(photo => ({
+                    this.$store.commit('addSlides', photos.map((photo) => ({
                         id: photo.id,
                         filename: photo.url_h.split('/').pop(),
                         path: photo.url_h,

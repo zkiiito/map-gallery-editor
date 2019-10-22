@@ -31,9 +31,9 @@
     </Modal>
 </template>
 <script>
+import Controller from 'EnvServices/Controller';
 import Modal from './Modal';
 import BigButton from './BigButton';
-import Controller from '../services/Controller';
 
 export default {
     name: 'SplashPopup',

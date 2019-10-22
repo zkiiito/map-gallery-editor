@@ -10,21 +10,15 @@
 </template>
 
 <script>
-import Controller from '../services/Controller';
-
-const fileUrl = require('file-url');
+import Controller from 'EnvServices/Controller';
+import SlideUrl from '../services/SlideUrl';
 
 export default {
     name: 'ImageView',
     computed: {
         src() {
             if (this.$store.getters.currentSlideType === 'image') {
-                switch (this.$store.state.gallery.currentSlide.source) {
-                case 'flickr':
-                    return this.$store.state.gallery.currentSlide.path;
-                default:
-                    return fileUrl(this.$store.state.gallery.currentSlide.path);
-                }
+                return SlideUrl.getFullsizeUrl(this.$store.state.gallery.currentSlide);
             }
             return '';
         },

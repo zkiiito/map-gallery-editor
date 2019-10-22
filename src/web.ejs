@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>MapGallery Editor</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/solid.css" integrity="sha384-+0VIRx+yz1WBcCTXBkVQYIBVNEFH1eP6Zknm16roZCyeNg2maWEpk/l/KsyFKs7G" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/fontawesome.css" integrity="sha384-jLuaxTTBR42U2qJ/pm4JRouHkEDHkVqH0T1nyQXn1mZ7Snycpf6Rl25VBNthU4z0" crossorigin="anonymous">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+        div.splash {
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            z-index: -1;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-image: url('static/ui/bg/mickael-tournier-541487-unsplash.jpg');
+    }
+    </style>
+    <script src="static/MapGallery/scripts/MapAnimator.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key="></script>
+    <script src="static/MapGallery/scripts/v3_epoly.js"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/7.1.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.1.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.1.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.1.0/firebase-storage.js"></script>
+  </head>
+  <body>
+    <div class="splash"></div>
+    <div id="app"></div>
+    <input type="file" id="fileselector" style="display:none" multiple/>
+    <!-- webpack builds are automatically injected -->
+  </body>
+</html>

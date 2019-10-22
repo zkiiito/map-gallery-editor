@@ -38,7 +38,7 @@ export default new Vuex.Store({
                 },
                 updateOrder(state, ids) {
                     state.slides = ids.reduce((newSlides, id) => {
-                        newSlides.push(state.slides.find(el => el.id === id));
+                        newSlides.push(state.slides.find((el) => el.id === id));
                         return newSlides;
                     }, []);
                 },
@@ -47,7 +47,7 @@ export default new Vuex.Store({
                 },
                 addSlideAfterCurrent(state, slide) {
                     if (state.currentSlide) {
-                        const index = state.slides.findIndex(slide => slide === state.currentSlide);
+                        const index = state.slides.findIndex((slide) => slide === state.currentSlide);
                         state.slides.splice(index + 1, 0, slide);
                     } else {
                         state.slides.push(slide);
@@ -182,7 +182,7 @@ export default new Vuex.Store({
 
                     return 'image';
                 },
-                fileData: state => ({
+                fileData: (state) => ({
                     id: state.id,
                     title: state.title,
                     description: state.description,
@@ -204,7 +204,7 @@ export default new Vuex.Store({
                     EventBus.$emit(EventBus.events.POPUP_OPENED, popup);
                 },
                 closePopup(state, popup) {
-                    state.popups = state.popups.filter(openpopup => popup !== openpopup);
+                    state.popups = state.popups.filter((openpopup) => popup !== openpopup);
                     EventBus.$emit(EventBus.events.POPUP_CLOSED, popup, state.popups.length);
                 },
                 closePopups(state) {
@@ -228,7 +228,7 @@ export default new Vuex.Store({
                 },
             },
             getters: {
-                isPopupOpen: state => (popup => state.popups.indexOf(popup) >= 0),
+                isPopupOpen: (state) => ((popup) => state.popups.indexOf(popup) >= 0),
             },
         },
         user: {
@@ -253,7 +253,7 @@ export default new Vuex.Store({
             mutations: {
                 setFilename(state, filename) {
                     if (filename) {
-                        const idx = state.projectHistory.findIndex(project => project.filename === filename);
+                        const idx = state.projectHistory.findIndex((project) => project.filename === filename);
                         if (idx > -1) {
                             state.projectHistory.splice(idx, 1);
                         }
@@ -276,6 +276,13 @@ export default new Vuex.Store({
                 },
                 setDescription(state, description) {
                     state.currentProject.description = description;
+                },
+                setHistory(state, projects) {
+                    projects = projects.map((project) => {
+                        project.filename = project.id;
+                        return project;
+                    });
+                    state.projectHistory = projects;
                 },
             },
         },

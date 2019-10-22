@@ -15,6 +15,7 @@
 <script>
 import Modal from './Modal';
 import AppServer from '../services/AppServer';
+import EventBus from '@/services/EventBus';
 
 export default {
     name: 'AuthPopup',
@@ -28,7 +29,7 @@ export default {
             AppServer.loginByToken(msg.channel);
         });
 
-        this.$bus.$on('user', () => {
+        this.$bus.$on(EventBus.events.USER_CHANGED, () => {
             this.$store.commit('closePopup', 'auth');
         });
     },

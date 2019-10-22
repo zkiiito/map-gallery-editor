@@ -1,13 +1,22 @@
 import EventBus from './EventBus';
-const firebase = require('firebase/app');
-require('firebase/auth');
-require('firebase/storage');
-require('firebase/firestore');
+import SlideUrl from '@/services/SlideUrl';
+
+let firebaseApp;
+
+if (process.env.IS_WEB) {
+    /* global firebase */
+    firebaseApp = firebase;
+} else {
+    firebaseApp = require('firebase/app');
+    require('firebase/auth');
+    require('firebase/storage');
+    require('firebase/firestore');
+}
 
 let imageIndex = {};
 
 function init() {
-    firebase.initializeApp({
+    firebaseApp.initializeApp({
         apiKey: 'AIzaSyBxJ2a3cME3l1zGkq5seDV_Czt4XBezg20',
         authDomain: 'mapgallery-216911.firebaseapp.com',
         databaseURL: 'https://mapgallery-216911.firebaseio.com',
@@ -16,26 +25,31 @@ function init() {
         messagingSenderId: '1046834610547',
     });
 
-    firebase.auth().onAuthStateChanged((user) => {
-        EventBus.$emit('user', user);
+    firebaseApp.auth().onAuthStateChanged((user) => {
+        EventBus.$emit(EventBus.events.USER_CHANGED, user);
     });
 }
 
+function login() {
+    const provider = new firebaseApp.auth.GoogleAuthProvider();
+    firebaseApp.auth().signInWithPopup(provider);
+}
+
 function loginByToken(token) {
-    const credential = firebase.auth.GoogleAuthProvider.credential(null, token);
-    firebase.auth().signInWithCredential(credential)
+    const credential = firebaseApp.auth.GoogleAuthProvider.credential(null, token);
+    firebaseApp.auth().signInWithCredential(credential)
         .catch((error) => {
             EventBus.$emit('error', error);
         });
 }
 
 function logout() {
-    firebase.auth().signOut();
+    firebaseApp.auth().signOut();
 }
 
 async function uploadFile(filename, buffer, galleryId, modifiedAt) {
-    const { uid } = firebase.auth().currentUser;
-    const storageRef = firebase.storage().ref().child(`users/${uid}/galleries/${galleryId}`);
+    const { uid } = firebaseApp.auth().currentUser;
+    const storageRef = firebaseApp.storage().ref().child(`users/${uid}/galleries/${galleryId}`);
     const metadata = {
         contentType: 'image/jpeg',
     };
@@ -50,8 +64,8 @@ async function uploadFile(filename, buffer, galleryId, modifiedAt) {
 }
 
 function getImageIndex(galleryData) {
-    const { uid } = firebase.auth().currentUser;
-    const db = firebase.firestore();
+    const { uid } = firebaseApp.auth().currentUser;
+    const db = firebaseApp.firestore();
     imageIndex = {};
 
     return db.collection('users').doc(uid).collection('galleries').doc(galleryData.id)
@@ -66,8 +80,8 @@ function getImageIndex(galleryData) {
 }
 
 function uploadGalleryData(galleryData) {
-    const { uid } = firebase.auth().currentUser;
-    const db = firebase.firestore();
+    const { uid } = firebaseApp.auth().currentUser;
+    const db = firebaseApp.firestore();
 
     return getImageIndex(galleryData)
         .then(() => db.collection('users').doc(uid).collection('galleries').doc(galleryData.id)
@@ -75,17 +89,57 @@ function uploadGalleryData(galleryData) {
 }
 
 function getPublishedUrl(galleryData) {
-    const { uid } = firebase.auth().currentUser;
+    const { uid } = firebaseApp.auth().currentUser;
 
     return `https://mapgallery.online/gallery/${uid}/${galleryData.id}`;
+}
+
+function getGalleries() {
+    const { uid } = firebaseApp.auth().currentUser;
+    const db = firebaseApp.firestore();
+
+    return db.collection('users').doc(uid).collection('galleries').get()
+        .then((querySnapshot) => {
+            const res = [];
+
+            querySnapshot.forEach((doc) => {
+                const data = doc.data();
+
+                data.slided = data.slides.map((slide) => {
+                    slide.modified_at = slide.modified_at ? slide.modified_at.toDate().toString() : null;
+                    slide.exif_date = slide.exif_date ? slide.exif_date.toDate().toString() : null;
+
+                    return slide;
+                });
+
+                res.push(data);
+            });
+
+            return res;
+        });
+}
+
+function getSlideUrl(slide, galleryId) {
+    const baseUrl = 'https://firebasestorage.googleapis.com/v0/b/mapgallery-216911.appspot.com/o/';
+    const { uid } = firebaseApp.auth().currentUser;
+
+    if (slide.source === 'web') {
+        const dataPath = `users/${uid}/galleries/${galleryId}`;
+        return `${baseUrl + encodeURIComponent(`${dataPath}/${SlideUrl.getExportedFilename(slide)}`)}?alt=media`;
+    }
+
+    return '';
 }
 
 init();
 
 export default {
     loginByToken,
+    login,
     logout,
     uploadFile,
     uploadGalleryData,
     getPublishedUrl,
+    getGalleries,
+    getSlideUrl,
 };
