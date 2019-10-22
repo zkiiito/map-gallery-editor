@@ -47,7 +47,8 @@
                         <Draggable
                             id="slideholder"
                             v-model="slides"
-                            :options="{group: 'slides', draggable: '.draggable'}"
+                            group="slides"
+                            draggable=".draggable"
                             :class="$store.getters.currentSlideType !== null ? 'small' : 'big'"
                         >
                             <SlidePreview v-for="slide in slides" :key="slide.id" :slide="slide" class="draggable"/>
