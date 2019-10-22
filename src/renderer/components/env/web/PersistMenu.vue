@@ -1,8 +1,5 @@
 <template>
     <div id="persist-menu">
-        <a @click="exportProject" href="#"><i class="fas fa-download"/>Offline export</a>
-        <a @click="saveProject" href="#"><i class="fas fa-save"/>Save</a>
-        <br>
         <BigButton :class="`${this.$store.state.user.googleUser === null ? 'disabled' : ''}`"
                    @click="publishProject"
                    cssstyle="width: 300px"
@@ -14,7 +11,7 @@
 
 <script>
 import Controller from 'EnvServices/Controller';
-import BigButton from './BigButton';
+import BigButton from '../../BigButton';
 
 export default {
     name: 'PersistMenu',
@@ -22,12 +19,6 @@ export default {
         BigButton,
     },
     methods: {
-        exportProject() {
-            Controller.exportProject();
-        },
-        saveProject() {
-            Controller.saveProject();
-        },
         publishProject() {
             if (this.$store.state.user.googleUser !== null) {
                 Controller.publish();

@@ -65,6 +65,7 @@
 import Draggable from 'vuedraggable';
 import Controller from 'EnvServices/Controller';
 import GoogleMap from 'EnvComponents/GoogleMap.vue';
+import PersistMenu from 'EnvComponents/PersistMenu';
 import WindowProgressbar from 'EnvComponents/WindowProgressbar';
 import SlidePreview from './components/SlidePreview.vue';
 import ErrorBar from './components/ErrorBar';
@@ -75,7 +76,6 @@ import SplashPopup from './components/SplashPopup';
 import ViewSwitch from './components/ViewSwitch';
 import ProjectNavigator from './components/ProjectNavigator';
 import AddButtons from './components/AddButtons';
-import PersistMenu from './components/PersistMenu';
 import UserCircle from './components/UserCircle';
 import ImageView from './components/ImageView';
 import ToasterUndo from './components/ToasterUndo';
