@@ -1,8 +1,7 @@
 import EventBus from '@/services/EventBus';
-// const exifReader = require('exif-reader');
+const exifReader = require('exif-js');
 const uuidv4 = require('uuid/v4');
 const Queue = require('promise-queue');
-// const pica = require('pica')();
 
 const imageSlideTemplate = {
     filename: 'lol.jpg',
@@ -21,37 +20,94 @@ function readFile(file) {
 
             img.src = e.target.result;
         };
-        reader.onerror = (e) => {
-            return reject(e);
-        };
+        reader.onerror = (e) => reject(e);
         reader.readAsDataURL(file);
     });
 }
 
-function resizeImage(img, targetWidth, targetHeight) {
+function resizeCanvas(canvas, targetWidth, targetHeight) {
+    let scaleFactor = targetWidth / canvas.width;
+    let canvasWidth = targetWidth;
+    let canvasHeight = canvas.height * scaleFactor;
+
+    if (canvasHeight > targetHeight) {
+        scaleFactor = targetHeight / canvas.height;
+        canvasHeight = targetHeight;
+        canvasWidth = canvas.width * scaleFactor;
+    }
+
+    canvas.width = canvasWidth;
+    canvas.height = canvasHeight;
+
+    return canvas;
+}
+
+function resizeImage(img, targetWidth, targetHeight, orientation) {
     return new Promise((resolve) => {
-        let scaleFactor = targetWidth / img.width;
-        let canvasWidth = targetWidth;
-        let canvasHeight = img.height * scaleFactor;
-
-        if (canvasHeight > targetHeight) {
-            scaleFactor = targetHeight / img.height;
-            canvasHeight = targetHeight;
-            canvasWidth = img.width * scaleFactor;
-        }
-
         const canvas = document.createElement('canvas');
         canvas.imageSmoothingQuality = 'low';
-        canvas.width = canvasWidth;
-        canvas.height = canvasHeight;
+        canvas.width = img.width;
+        canvas.height = img.height;
 
+        resizeCanvas(canvas, targetWidth, targetHeight);
         const ctx = canvas.getContext('2d');
-        ctx.drawImage(img, 0, 0, canvasWidth, canvasHeight);
+        let { width, height } = canvas;
+
+        // Good explanation of EXIF orientation is here http://www.daveperrett.com/articles/2012/07/28/exif-orientation-handling-is-a-ghetto/
+        if (orientation > 1) {
+            if (orientation > 4) {
+                canvas.width = height;
+                canvas.height = width;
+
+                resizeCanvas(canvas, targetWidth, targetHeight);
+
+                width = canvas.height;
+                height = canvas.width;
+            }
+            switch (orientation) {
+            case 2:
+                ctx.translate(width, 0);
+                ctx.scale(-1, 1);
+                break;
+            case 3:
+                ctx.translate(width, height);
+                ctx.rotate(Math.PI);
+                break;
+            case 4:
+                ctx.translate(0, height);
+                ctx.scale(1, -1);
+                break;
+            case 5:
+                ctx.rotate(0.5 * Math.PI);
+                ctx.scale(1, -1);
+                break;
+            case 6:
+                ctx.rotate(0.5 * Math.PI);
+                ctx.translate(0, -height);
+                break;
+            case 7:
+                ctx.rotate(0.5 * Math.PI);
+                ctx.translate(width, -height);
+                ctx.scale(-1, 1);
+                break;
+            case 8:
+                ctx.rotate(-0.5 * Math.PI);
+                ctx.translate(-width, 0);
+                break;
+            default:
+            }
+        }
+        ctx.drawImage(img, 0, 0, width, height);
+
         ctx.canvas.toBlob((blob) => resolve(blob), 'image/jpeg', 0.92);
     });
 }
 
-function generateSlideData(file) {
+function parseExifDate(dateString) {
+    return new Date(dateString.replace(':', '.').replace(':', '.'));
+}
+
+async function generateSlideData(file) {
     console.log(file);
 
     const res = {
@@ -61,24 +117,34 @@ function generateSlideData(file) {
             filename: file.name,
             thumbnail: '',
             path: URL.createObjectURL(file),
-            // exif_date: new Date('2016-01-01 01:11:23'), // TODO
+            exif_date: new Date(file.lastModified),
             modified_at: new Date(file.lastModified),
             source: 'web',
             uploaded: false,
         },
     };
 
+    const exifData = await new Promise((resolve) => {
+        // eslint-disable-next-line func-names
+        exifReader.getData(file, function () {
+            resolve(exifReader.getAllTags(this));
+        });
+    });
+
+    const orientation = exifData.Orientation;
+    res.exif_date = exifData.DateTimeOriginal ? parseExifDate(exifData.DateTimeOriginal) : res.modified_at;
+
     let iimg;
 
     return readFile(file)
         .then((img) => {
             iimg = img;
-            return resizeImage(img, 150, 150);
+            return resizeImage(img, 150, 150, orientation);
         })
         .then((blob) => {
             res.thumbnail = URL.createObjectURL(blob);
         })
-        .then(() => resizeImage(iimg, 1920, 1080))
+        .then(() => resizeImage(iimg, 1920, 1080, orientation))
         .then((blob) => {
             res.path = URL.createObjectURL(blob);
             return res;
@@ -143,11 +209,6 @@ function processNewImages(files, callback) {
     return allProgressGenerators(promiseGenerators);
 }
 
-function exportSlides(slides, dir) {
-    const promiseGenerators = slides.map((slide) => () => generateExport(slide, dir));
-    return allProgressGenerators(promiseGenerators);
-}
-
 function updateSlides(slides) {
     const promiseGenerators = slides.map((slide) => () => updateSlide(slide));
     return allProgressGenerators(promiseGenerators);
@@ -155,7 +216,6 @@ function updateSlides(slides) {
 
 export default {
     processNewImages,
-    // exportSlides,
     updateSlides,
     getImageExport,
 };

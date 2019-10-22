@@ -88,6 +88,7 @@
     "ajv": "^6.10.2",
     "del": "^5.1.0",
     "electron-unhandled": "^3.0.0",
+    "exif-js": "^2.3.0",
     "exif-reader": "^1.0.3",
     "file-url": "^3.0.0",
     "firebase": "^7.1.0",
