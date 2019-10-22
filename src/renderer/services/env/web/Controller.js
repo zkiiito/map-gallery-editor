@@ -40,7 +40,7 @@ const Controller = Object.assign(BaseController, {
     publish() {
         ProjectHandler.publishProject()
             .then((url) => {
-                console.log(url);
+                window.open(url, 'mapgallerywindow');
             })
             .catch((err) => {
                 EventBus.$emit('error', err);
