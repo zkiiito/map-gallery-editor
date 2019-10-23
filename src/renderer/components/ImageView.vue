@@ -11,14 +11,22 @@
 
 <script>
 import Controller from 'EnvServices/Controller';
+import ImageProcessor from 'EnvServices/ImageProcessor';
 import SlideUrl from '../services/SlideUrl';
 
 export default {
     name: 'ImageView',
-    computed: {
+    asyncComputed: {
         src() {
             if (this.$store.getters.currentSlideType === 'image') {
-                return SlideUrl.getFullsizeUrl(this.$store.state.gallery.currentSlide);
+                const slide = this.$store.state.gallery.currentSlide;
+                const url = SlideUrl.getFullsizeUrl(slide);
+
+                if (!slide.source && slide.orientation > 1) {
+                    return ImageProcessor.getTempRotatedFile(slide);
+                }
+
+                return url;
             }
             return '';
         },

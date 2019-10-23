@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import VueProgressBar from 'vue-progressbar';
+import AsyncComputed from 'vue-async-computed';
 import App from './App';
 import store from './store';
 import EventBus from './services/EventBus';
@@ -29,6 +30,7 @@ const progressBarOptions = {
 };
 
 Vue.use(VueProgressBar, progressBarOptions);
+Vue.use(AsyncComputed);
 
 new Vue({
     components: { App },

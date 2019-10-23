@@ -40,4 +40,5 @@ export default {
     getFullsizeUrl,
     getThumbnailUrl,
     getExportedFilename,
+    fileUrl,
 };

@@ -21,7 +21,7 @@ function generateSlideData(filepath) {
     return new Promise(async (resolve, reject) => {
         try {
             const filename = path.basename(filepath);
-            const thumbname = path.join(remote.app.getPath('temp'), `/thumbs/thumb_${filename}`);
+            const thumbname = path.join(remote.app.getPath('temp'), `/thumbs/thumb_v2_${filename}`);
             const simg = sharp(filepath);
             const fileLastModifiedDate = fse.statSync(filepath).mtime;
             let exifdate = fileLastModifiedDate;
@@ -43,11 +43,13 @@ function generateSlideData(filepath) {
                     path: filepath,
                     exif_date: exifdate,
                     modified_at: fileLastModifiedDate,
+                    orientation: metadata.orientation || 1,
                 },
             };
 
             if (!fse.existsSync(thumbname) || fse.statSync(thumbname).mtime < fileLastModifiedDate) {
                 const thumbData = await simg
+                    .rotate()
                     .resize(150, 150)
                     .resize({ fit: 'inside' })
                     .toBuffer();
@@ -62,10 +64,11 @@ function generateSlideData(filepath) {
     });
 }
 
-async function getImageExport(slide) {
+function getImageExport(slide) {
     const simg = sharp(slide.path);
 
     return simg
+        .rotate()
         .resize(1920, 1080)
         .resize({ fit: 'inside' })
         .toBuffer();
@@ -126,6 +129,14 @@ function updateSlide(slide) {
     });
 }
 
+async function getTempRotatedFile(slide) {
+    const rotatedFileName = path.join(remote.app.getPath('temp'), '/thumbs/rotated.jpg');
+
+    const rotatedData = await getImageExport(slide);
+    await fse.outputFile(rotatedFileName, rotatedData);
+    return SlideUrl.fileUrl(rotatedFileName);
+}
+
 function reportProgress(percent) {
     EventBus.$emit('progress', percent);
 }
@@ -172,4 +183,5 @@ export default {
     exportSlides,
     updateSlides,
     getImageExport,
+    getTempRotatedFile,
 };

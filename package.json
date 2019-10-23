@@ -98,6 +98,7 @@
     "sharp": "^0.23.1",
     "uuid": "^3.3.3",
     "vue": "^2.6.10",
+    "vue-async-computed": "^3.7.0",
     "vue-electron": "^1.0.6",
     "vue-progressbar": "^0.7.5",
     "vuedraggable": "^2.23.2",

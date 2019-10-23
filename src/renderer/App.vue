@@ -31,7 +31,7 @@
                     <UserCircle/>
                 </div>
 
-                <div id="view-image" v-show="$store.state.ui.view === 'image'">
+                <div id="view-image" v-if="$store.state.ui.view === 'image'">
                     <ImageView style="height: 100%"/>
                 </div>
 
