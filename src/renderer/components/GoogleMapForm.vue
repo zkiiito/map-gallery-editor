@@ -3,11 +3,11 @@
         <dl>
             <dt><label class="label">From:</label></dt>
             <dd>
-                <input v-model.lazy="routeFrom" class="input" type="text" placeholder="Start location" required>
+                <input ref="routeFrom" v-model.lazy="routeFrom" class="input" type="text" placeholder="Start location" required>
             </dd>
             <dt><label class="label">To:</label></dt>
             <dd>
-                <input v-model.lazy="routeTo" class="input" type="text" placeholder="End location" required>
+                <input ref="routeTo" v-model.lazy="routeTo" class="input" type="text" placeholder="End location" required>
             </dd>
             <dt><label class="label">Via:</label></dt>
             <dd>
@@ -97,6 +97,17 @@ export default {
                 this.updateSlide({ mode: value });
             },
         },
+    },
+    mounted() {
+        if (typeof google !== 'undefined' && google.maps.places) {
+            const options = {
+                types: ['geocode'],
+            };
+
+            /* global google */
+            new google.maps.places.Autocomplete(this.$refs.routeFrom, options);
+            new google.maps.places.Autocomplete(this.$refs.routeTo, options);
+        }
     },
     methods: {
         displayRoute() {
