@@ -61,10 +61,10 @@ const Controller = {
 
         const prevIdx = store.state.gallery.slides.indexOf(prevSlide);
 
-        if (prevIdx) {
+        if (prevIdx >= 0) {
             const mapSlides = store.state.gallery.slides.filter((slide, idx) => idx <= prevIdx && slide.from);
 
-            if (mapSlides) {
+            if (mapSlides.length) {
                 const prevMapSlide = mapSlides[mapSlides.length - 1];
                 slide.from = prevMapSlide.to;
                 slide.to = prevMapSlide.from;
