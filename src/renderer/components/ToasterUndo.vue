@@ -22,7 +22,7 @@ export default {
             that.show = true;
             setTimeout(() => {
                 that.show = false;
-            }, 2000);
+            }, 5000);
         });
 
         this.$bus.$on(this.$bus.events.SLIDE_DELETED_UNDO, () => {

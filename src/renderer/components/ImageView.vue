@@ -36,14 +36,17 @@ export default {
             };
         },
     },
-    mounted() {
-        const that = this;
-
-        this.$bus.$on(this.$bus.events.CURRENT_SLIDE_CHANGED, () => {
-            if (that.$store.state.ui.view === 'image' && that.$store.getters.currentSlideType !== 'image') {
-                that.$store.commit('setView', 'map');
+    computed: {
+        currentSlide() {
+            return this.$store.state.gallery.currentSlide;
+        },
+    },
+    watch: {
+        currentSlide() {
+            if (this.$store.state.ui.view === 'image' && this.$store.getters.currentSlideType !== 'image') {
+                this.$store.commit('setView', 'map');
             }
-        });
+        },
     },
     methods: {
         close() {
