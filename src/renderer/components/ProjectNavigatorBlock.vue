@@ -52,13 +52,21 @@ export default {
     data: () => ({
         editMode: false,
     }),
+    computed: {
+        currentSlide() {
+            return this.$store.state.gallery.currentSlide;
+        },
+    },
+    watch: {
+        currentSlide(newSlide) {
+            this.editMode = false;
+            if (newSlide === this.block.mapslide) {
+                console.log('losg');
+                this.$nextTick(() => this.$el.scrollIntoViewIfNeeded());
+            }
+        },
+    },
     mounted() {
-        const that = this;
-
-        this.$bus.$on(this.$bus.events.CURRENT_SLIDE_CHANGED, () => {
-            that.editMode = false;
-        });
-
         if (this.block.mapslide === this.$store.state.gallery.currentSlide) {
             this.openMap();
         }
