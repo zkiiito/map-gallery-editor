@@ -61,7 +61,6 @@ export default {
         currentSlide(newSlide) {
             this.editMode = false;
             if (newSlide === this.block.mapslide) {
-                console.log('losg');
                 this.$nextTick(() => this.$el.scrollIntoViewIfNeeded());
             }
         },
