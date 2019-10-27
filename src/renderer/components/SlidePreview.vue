@@ -70,10 +70,18 @@ export default {
         thumbnailUrl() {
             return SlideUrl.getThumbnailUrl(this.slide);
         },
+        currentView() {
+            return this.$store.state.ui.view;
+        },
     },
     watch: {
         currentSlide(newSlide) {
             if (newSlide === this.slide) {
+                this.$nextTick(() => this.$el.scrollIntoViewIfNeeded());
+            }
+        },
+        currentView(newView) {
+            if (this.currentSlide === this.slide && newView === 'gallery') {
                 this.$nextTick(() => this.$el.scrollIntoViewIfNeeded());
             }
         },
