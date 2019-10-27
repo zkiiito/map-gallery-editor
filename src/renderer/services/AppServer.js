@@ -83,6 +83,8 @@ function uploadGalleryData(galleryData) {
     const { uid } = firebaseApp.auth().currentUser;
     const db = firebaseApp.firestore();
 
+    galleryData = Object.assign(galleryData, { updated_at: firebase.firestore.FieldValue.serverTimestamp() });
+
     return getImageIndex(galleryData)
         .then(() => db.collection('users').doc(uid).collection('galleries').doc(galleryData.id)
             .set(galleryData));
@@ -98,21 +100,35 @@ function getGalleries() {
     const { uid } = firebaseApp.auth().currentUser;
     const db = firebaseApp.firestore();
 
-    return db.collection('users').doc(uid).collection('galleries').get()
+    return db.collection('users').doc(uid).collection('galleries')
+        // .orderBy('updated_at', 'desc')
+        .get()
         .then((querySnapshot) => {
             const res = [];
 
             querySnapshot.forEach((doc) => {
                 const data = doc.data();
 
-                data.slided = data.slides.map((slide) => {
-                    slide.modified_at = slide.modified_at ? slide.modified_at.toDate().toString() : null;
-                    slide.exif_date = slide.exif_date ? slide.exif_date.toDate().toString() : null;
+                data.slides = data.slides.map((slide) => {
+                    if (slide.from === undefined) {
+                        slide.modified_at = slide.modified_at ? slide.modified_at.toDate()
+                            .toString() : null;
+                        slide.exif_date = slide.exif_date ? slide.exif_date.toDate()
+                            .toString() : null;
+                    }
 
                     return slide;
                 });
 
                 res.push(data);
+            });
+
+            res.sort((a, b) => {
+                if (a.updated_at && b.updated_at) {
+                    return a.updated_at.seconds - b.updated_at.seconds;
+                }
+
+                return a.updated_at ? 1 : -1;
             });
 
             return res;
