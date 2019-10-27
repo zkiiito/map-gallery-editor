@@ -7,10 +7,6 @@
         </template>
 
         <template slot="body">
-            <webview ref="webview" v-if="this.$store.state.user.flickrUser === null"
-                     src="https://mapgallery-216911.firebaseapp.com/flickr/auth"
-                     httpreferrer="https://editor.mapgallery.online"
-            />
             <div id="flickr-photosets" v-if="this.$store.state.user.flickrUser !== null">
                 <ul id="flickr-photoset-list">
                     <li v-for="photoset in photosets" :key="photoset.id">
@@ -27,8 +23,8 @@
 </template>
 
 <script>
-import Modal from './Modal';
-import FlickrServer from '../services/FlickrServer';
+import Modal from '@/components/Modal';
+import FlickrServer from '@/services/FlickrServer';
 
 export default {
     name: 'FlickrPopup',
@@ -42,13 +38,17 @@ export default {
         };
     },
     mounted() {
-        if (this.$store.state.user.flickrUser === null) {
-            this.$refs.webview.setAttribute('preload', `file://${__static}/flickr-preload.js`);
+        if (this.$store.state.user.flickrUser === null || 1) {
+            window.open('https://mapgallery-216911.firebaseapp.com/flickr/auth', 'flickr', 'width=400,height=600');
 
-            this.$refs.webview.addEventListener('ipc-message', (msg) => {
-                this.$store.commit('setFlickrUser', msg.channel);
-                this.$bus.$emit(this.$bus.events.FLICKR_USER_READY, msg.channel);
-            });
+            window.addEventListener('message', (e) => {
+                if (e.origin !== 'https://mapgallery-216911.firebaseapp.com') {
+                    return;
+                }
+
+                this.$store.commit('setFlickrUser', e.data);
+                this.$bus.$emit(this.$bus.events.FLICKR_USER_READY, e.data);
+            }, false);
 
             this.$bus.$on(this.$bus.events.FLICKR_USER_READY, () => {
                 this.getPhotosets();

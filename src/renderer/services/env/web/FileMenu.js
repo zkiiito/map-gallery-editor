@@ -6,6 +6,11 @@ function close(e) {
         e.preventDefault();
         Controller.closeSlide();
     }
+
+    if (e.key === 'f' && e.ctrlKey) {
+        e.preventDefault();
+        Controller.openFlickr();
+    }
 }
 
 function move(e) {
