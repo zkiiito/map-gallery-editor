@@ -132,6 +132,9 @@ let rendererConfig = {
         : false
     }),
     new webpack.NoEmitOnErrorsPlugin(),
+    new webpack.DefinePlugin({
+      'process.app.version': `"${require('../package.json').version}"`,
+    }),
   ],
   output: {
     filename: '[name].js',

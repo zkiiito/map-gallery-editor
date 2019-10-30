@@ -97,7 +97,8 @@ let webConfig = {
       nodeModules: false
     }),
     new webpack.DefinePlugin({
-      'process.env.IS_WEB': 'true'
+      'process.env.IS_WEB': 'true',
+      'process.app.version': `"${require('../package.json').version}"`,
     }),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoEmitOnErrorsPlugin()
