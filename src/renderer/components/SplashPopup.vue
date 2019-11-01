@@ -73,6 +73,7 @@ div#splash-welcome, div#splash-history {
     height: 500px;
     padding: 40px 0 0 34px;
     position: relative;
+    overflow: hidden;
 }
 
 div#splash-welcome {
@@ -105,6 +106,7 @@ div#splash-history {
     background-color: #f6f6f6;
     border-left: 1px solid #dddddd;
     padding-left: 20px;
+    overflow-y: auto;
 }
 
 div#splash-history h2 {
