@@ -50,10 +50,13 @@ const Controller = Object.assign(BaseController, {
         AppServer.login();
     },
     init() {
-        EventBus.$on(EventBus.events.USER_CHANGED, () => {
-            AppServer.getGalleries().then((galleries) => {
-                store.commit('setHistory', galleries);
-            });
+        EventBus.$on(EventBus.events.USER_CHANGED, (user) => {
+            if (user) {
+                AppServer.getGalleries()
+                    .then((galleries) => {
+                        store.commit('setHistory', galleries);
+                    });
+            }
         });
 
         this.openSplash();

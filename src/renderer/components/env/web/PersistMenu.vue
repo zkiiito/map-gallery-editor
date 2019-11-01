@@ -1,5 +1,13 @@
 <template>
     <div id="persist-menu">
+        <BigButton v-if="this.$store.state.user.googleUser === null"
+                   @click="login"
+                   cssstyle="width: 300px; margin-bottom: 10px"
+        >
+            <img class="google-logo" src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg">
+            <span> Sign in with Google</span>
+        </BigButton>
+        <br>
         <BigButton :class="`${this.$store.state.user.googleUser === null ? 'disabled' : ''}`"
                    @click="publishProject"
                    cssstyle="width: 300px"
@@ -23,6 +31,9 @@ export default {
             if (this.$store.state.user.googleUser !== null) {
                 Controller.publish();
             }
+        },
+        login() {
+            Controller.login();
         },
     },
 };
@@ -50,5 +61,13 @@ export default {
     #persist-menu a:nth-of-type(1) {
         margin-right: 45px;
         margin-left: 10px;
+    }
+
+    img.google-logo {
+        width: 20px;
+        background-color: white;
+        border-radius: 25px;
+        padding: 5px;
+        vertical-align: middle;
     }
 </style>

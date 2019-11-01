@@ -18,7 +18,7 @@ let imageIndex = {};
 function init() {
     firebaseApp.initializeApp({
         apiKey: 'AIzaSyBxJ2a3cME3l1zGkq5seDV_Czt4XBezg20',
-        authDomain: 'mapgallery-216911.firebaseapp.com',
+        authDomain: 'mapgallery.online',
         databaseURL: 'https://mapgallery-216911.firebaseio.com',
         projectId: 'mapgallery-216911',
         storageBucket: 'mapgallery-216911.appspot.com',
