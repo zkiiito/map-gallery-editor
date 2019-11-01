@@ -14,14 +14,26 @@ function getExportedFilename(slide) {
     return `export_${slide.id}_${slide.filename}`;
 }
 
+function getExportedThumbnailFilename(slide) {
+    if (slide.source === 'flickr') {
+        return slide.thumbnail;
+    }
+
+    const parts = slide.filename.split('.');
+    parts[parts.length - 2] = `${parts[parts.length - 2]}_150x150`;
+
+    return `export_${slide.id}_${parts.join('.')}`;
+}
+
 function getThumbnailUrl(slide) {
     switch (slide.source) {
     case 'flickr':
         return slide.thumbnail;
     case 'web':
-        return slide.uploaded ? AppServer.getSlideUrl(slide, store.state.gallery.id) : slide.path;
+        return slide.uploaded ? AppServer.getSlideThumbnailUrl(slide, store.state.gallery.id) : slide.path;
+    case 'app':
     default:
-        return fileUrl(slide.thumbnail);
+        return process.env.IS_WEB ? AppServer.getSlideThumbnailUrl(slide, store.state.gallery.id) : fileUrl(slide.thumbnail);
     }
 }
 
@@ -31,8 +43,9 @@ function getFullsizeUrl(slide) {
         return slide.path;
     case 'web':
         return slide.uploaded ? AppServer.getSlideUrl(slide, store.state.gallery.id) : slide.path;
+    case 'app':
     default:
-        return fileUrl(slide.path);
+        return process.env.IS_WEB ? AppServer.getSlideUrl(slide, store.state.gallery.id) : fileUrl(slide.path);
     }
 }
 
@@ -40,5 +53,6 @@ export default {
     getFullsizeUrl,
     getThumbnailUrl,
     getExportedFilename,
+    getExportedThumbnailFilename,
     fileUrl,
 };

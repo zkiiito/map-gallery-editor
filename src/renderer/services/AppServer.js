@@ -139,9 +139,21 @@ function getSlideUrl(slide, galleryId) {
     const baseUrl = 'https://firebasestorage.googleapis.com/v0/b/mapgallery-216911.appspot.com/o/';
     const { uid } = firebaseApp.auth().currentUser;
 
-    if (slide.source === 'web') {
+    if (slide.source === 'web' || slide.source === null || slide.source === undefined || slide.source === 'app') {
         const dataPath = `users/${uid}/galleries/${galleryId}`;
         return `${baseUrl + encodeURIComponent(`${dataPath}/${SlideUrl.getExportedFilename(slide)}`)}?alt=media`;
+    }
+
+    return '';
+}
+
+function getSlideThumbnailUrl(slide, galleryId) {
+    const baseUrl = 'https://firebasestorage.googleapis.com/v0/b/mapgallery-216911.appspot.com/o/';
+    const { uid } = firebaseApp.auth().currentUser;
+
+    if (slide.source === 'web' || slide.source === null || slide.source === undefined || slide.source === 'app') {
+        const dataPath = `users/${uid}/galleries/${galleryId}`;
+        return `${baseUrl + encodeURIComponent(`${dataPath}/thumbs/${SlideUrl.getExportedThumbnailFilename(slide)}`)}?alt=media`;
     }
 
     return '';
@@ -158,4 +170,5 @@ export default {
     getPublishedUrl,
     getGalleries,
     getSlideUrl,
+    getSlideThumbnailUrl,
 };
