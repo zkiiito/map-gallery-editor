@@ -185,9 +185,6 @@
     "write-file-webpack-plugin": "^4.5.1"
   },
   "greenkeeper": {
-    "ignore": [
-      "babel-loader",
-      "babel-plugin-istanbul"
-    ]
+    "ignore": []
   }
 }
