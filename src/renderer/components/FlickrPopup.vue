@@ -39,10 +39,10 @@ export default {
     },
     mounted() {
         if (this.$store.state.user.flickrUser === null || 1) {
-            window.open('https://mapgallery-216911.firebaseapp.com/flickr/auth', 'flickr', 'width=400,height=600');
+            window.open('https://mapgallery.online/flickr/auth', 'flickr', 'width=400,height=600');
 
             window.addEventListener('message', (e) => {
-                if (e.origin !== 'https://mapgallery-216911.firebaseapp.com') {
+                if (e.origin !== 'https://mapgallery.online') {
                     return;
                 }
 
