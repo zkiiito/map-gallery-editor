@@ -35,11 +35,11 @@ async function openProject(id) {
     store.commit('setSlides', slides);
 }
 
-async function saveProject(path) {
+async function saveProject() {
     throw new Error('implement');
 }
 
-async function exportProject(dir) {
+async function exportProject() {
     throw new Error('implement');
 }
 

@@ -46,10 +46,10 @@
                     <div id="slides">
                         <Draggable
                             id="slideholder"
+                            :class="$store.getters.currentSlideType !== null ? 'small' : 'big'"
                             v-model="slides"
                             group="slides"
                             draggable=".draggable"
-                            :class="$store.getters.currentSlideType !== null ? 'small' : 'big'"
                         >
                             <SlidePreview v-for="slide in slides" :key="slide.id" :slide="slide" class="draggable"/>
                         </Draggable>

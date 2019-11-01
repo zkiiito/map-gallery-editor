@@ -38,7 +38,7 @@ export default {
         };
     },
     mounted() {
-        if (this.$store.state.user.flickrUser === null || 1) {
+        if (this.$store.state.user.flickrUser === null) {
             window.open('https://mapgallery.online/flickr/auth', 'flickr', 'width=400,height=600');
 
             window.addEventListener('message', (e) => {

@@ -53,7 +53,8 @@ function resizeImage(img, targetWidth, targetHeight, orientation) {
         const ctx = canvas.getContext('2d');
         let { width, height } = canvas;
 
-        // Good explanation of EXIF orientation is here http://www.daveperrett.com/articles/2012/07/28/exif-orientation-handling-is-a-ghetto/
+        // Good explanation of EXIF orientation is here:
+        // http://www.daveperrett.com/articles/2012/07/28/exif-orientation-handling-is-a-ghetto/
         if (orientation > 1) {
             if (orientation > 4) {
                 canvas.width = height;
@@ -108,8 +109,6 @@ function parseExifDate(dateString) {
 }
 
 async function generateSlideData(file) {
-    console.log(file);
-
     const res = {
         ...imageSlideTemplate,
         ...{

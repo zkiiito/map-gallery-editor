@@ -30,7 +30,7 @@ module.exports = {
         // allow debugger during development
         'no-debugger': process.env.NODE_ENV === 'production' ? 2 : 0,
         'indent': ['error', 4],
-        'max-len': ['warn', 120],
+        'max-len': ['warn', 140],
         'linebreak-style': 0,
         'vue/html-indent': ['error', 4],
         'vue/singleline-html-element-content-newline': 0,

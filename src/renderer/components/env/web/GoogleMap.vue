@@ -72,8 +72,8 @@ export default {
         worldViewFit() {
             const mapObj = MapAnimator.map;
             const worldBounds = new google.maps.LatLngBounds(
-                new google.maps.LatLng(70.4043, -143.5291),   //Top-left
-                new google.maps.LatLng(-46.11251, 163.4288),  //Bottom-right
+                new google.maps.LatLng(70.4043, -143.5291), //  Top-left
+                new google.maps.LatLng(-46.11251, 163.4288), // Bottom-right
             );
             mapObj.fitBounds(worldBounds, 0);
             const actualBounds = mapObj.getBounds();
