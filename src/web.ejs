@@ -22,9 +22,10 @@
             background-image: url('static/ui/bg/mickael-tournier-541487-unsplash.jpg');
     }
     </style>
-    <script src="static/MapGallery/scripts/MapAnimator.js"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key="></script>
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=<%= process.env.GOOGLE_MAPS_API_KEY %>&libraries=places"></script>
     <script src="static/MapGallery/scripts/v3_epoly.js"></script>
+    <script src="static/MapGallery/scripts/MapAnimator.js"></script>
 
     <script src="https://www.gstatic.com/firebasejs/7.1.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.1.0/firebase-auth.js"></script>

@@ -11,6 +11,8 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { VueLoaderPlugin } = require('vue-loader')
 
+require('dotenv').config();
+
 let webConfig = {
   devtool: '#cheap-module-eval-source-map',
   entry: {
@@ -99,6 +101,7 @@ let webConfig = {
     new webpack.DefinePlugin({
       'process.env.IS_WEB': 'true',
       'process.app.version': `"${require('../package.json').version}"`,
+      'process.env.GOOGLE_MAPS_API_KEY': `"${process.env.GOOGLE_MAPS_API_KEY}"`,
     }),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoEmitOnErrorsPlugin()

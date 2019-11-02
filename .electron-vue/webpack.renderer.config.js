@@ -14,6 +14,8 @@ const { VueLoaderPlugin } = require('vue-loader')
 const WriteFilePlugin = require('write-file-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
+require('dotenv').config();
+
 /**
  * List of node_modules to include in webpack bundle
  *
@@ -134,6 +136,7 @@ let rendererConfig = {
     new webpack.NoEmitOnErrorsPlugin(),
     new webpack.DefinePlugin({
       'process.app.version': `"${require('../package.json').version}"`,
+      'process.env.GOOGLE_MAPS_API_KEY': `"${process.env.GOOGLE_MAPS_API_KEY}"`,
     }),
   ],
   output: {

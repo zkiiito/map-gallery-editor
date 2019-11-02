@@ -99,15 +99,13 @@ export default {
         },
     },
     mounted() {
-        if (typeof google !== 'undefined' && google.maps.places) {
-            const options = {
-                types: ['geocode'],
-            };
+        const options = {
+            types: ['geocode'],
+        };
 
-            /* global google */
-            new google.maps.places.Autocomplete(this.$refs.routeFrom, options);
-            new google.maps.places.Autocomplete(this.$refs.routeTo, options);
-        }
+        /* global google */
+        new google.maps.places.Autocomplete(this.$refs.routeFrom, options);
+        new google.maps.places.Autocomplete(this.$refs.routeTo, options);
     },
     methods: {
         displayRoute() {

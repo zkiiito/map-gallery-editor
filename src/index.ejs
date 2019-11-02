@@ -22,6 +22,9 @@
             background-image: url('static/ui/bg/mickael-tournier-541487-unsplash.jpg');
     }
     </style>
+    <script src="https://maps.googleapis.com/maps/api/js?key=<%= process.env.GOOGLE_MAPS_API_KEY %>&libraries=places"></script>
+    <script src="static/MapGallery/scripts/v3_epoly.js"></script>
+    <script src="static/MapGallery/scripts/MapAnimator.js"></script>
     <% if (htmlWebpackPlugin.options.nodeModules) { %>
       <!-- Add `node_modules/` to global paths so `require` works properly in development -->
       <script>

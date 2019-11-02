@@ -65,9 +65,9 @@
 <script>
 import Draggable from 'vuedraggable';
 import Controller from 'EnvServices/Controller';
-import GoogleMap from 'EnvComponents/GoogleMap.vue';
 import PersistMenu from 'EnvComponents/PersistMenu';
-import WindowProgressbar from 'EnvComponents/WindowProgressbar';
+import WindowProgressbar from '@/components/WindowProgressbar';
+import GoogleMap from '@/components/GoogleMap.vue';
 import SlidePreview from './components/SlidePreview.vue';
 import ErrorBar from './components/ErrorBar';
 import AuthPopup from './components/AuthPopup';
