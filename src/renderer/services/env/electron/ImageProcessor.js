@@ -17,11 +17,40 @@ const imageSlideTemplate = {
     visible: true,
 };
 
+function orientationToAngle(orientation) {
+    switch (orientation) {
+    case 1:
+        return 0;
+    case 8:
+        return 270;
+    case 3:
+        return 180;
+    case 6:
+        return 90;
+    default:
+        return 0;
+    }
+}
+
+function getThumbnail(slide) {
+    return path.join(remote.app.getPath('temp'), `/thumbs/thumb_${slide.orientation}_${slide.filename}`);
+}
+
+function updateThumbnails(slide, simg) {
+    simg = simg || sharp(slide.path);
+
+    return simg
+        .rotate(orientationToAngle(slide.orientation))
+        .resize(150, 150)
+        .resize({ fit: 'inside' })
+        .toBuffer()
+        .then((thumbData) => fse.outputFile(getThumbnail(slide), thumbData));
+}
+
 function generateSlideData(filepath) {
     return new Promise(async (resolve, reject) => {
         try {
             const filename = path.basename(filepath);
-            const thumbname = path.join(remote.app.getPath('temp'), `/thumbs/thumb_v2_${filename}`);
             const simg = sharp(filepath);
             const fileLastModifiedDate = fse.statSync(filepath).mtime;
             let exifdate = fileLastModifiedDate;
@@ -39,7 +68,7 @@ function generateSlideData(filepath) {
                 ...{
                     id: uuidv4(),
                     filename,
-                    thumbnail: thumbname,
+                    thumbnail: null,
                     path: filepath,
                     exif_date: exifdate,
                     modified_at: fileLastModifiedDate,
@@ -47,14 +76,11 @@ function generateSlideData(filepath) {
                 },
             };
 
-            if (!fse.existsSync(thumbname) || fse.statSync(thumbname).mtime < fileLastModifiedDate) {
-                const thumbData = await simg
-                    .rotate()
-                    .resize(150, 150)
-                    .resize({ fit: 'inside' })
-                    .toBuffer();
+            const thumbname = getThumbnail(res);
+            res.thumbnail = thumbname;
 
-                await fse.outputFile(thumbname, thumbData);
+            if (!fse.existsSync(thumbname) || fse.statSync(thumbname).mtime < fileLastModifiedDate) {
+                await updateThumbnails(res, simg);
             }
 
             return resolve(res);
@@ -64,11 +90,26 @@ function generateSlideData(filepath) {
     });
 }
 
+function getNextOrientation(slide) {
+    const orientations = [1, 8, 3, 6];
+    const currentOrientationIndex = orientations.indexOf(slide.orientation);
+    return orientations[(currentOrientationIndex + 1) % orientations.length];
+}
+
+function rotateImage(slide) {
+    slide.orientation = getNextOrientation(slide);
+
+    updateThumbnails(slide).then(() => {
+        slide.modified_at = new Date();
+        slide.thumbnail = getThumbnail(slide);
+    });
+}
+
 function getImageExport(slide) {
     const simg = sharp(slide.path);
 
     return simg
-        .rotate()
+        .rotate(orientationToAngle(slide.orientation))
         .resize(1920, 1080)
         .resize({ fit: 'inside' })
         .toBuffer();
@@ -134,7 +175,7 @@ async function getTempRotatedFile(slide) {
 
     const rotatedData = await getImageExport(slide);
     await fse.outputFile(rotatedFileName, rotatedData);
-    return SlideUrl.fileUrl(rotatedFileName);
+    return `${SlideUrl.fileUrl(rotatedFileName)}?=${Math.random()}`;
 }
 
 function reportProgress(percent) {
@@ -184,4 +225,5 @@ export default {
     updateSlides,
     getImageExport,
     getTempRotatedFile,
+    rotateImage,
 };

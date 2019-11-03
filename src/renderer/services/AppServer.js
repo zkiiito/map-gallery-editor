@@ -83,7 +83,7 @@ function uploadGalleryData(galleryData) {
     const { uid } = firebaseApp.auth().currentUser;
     const db = firebaseApp.firestore();
 
-    galleryData = Object.assign(galleryData, { updated_at: firebase.firestore.FieldValue.serverTimestamp() });
+    galleryData = Object.assign(galleryData, { updated_at: firebaseApp.firestore.FieldValue.serverTimestamp() });
 
     return getImageIndex(galleryData)
         .then(() => db.collection('users').doc(uid).collection('galleries').doc(galleryData.id)

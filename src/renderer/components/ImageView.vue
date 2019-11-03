@@ -4,7 +4,10 @@
         <a @click="close" href="#" class="close fas fa-times"/>
         <div class="buttons">
             <a @click="deleteImage" href="#"><i class="fas fa-trash"/> Delete</a>
-            <a @click="rotateImage" v-if="currentSlide.source === 'web' && !currentSlide.uploaded" href="#"><i class="fas fa-undo"/> Rotate</a>
+            <a @click="rotateImage"
+               v-if="(currentSlide.source === 'web' && !currentSlide.uploaded) || !currentSlide.source"
+               href="#"
+            ><i class="fas fa-undo"/> Rotate</a>
         </div>
     </div>
 </template>

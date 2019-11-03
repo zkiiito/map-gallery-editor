@@ -32,7 +32,10 @@
                 <img :src="thumbnailUrl" :title="slide.filename" :alt="slide.filename" @click="showImage">
             </div>
             <div class="overlay overlay-bottom">
-                <a @click.stop="rotateSlide" v-if="slide.source === 'web' && !slide.uploaded" href="#" class="fas fa-undo"/>
+                <a @click.stop="rotateSlide"
+                   v-if="(slide.source === 'web' && !slide.uploaded) || !slide.source"
+                   href="#" class="fas fa-undo"
+                />
             </div>
         </template>
     </div>
