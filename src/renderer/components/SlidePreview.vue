@@ -33,7 +33,7 @@
             </div>
             <div class="overlay overlay-bottom">
                 <a @click.stop="rotateSlide"
-                   v-if="(slide.source === 'web' && !slide.uploaded) || !slide.source"
+                   v-if="(slide.source === 'web' && !slide.uploaded) || (!slide.source && !isWeb)"
                    href="#" class="fas fa-undo"
                 />
             </div>
@@ -75,6 +75,9 @@ export default {
         },
         currentView() {
             return this.$store.state.ui.view;
+        },
+        isWeb() {
+            return process.env.IS_WEB;
         },
     },
     watch: {

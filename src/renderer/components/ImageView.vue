@@ -5,7 +5,7 @@
         <div class="buttons">
             <a @click="deleteImage" href="#"><i class="fas fa-trash"/> Delete</a>
             <a @click="rotateImage"
-               v-if="(currentSlide.source === 'web' && !currentSlide.uploaded) || !currentSlide.source"
+               v-if="(currentSlide.source === 'web' && !currentSlide.uploaded) || (!currentSlide.source && !isWeb)"
                href="#"
             ><i class="fas fa-undo"/> Rotate</a>
         </div>
@@ -42,6 +42,9 @@ export default {
     computed: {
         currentSlide() {
             return this.$store.state.gallery.currentSlide;
+        },
+        isWeb() {
+            return process.env.IS_WEB;
         },
     },
     watch: {
