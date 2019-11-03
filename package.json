@@ -91,7 +91,6 @@
     "exif-js": "^2.3.0",
     "exif-reader": "^1.0.3",
     "file-url": "^3.0.0",
-    "firebase": "^7.2.3",
     "fs-extra": "^8.1.0",
     "pica": "^5.1.0",
     "promise-queue": "^2.2.5",

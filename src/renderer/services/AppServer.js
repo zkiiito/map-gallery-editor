@@ -1,18 +1,8 @@
 import EventBus from './EventBus';
 import SlideUrl from '@/services/SlideUrl';
 
-let firebaseApp;
-
-if (process.env.IS_WEB) {
-    /* global firebase */
-    firebaseApp = firebase;
-} else {
-    firebaseApp = require('firebase/app');
-    require('firebase/auth');
-    require('firebase/storage');
-    require('firebase/firestore');
-}
-
+/* global firebase */
+const firebaseApp = firebase;
 let imageIndex = {};
 
 function init() {

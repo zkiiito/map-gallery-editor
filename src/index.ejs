@@ -25,7 +25,12 @@
     <script src="https://maps.googleapis.com/maps/api/js?key=<%= process.env.GOOGLE_MAPS_API_KEY %>&libraries=places"></script>
     <script src="static/MapGallery/scripts/v3_epoly.js"></script>
     <script src="static/MapGallery/scripts/MapAnimator.js"></script>
-    <% if (htmlWebpackPlugin.options.nodeModules) { %>
+
+    <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-storage.js"></script>
+    <% if (!process.env.IS_WEB && htmlWebpackPlugin.options.nodeModules) { %>
       <!-- Add `node_modules/` to global paths so `require` works properly in development -->
       <script>
         require('module').globalPaths.push('<%= htmlWebpackPlugin.options.nodeModules.replace(/\\/g, '\\\\') %>')
@@ -35,11 +40,14 @@
   <body>
     <div class="splash"></div>
     <div id="app"></div>
+    <% if (!process.env.IS_WEB) { %>
     <!-- Set `__static` path to static files in production -->
     <script>
       if (process.env.NODE_ENV !== 'development') window.__static = require('path').join(__dirname, '/static').replace(/\\/g, '\\\\')
     </script>
-
+    <% } else { %>
+    <input type="file" id="fileselector" style="display:none" multiple/>
+    <% } %>
     <!-- webpack builds are automatically injected -->
   </body>
 </html>
