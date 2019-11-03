@@ -32,7 +32,7 @@
                 <img :src="thumbnailUrl" :title="slide.filename" :alt="slide.filename" @click="showImage">
             </div>
             <div class="overlay overlay-bottom">
-                <a href="#" class="fas fa-undo"/>
+                <a @click.stop="rotateSlide" v-if="slide.source === 'web' && !slide.uploaded" href="#" class="fas fa-undo"/>
             </div>
         </template>
     </div>
@@ -114,6 +114,9 @@ export default {
         showImage() {
             this.$store.commit('setCurrentSlide', this.slide);
             this.$store.commit('setView', 'image');
+        },
+        rotateSlide() {
+            Controller.rotateSlide(this.slide);
         },
     },
 };

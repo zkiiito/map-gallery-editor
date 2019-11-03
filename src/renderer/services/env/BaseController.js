@@ -1,4 +1,5 @@
 import ProjectHandler from 'EnvServices/ProjectHandler';
+import ImageProcessor from 'EnvServices/ImageProcessor';
 import store from '@/store';
 import EventBus from '@/services/EventBus';
 import AppServer from '@/services/AppServer';
@@ -118,6 +119,9 @@ const Controller = {
     },
     init() {
         throw new Error('implement');
+    },
+    rotateSlide(slide) {
+        ImageProcessor.rotateImage(slide);
     },
 };
 

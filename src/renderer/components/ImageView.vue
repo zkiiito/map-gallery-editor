@@ -4,7 +4,7 @@
         <a @click="close" href="#" class="close fas fa-times"/>
         <div class="buttons">
             <a @click="deleteImage" href="#"><i class="fas fa-trash"/> Delete</a>
-            <a @click="rotateImage" href="#"><i class="fas fa-undo"/> Rotate</a>
+            <a @click="rotateImage" v-if="currentSlide.source === 'web' && !currentSlide.uploaded" href="#"><i class="fas fa-undo"/> Rotate</a>
         </div>
     </div>
 </template>
@@ -19,10 +19,10 @@ export default {
     asyncComputed: {
         src() {
             if (this.$store.getters.currentSlideType === 'image') {
-                const slide = this.$store.state.gallery.currentSlide;
+                const slide = this.currentSlide;
                 const url = SlideUrl.getFullsizeUrl(slide);
 
-                if (!slide.source && slide.orientation > 1) {
+                if (!process.env.IS_WEB && !slide.source && slide.orientation > 1) {
                     return ImageProcessor.getTempRotatedFile(slide);
                 }
 
@@ -57,6 +57,7 @@ export default {
             Controller.deleteSlide();
         },
         rotateImage() {
+            Controller.rotateSlide(this.currentSlide);
         },
     },
 };

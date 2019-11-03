@@ -9,7 +9,11 @@ const imageSlideTemplate = {
     exif_date: new Date('2016-01-01 01:11:23'),
     modified_at: new Date('2016-01-01 01:11:23'),
     visible: true,
+    uploaded: false,
+    orientation: 1,
 };
+
+const fileCache = {};
 
 function readFile(file) {
     return new Promise((resolve, reject) => {
@@ -104,6 +108,24 @@ function resizeImage(img, targetWidth, targetHeight, orientation) {
     });
 }
 
+function updateThumbnails(slide) {
+    let iimg;
+
+    return readFile(fileCache[slide.id])
+        .then((img) => {
+            iimg = img;
+            return resizeImage(img, 150, 150, slide.orientation);
+        })
+        .then((blob) => {
+            slide.thumbnail = URL.createObjectURL(blob);
+        })
+        .then(() => resizeImage(iimg, 1920, 1080, slide.orientation))
+        .then((blob) => {
+            slide.path = URL.createObjectURL(blob);
+            return slide;
+        });
+}
+
 function parseExifDate(dateString) {
     return new Date(dateString.replace(':', '.').replace(':', '.'));
 }
@@ -130,24 +152,24 @@ async function generateSlideData(file) {
         });
     });
 
-    const orientation = exifData.Orientation;
+    res.orientation = exifData.Orientation ? exifData.Orientation : 1;
     res.exif_date = exifData.DateTimeOriginal ? parseExifDate(exifData.DateTimeOriginal) : res.modified_at;
 
-    let iimg;
+    fileCache[res.id] = file;
 
-    return readFile(file)
-        .then((img) => {
-            iimg = img;
-            return resizeImage(img, 150, 150, orientation);
-        })
-        .then((blob) => {
-            res.thumbnail = URL.createObjectURL(blob);
-        })
-        .then(() => resizeImage(iimg, 1920, 1080, orientation))
-        .then((blob) => {
-            res.path = URL.createObjectURL(blob);
-            return res;
-        });
+    return updateThumbnails(res);
+}
+
+function getNextOrientation(slide) {
+    const orientations = [1, 8, 3, 6];
+    const currentOrientationIndex = orientations.indexOf(slide.orientation);
+    return orientations[(currentOrientationIndex + 1) % orientations.length];
+}
+
+function rotateImage(slide) {
+    slide.orientation = getNextOrientation(slide);
+    slide.modified_at = new Date();
+    return updateThumbnails(slide);
 }
 
 async function getImageExport(slide) {
@@ -217,4 +239,5 @@ export default {
     processNewImages,
     updateSlides,
     getImageExport,
+    rotateImage,
 };
