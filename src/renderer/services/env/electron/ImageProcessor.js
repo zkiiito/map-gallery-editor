@@ -47,47 +47,41 @@ function updateThumbnails(slide, simg) {
         .then((thumbData) => fse.outputFile(getThumbnail(slide), thumbData));
 }
 
-function generateSlideData(filepath) {
-    return new Promise(async (resolve, reject) => {
-        try {
-            const filename = path.basename(filepath);
-            const simg = sharp(filepath);
-            const fileLastModifiedDate = fse.statSync(filepath).mtime;
-            let exifdate = fileLastModifiedDate;
+async function generateSlideData(filepath) {
+    const filename = path.basename(filepath);
+    const simg = sharp(filepath);
+    const fileLastModifiedDate = fse.statSync(filepath).mtime;
+    let exifdate = fileLastModifiedDate;
 
-            const metadata = await simg.metadata();
-            if (metadata.exif) {
-                const exifDecoded = exifReader(metadata.exif);
-                if (exifDecoded.exif) {
-                    exifdate = exifDecoded.exif.DateTimeOriginal || exifdate;
-                }
-            }
-
-            const res = {
-                ...imageSlideTemplate,
-                ...{
-                    id: uuidv4(),
-                    filename,
-                    thumbnail: null,
-                    path: filepath,
-                    exif_date: exifdate,
-                    modified_at: fileLastModifiedDate,
-                    orientation: metadata.orientation || 1,
-                },
-            };
-
-            const thumbname = getThumbnail(res);
-            res.thumbnail = thumbname;
-
-            if (!fse.existsSync(thumbname) || fse.statSync(thumbname).mtime < fileLastModifiedDate) {
-                await updateThumbnails(res, simg);
-            }
-
-            return resolve(res);
-        } catch (err) {
-            return reject(err);
+    const metadata = await simg.metadata();
+    if (metadata.exif) {
+        const exifDecoded = exifReader(metadata.exif);
+        if (exifDecoded.exif) {
+            exifdate = exifDecoded.exif.DateTimeOriginal || exifdate;
         }
-    });
+    }
+
+    const res = {
+        ...imageSlideTemplate,
+        ...{
+            id: uuidv4(),
+            filename,
+            thumbnail: null,
+            path: filepath,
+            exif_date: exifdate,
+            modified_at: fileLastModifiedDate,
+            orientation: metadata.orientation || 1,
+        },
+    };
+
+    const thumbname = getThumbnail(res);
+    res.thumbnail = thumbname;
+
+    if (!fse.existsSync(thumbname) || fse.statSync(thumbname).mtime < fileLastModifiedDate) {
+        await updateThumbnails(res, simg);
+    }
+
+    return res;
 }
 
 function getNextOrientation(slide) {
@@ -115,59 +109,47 @@ function getImageExport(slide) {
         .toBuffer();
 }
 
-function generateExport(slide, dir) {
-    return new Promise(async (resolve, reject) => {
-        if (slide.path === undefined || slide.source === 'flickr') {
-            return resolve();
-        }
+async function generateExport(slide, dir) {
+    if (slide.path === undefined || slide.source === 'flickr') {
+        return;
+    }
 
-        try {
-            const filepath = path.join(dir, 'images', SlideUrl.getExportedFilename(slide));
+    const filepath = path.join(dir, 'images', SlideUrl.getExportedFilename(slide));
 
-            if (!fse.existsSync(filepath) || fse.statSync(filepath).mtime < slide.modified_at.getTime()) {
-                const imageData = await getImageExport(slide);
-                await fse.outputFile(filepath, imageData);
-            }
-
-            return resolve();
-        } catch (err) {
-            return reject(err);
-        }
-    });
+    if (!fse.existsSync(filepath) || fse.statSync(filepath).mtime < slide.modified_at.getTime()) {
+        const imageData = await getImageExport(slide);
+        await fse.outputFile(filepath, imageData);
+    }
 }
 
-function updateSlide(slide) {
-    return new Promise(async (resolve, reject) => {
-        if (slide.path === undefined || slide.source === 'flickr') {
-            resolve(slide);
-            return;
-        }
+async function updateSlide(slide) {
+    if (slide.path === undefined || slide.source === 'flickr') {
+        return slide;
+    }
 
-        let imageStat = null;
-        let thumbStat = null;
+    let imageStat = null;
+    let thumbStat = null;
 
-        try {
-            imageStat = await fse.stat(slide.path);
-        } catch (err) {
-            reject(new Error(`Image not found: ${slide.path}`));
-            return;
-        }
+    try {
+        imageStat = await fse.stat(slide.path);
+    } catch (err) {
+        throw new Error(`Image not found: ${slide.path}`);
+    }
 
-        try {
-            thumbStat = await fse.stat(slide.thumbnail);
-        } catch (err) {
-            thumbStat = null;
-        }
+    try {
+        thumbStat = await fse.stat(slide.thumbnail);
+    } catch (err) {
+        thumbStat = null;
+    }
 
-        if (thumbStat === null || thumbStat.mtimeMs < imageStat.mtimeMs || slide.modified_at < imageStat.mtime) {
-            const { id } = slide;
-            const newSlide = await generateSlideData(slide.path);
-            slide = { ...slide, ...newSlide };
-            slide.id = id;
-        }
+    if (thumbStat === null || thumbStat.mtimeMs < imageStat.mtimeMs || slide.modified_at < imageStat.mtime) {
+        const { id } = slide;
+        const newSlide = await generateSlideData(slide.path);
+        slide = { ...slide, ...newSlide };
+        slide.id = id;
+    }
 
-        resolve(slide);
-    });
+    return slide;
 }
 
 async function getTempRotatedFile(slide) {
