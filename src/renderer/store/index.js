@@ -289,6 +289,9 @@ export default new Vuex.Store({
     },
     plugins: [createPersistedState({
         key: 'MapGalleryEditor',
-        paths: ['app.projectHistory', 'user.flickrUser'],
+        paths: [
+            'app.projectHistory',
+            'user.flickrUser',
+        ],
     })],
 });

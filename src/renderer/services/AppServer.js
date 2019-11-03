@@ -44,7 +44,7 @@ function loginByToken(token) {
 }
 
 function logout() {
-    firebaseApp.auth().signOut();
+    return firebaseApp.auth().signOut();
 }
 
 async function uploadFile(filename, buffer, galleryId, modifiedAt) {

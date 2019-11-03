@@ -20,7 +20,9 @@ export default {
     name: 'UserCircle',
     methods: {
         logout() {
-            Controller.logout();
+            if (confirm('Are you sure you want to log out?')) {
+                Controller.logout();
+            }
         },
         login() {
             Controller.login();

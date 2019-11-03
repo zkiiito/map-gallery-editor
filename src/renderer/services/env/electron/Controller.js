@@ -5,6 +5,7 @@ import ProjectHandler from 'EnvServices/ProjectHandler';
 import store from '@/store';
 import EventBus from '@/services/EventBus';
 import BaseController from '@/services/env/BaseController';
+import AppServer from '@/services/AppServer';
 
 const { dialog, shell } = remote;
 
@@ -84,6 +85,12 @@ const Controller = Object.assign(BaseController, {
     },
     login() {
         store.commit('openPopup', 'auth');
+    },
+    logout() {
+        AppServer.logout().then(() => {
+            store.commit('setFlickrUser', null);
+            ipcRenderer.send('logout');
+        });
     },
     init() {
         const fileName = ipcRenderer.sendSync('get-opened-file');

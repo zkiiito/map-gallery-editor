@@ -81,6 +81,10 @@ ipcMain.on('get-opened-file', (event) => {
     event.returnValue = openedFile;
 });
 
+ipcMain.on('logout', () => {
+    mainWindow.webContents.session.clearStorageData();
+});
+
 /**
  * Auto Updater
  *

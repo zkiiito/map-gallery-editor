@@ -103,7 +103,9 @@ const Controller = {
         throw new Error('implement');
     },
     logout() {
-        AppServer.logout();
+        AppServer.logout().then(() => {
+            store.commit('setFlickrUser', null);
+        });
     },
     publish() {
         throw new Error('implement');
