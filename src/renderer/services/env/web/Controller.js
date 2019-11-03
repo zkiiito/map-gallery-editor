@@ -12,7 +12,7 @@ const Controller = Object.assign(BaseController, {
     saveProjectAs() {
         // TODO
     },
-    addImages(prevSlide) {
+    addImagesFromDevice(prevSlide) {
         const inputElement = document.getElementById('fileselector');
         const listenerFunction = (e) => {
             inputElement.removeEventListener('change', listenerFunction, false);

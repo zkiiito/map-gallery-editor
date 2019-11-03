@@ -35,7 +35,7 @@ const Controller = Object.assign(BaseController, {
             }
         });
     },
-    addImages(prevSlide) {
+    addImagesFromDevice(prevSlide) {
         return new Promise((resolve, reject) => {
             dialog.showOpenDialog({
                 properties: ['openFile', 'multiSelections'],

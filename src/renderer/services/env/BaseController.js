@@ -43,8 +43,11 @@ const Controller = {
     saveProjectAs() {
         throw new Error('implement');
     },
-    // eslint-disable-next-line no-unused-vars
     addImages(prevSlide) {
+        return this.addImagesFromDevice(prevSlide);
+    },
+    // eslint-disable-next-line no-unused-vars
+    addImagesFromDevice(prevSlide) {
         throw new Error('implement');
     },
     addMapSlide() {
