@@ -1,7 +1,7 @@
 import electron from 'electron'
 import { Application } from 'spectron'
+import dialogAddon from 'spectron-dialog-addon';
 const path = require('path');
-const fakeDialog = require('spectron-fake-dialog');
 
 const images = [
     'alex-lopez-385829-unsplash.jpg',
@@ -28,10 +28,14 @@ export default {
       waitTimeout: 10000
     });
 
-    fakeDialog.apply(this.app);
+    dialogAddon.apply(this.app);
 
-    return this.app.start().then(() =>
-        fakeDialog.mock([ { method: 'showOpenDialog', value: [images[0], images[1]] } ])
+    return this.app.start().then(() => {
+            dialogAddon.mock([{
+                method: 'showOpenDialog',
+                value: { filePaths: [images[0], images[1]] }
+            }]);
+        }
     );
   }
 }
