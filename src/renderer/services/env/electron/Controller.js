@@ -15,9 +15,9 @@ const Controller = Object.assign(BaseController, {
             dialog.showOpenDialog({
                 properties: ['openFile'],
                 filters: [{ name: 'MapGallery Editor files', extensions: ['mapgallery'] }],
-            }, (filename) => {
-                if (filename) {
-                    Controller.openProjectFile(filename.toString());
+            }).then((result) => {
+                if (result.filePaths.length === 1) {
+                    Controller.openProjectFile(result.filePaths[0]);
                     return resolve();
                 }
                 return reject();
@@ -27,11 +27,11 @@ const Controller = Object.assign(BaseController, {
     saveProjectAs() {
         dialog.showSaveDialog({
             filters: [{ name: 'MapGallery Editor files', extensions: ['mapgallery'] }],
-        }, (fileName) => {
-            if (fileName) {
+        }).then((result) => {
+            if (result.filePath) {
                 // force id regeneration
                 store.commit('setId', false);
-                store.commit('setFilename', fileName.toString());
+                store.commit('setFilename', result.filePath);
                 Controller.saveProject();
             }
         });
@@ -41,9 +41,9 @@ const Controller = Object.assign(BaseController, {
             dialog.showOpenDialog({
                 properties: ['openFile', 'multiSelections'],
                 filters: [{ name: 'Images', extensions: ['jpg', 'JPG', 'jpeg', 'JPEG'] }],
-            }, (files) => {
-                if (files) {
-                    ImageProcessor.processNewImages(files).then((slides) => {
+            }).then((result) => {
+                if (result.filePaths.length > 0) {
+                    ImageProcessor.processNewImages(result.filePaths).then((slides) => {
                         if (prevSlide) {
                             store.commit('addSlidesAfter', {
                                 slide: prevSlide,
@@ -62,9 +62,9 @@ const Controller = Object.assign(BaseController, {
         });
     },
     exportProject() {
-        dialog.showOpenDialog({ properties: ['openDirectory', 'createDirectory'] }, (dir) => {
-            if (dir) {
-                ProjectHandler.exportProject(dir.toString())
+        dialog.showOpenDialog({ properties: ['openDirectory', 'createDirectory'] }).then((result) => {
+            if (result.filePaths.length === 1) {
+                ProjectHandler.exportProject(result.filePaths[0])
                     .then((url) => {
                         shell.openExternal(url);
                     })
