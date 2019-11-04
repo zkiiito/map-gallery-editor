@@ -177,6 +177,11 @@ if (process.env.NODE_ENV === 'production') {
         to: path.join(__dirname, '../dist/electron/static'),
         ignore: ['.*']
       },
+      {
+        from: path.join(__dirname, '../node_modules/MapGallery'),
+        to: path.join(__dirname, '../dist/electron/static/MapGallery'),
+        ignore: ['*.jpg']
+      },
     ]),
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': '"production"'
