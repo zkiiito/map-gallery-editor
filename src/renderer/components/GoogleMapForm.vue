@@ -104,8 +104,16 @@ export default {
         };
 
         /* global google */
-        new google.maps.places.Autocomplete(this.$refs.routeFrom, options);
-        new google.maps.places.Autocomplete(this.$refs.routeTo, options);
+        const autocompleteFrom = new google.maps.places.Autocomplete(this.$refs.routeFrom, options);
+        const autoCompleteTo = new google.maps.places.Autocomplete(this.$refs.routeTo, options);
+
+        google.maps.event.addListener(autocompleteFrom, 'place_changed', () => {
+            this.routeFrom = autocompleteFrom.getPlace().formatted_address;
+        });
+
+        google.maps.event.addListener(autoCompleteTo, 'place_changed', () => {
+            this.routeTo = autoCompleteTo.getPlace().formatted_address;
+        });
     },
     methods: {
         displayRoute() {
