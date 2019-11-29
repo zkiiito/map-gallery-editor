@@ -32,7 +32,11 @@ function publishProject() {
             let filesUploaded = 0;
 
             slides.forEach((slide) => {
-                if (slide.from || slide.source === 'flickr' || (slide.source === 'web' && slide.uploaded)) {
+                if (slide.from
+                    || slide.source === 'flickr'
+                    || (slide.source === 'web' && slide.uploaded)
+                    || (slide.source === undefined && process.env.IS_WEB)
+                ) {
                     return;
                 }
 
