@@ -48,9 +48,7 @@ export default {
             this.$store.commit('setCurrentSlide', mapSlide);
         },
         addImages() {
-            Controller.addImages().then(() => {
-                this.$store.commit('setView', 'gallery');
-            });
+            Controller.addImages();
         },
     },
 };

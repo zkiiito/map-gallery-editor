@@ -44,10 +44,10 @@ const Controller = {
         throw new Error('implement');
     },
     addImages(prevSlide) {
-        return this.addImagesFromDevice(prevSlide);
+        store.commit('setAddAfterSlide', prevSlide);
+        store.commit('openPopup', 'addImage');
     },
-    // eslint-disable-next-line no-unused-vars
-    addImagesFromDevice(prevSlide) {
+    addImagesFromDevice() {
         throw new Error('implement');
     },
     addMapSlide() {
@@ -56,8 +56,8 @@ const Controller = {
     addMapSlideAfter(prevSlide) {
         const slide = {
             id: uuidv4(),
-            from: 'Budapest',
-            to: 'Vienna',
+            from: 'Budapest, Hungary',
+            to: 'Vienna, Austria',
             speed: 5000,
             mode: 'DRIVING',
             waypoints: [],
@@ -75,10 +75,8 @@ const Controller = {
             }
         }
 
-        store.commit('addSlidesAfter', {
-            slide: prevSlide,
-            slides: [slide],
-        });
+        store.commit('setAddAfterSlide', prevSlide);
+        store.commit('addSlides', [slide]);
         return slide;
     },
     prevSlide() {

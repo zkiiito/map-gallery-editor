@@ -26,6 +26,7 @@ export default new Vuex.Store({
                 user: null,
                 deletedSlide: null,
                 deletedSlideIdx: null,
+                addAfterSlide: null,
             },
             mutations: {
                 setSlides(state, slides) {
@@ -54,11 +55,13 @@ export default new Vuex.Store({
                     }
                 },
                 addSlides(state, slides) {
-                    state.slides = state.slides.concat(slides);
-                },
-                addSlidesAfter(state, obj) {
-                    const idx = state.slides.indexOf(obj.slide);
-                    state.slides.splice(idx + 1, 0, ...obj.slides);
+                    if (state.addAfterSlide) {
+                        const idx = state.slides.indexOf(state.addAfterSlide);
+                        state.slides.splice(idx + 1, 0, ...slides);
+                        state.addAfterSlide = null;
+                    } else {
+                        state.slides = state.slides.concat(slides);
+                    }
                 },
                 moveSlide(state, diff) {
                     const slideCount = state.slides.length;
@@ -157,6 +160,9 @@ export default new Vuex.Store({
                 },
                 setId(state, id) {
                     state.id = id || uuidv4();
+                },
+                setAddAfterSlide(state, slide) {
+                    state.addAfterSlide = slide;
                 },
             },
             actions: {

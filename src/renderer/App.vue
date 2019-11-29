@@ -1,6 +1,7 @@
 <template>
     <div id="app">
         <AuthPopup v-if="$store.getters.isPopupOpen('auth')"/>
+        <AddImagePopup v-if="$store.getters.isPopupOpen('addImage')"/>
         <FlickrPopup v-if="$store.getters.isPopupOpen('flickr')"/>
         <ProjectDataPopup v-if="$store.getters.isPopupOpen('projectData')"/>
         <SplashPopup v-if="$store.getters.isPopupOpen('splash')"/>
@@ -84,10 +85,12 @@ import UserCircle from './components/UserCircle';
 import ImageView from './components/ImageView';
 import ToasterUndo from './components/ToasterUndo';
 import EventBus from '@/services/EventBus';
+import AddImagePopup from '@/components/AddImagePopup';
 
 export default {
     name: 'App',
     components: {
+        AddImagePopup,
         ToasterUndo,
         ImageView,
         UserCircle,

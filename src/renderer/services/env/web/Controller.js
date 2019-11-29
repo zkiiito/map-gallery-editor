@@ -12,21 +12,19 @@ const Controller = Object.assign(BaseController, {
     saveProjectAs() {
         // TODO
     },
-    addImagesFromDevice(prevSlide) {
+    addImagesFromDevice() {
         const inputElement = document.getElementById('fileselector');
         const listenerFunction = (e) => {
             inputElement.removeEventListener('change', listenerFunction, false);
             const files = [...e.target.files];
+            let prevSlide = store.state.gallery.addAfterSlide;
+
             ImageProcessor.processNewImages(files, (slide) => {
                 if (prevSlide) {
-                    store.commit('addSlidesAfter', {
-                        slide: prevSlide,
-                        slides: [slide],
-                    });
+                    store.commit('setAddAfterSlide', prevSlide);
                     prevSlide = slide;
-                } else {
-                    store.commit('addSlides', [slide]);
                 }
+                store.commit('addSlides', [slide]);
             })
                 .catch((err) => {
                     EventBus.$emit('error', err);

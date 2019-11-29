@@ -1,22 +1,24 @@
 <template>
     <Modal>
         <template slot="header">
-            <button @click="close" class="modal-default-button">
-                Close
-            </button>
+            <h2>Import pictures from flickr</h2>
+            <a @click="close" href="#" class="close fas fa-times"/>
         </template>
 
         <template slot="body">
             <div id="flickr-photosets" v-if="this.$store.state.user.flickrUser !== null">
-                <ul id="flickr-photoset-list">
-                    <li v-for="photoset in photosets" :key="photoset.id">
-                        <label>
-                            <input :value="photoset.id" v-model="selectedPhotoset" type="radio" name="photoset">
-                            {{ photoset.title }} ({{ photoset.photos }})
-                        </label>
-                    </li>
-                </ul>
-                <button v-show="selectedPhotoset !== null" @click="importPhotos">Import</button>
+                <div v-if="photosets.length === 0"><FlickrLoader/></div>
+
+                <div id="flickr-photoset-list">
+                    <label v-for="photoset in photosets" class="album" :key="photoset.id" :style="`background-image: url('${ photoset.primary_photo }')`">
+                        <input :value="photoset.id" v-model="selectedPhotoset" type="radio" name="photoset">
+                        <div class="bottom">
+                            <span class="title">{{ photoset.title }}</span><br>
+                            <span class="count">{{ photoset.photos }} photos</span>
+                        </div>
+                    </label>
+                </div>
+                <BigButton cssstyle="width: 300px; margin: auto" v-show="selectedPhotoset !== null" @click="importPhotos">Import</BigButton>
             </div>
         </template>
     </Modal>
@@ -25,10 +27,14 @@
 <script>
 import Modal from '@/components/Modal';
 import FlickrServer from '@/services/FlickrServer';
+import BigButton from '@/components/BigButton';
+import FlickrLoader from '@/components/FlickrLoader';
 
 export default {
     name: 'FlickrPopup',
     components: {
+        FlickrLoader,
+        BigButton,
         Modal,
     },
     data() {
@@ -81,6 +87,7 @@ export default {
                         thumbnail: photo.url_s,
                     })));
 
+                    this.$store.commit('setView', 'gallery');
                     this.close();
                 });
             }
@@ -90,12 +97,50 @@ export default {
 </script>
 
 <style scoped>
-    webview, div#flickr-photosets {
+    div#flickr-photosets {
         height: 580px;
+        align-items: center;
+        display: flex;
+        flex-direction: column;
     }
 
-    ul#flickr-photoset-list {
-        max-height: 80%;
+    #flickr-photoset-list {
+        max-height: 90%;
         overflow-y: scroll;
+    }
+
+    a.close {
+        float: right;
+    }
+
+    h2 {
+        float: left;
+    }
+
+    .album {
+        width: 180px;
+        height: 110px;
+        float: left;
+        background-position: center;
+        background-size: cover;
+        margin: 10px;
+        position: relative;
+        overflow: hidden;
+        color: #ffffff;
+    }
+
+    .album div.bottom {
+        position: absolute;
+        bottom: 10px;
+        left: 10px;
+    }
+
+    .album span.title, .album span.count {
+        overflow: hidden;
+        text-shadow: 1px 1px 2px black;
+    }
+
+    .album span.count {
+        font-size: 14px;
     }
 </style>

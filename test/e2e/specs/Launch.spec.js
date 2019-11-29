@@ -36,7 +36,7 @@ describe('Launch', function () {
             .waitForVisible('#main')
             .getText('#main-title h1')
             .then((text) => {
-                expect(text).to.eq('Weekend in Austria');
+                expect(text).to.eq('Weekend in Austria (0)');
             });
     });
 
@@ -45,9 +45,14 @@ describe('Launch', function () {
         expect(buttons.value.length).to.equal(2);
     });
 
+    it('should display add image popup', function () {
+        this.app.client.$('button.huge:nth-of-type(2)').click();
+        return this.app.client.waitForVisible('button.add-image-from-computer');
+    });
+
     it('should load 2 images', async function () {
         this.timeout(100000);
-        this.app.client.$('button.huge:nth-of-type(2)').click();
+        this.app.client.$('button.add-image-from-computer').click();
         await this.app.client.waitForExist('div.slide.image:nth-child(2)', 100000);
 
         // ?

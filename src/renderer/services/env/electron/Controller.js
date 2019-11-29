@@ -36,7 +36,7 @@ const Controller = Object.assign(BaseController, {
             }
         });
     },
-    addImagesFromDevice(prevSlide) {
+    addImagesFromDevice() {
         return new Promise((resolve, reject) => {
             dialog.showOpenDialog({
                 properties: ['openFile', 'multiSelections'],
@@ -44,14 +44,7 @@ const Controller = Object.assign(BaseController, {
             }).then((result) => {
                 if (result.filePaths.length > 0) {
                     ImageProcessor.processNewImages(result.filePaths).then((slides) => {
-                        if (prevSlide) {
-                            store.commit('addSlidesAfter', {
-                                slide: prevSlide,
-                                slides,
-                            });
-                        } else {
-                            store.commit('addSlides', slides);
-                        }
+                        store.commit('addSlides', slides);
                         return resolve();
                     }).catch((err) => {
                         EventBus.$emit('error', err);
