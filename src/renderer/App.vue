@@ -15,7 +15,10 @@
                 </div>
 
                 <div id="main-title" @click="openProjectData">
-                    <h1>{{ $store.state.gallery.title.length ? $store.state.gallery.title : 'Unnamed trip' }}</h1>
+                    <h1>
+                        {{ $store.state.gallery.title.length ? $store.state.gallery.title : 'Unnamed trip' }}
+                        ({{ $store.state.gallery.slides.length }})
+                    </h1>
                     <h2>{{ $store.state.gallery.description }}</h2>
                 </div>
 
