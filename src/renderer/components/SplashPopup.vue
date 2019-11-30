@@ -9,6 +9,12 @@
                     Show your journey in the map and upload images. You can publish it online, and start
                     the presentation. Easy peasy!
                 </p>
+                <div v-if="newVersion && newVersion !== version" class="upgrade-holder">
+                    <strong>Version {{ newVersion }} available!</strong>
+                    <BigButton cssstyle="width: 300px">
+                        <a :href="newVersionUrl" class="download">Upgrade now</a>
+                    </BigButton>
+                </div>
                 <div class="button-holder">
                     <BigButton @click="newProject">New Trip</BigButton>
                 </div>
@@ -44,7 +50,12 @@ export default {
     data() {
         return {
             version: process.app.version,
+            newVersion: null,
+            newVersionUrl: null,
         };
+    },
+    mounted() {
+        this.getLatestVersion();
     },
     methods: {
         openProject() {
@@ -63,6 +74,32 @@ export default {
         openRecentProject(projectHistory) {
             Controller.openProjectFile(projectHistory.filename);
             this.close();
+        },
+        getLatestVersion() {
+            if (process.env.IS_WEB) {
+                return;
+            }
+
+            const n = navigator;
+            const osMatch = n.platform.match(/(Win|Mac|Linux)/);
+            const os = (osMatch && osMatch[1]) || '';
+
+            fetch('https://api.github.com/repos/zkiiito/map-gallery-editor/releases')
+                .then((res) => res.json())
+                .then((res) => {
+                    const release = res[0];
+                    release.assets.forEach((asset) => {
+                        const ext = asset.name.split('.').pop();
+                        if (
+                            (ext === 'exe' && os === 'Win')
+                            || (ext === 'dmg' && os === 'Mac')
+                            || (ext === 'AppImage' && os === 'Linux')
+                        ) {
+                            this.newVersionUrl = asset.browser_download_url;
+                            this.newVersion = release.tag_name;
+                        }
+                    });
+                });
         },
     },
 };
@@ -98,6 +135,11 @@ div#splash-welcome h3 {
 .button-holder {
     position: absolute;
     bottom: 34px;
+}
+
+.upgrade-holder {
+    position: absolute;
+    bottom: 200px;
 }
 
 div#splash-history {
@@ -136,4 +178,8 @@ div.trip-history:hover {
     background-color: #eeeeee;
 }
 
+a.download {
+    color: #ffffff;
+    display: block;
+}
 </style>
