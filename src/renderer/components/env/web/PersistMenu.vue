@@ -1,16 +1,16 @@
 <template>
     <div id="persist-menu">
         <BigButton v-if="this.$store.state.user.googleUser === null"
-                   @click="login"
                    cssstyle="width: 300px; margin-bottom: 10px"
+                   @click="login"
         >
             <img class="google-logo" src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg">
             <span> Sign in with Google</span>
         </BigButton>
         <br>
         <BigButton :class="`${this.$store.state.user.googleUser === null ? 'disabled' : ''}`"
-                   @click="publishProject"
                    cssstyle="width: 300px"
+                   @click="publishProject"
         >
             <i class="fas fa-cloud-upload-alt"/>Publish
         </BigButton>

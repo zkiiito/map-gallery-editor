@@ -2,7 +2,7 @@
     <Modal>
         <template slot="header">
             <h2>Add pictures</h2>
-            <a @click="close" href="#" class="close fas fa-times"/>
+            <a href="#" class="close fas fa-times" @click="close"/>
         </template>
 
         <template slot="body">

@@ -8,7 +8,7 @@
         <ErrorBar/>
         <WindowProgressbar/>
 
-        <div id="main" v-if="!$store.state.ui.splashMode">
+        <div v-if="!$store.state.ui.splashMode" id="main">
             <div id="main-left">
                 <div id="main-logo">
                     <img src="static/ui/logo.png" alt="logo">
@@ -35,23 +35,23 @@
                     <UserCircle/>
                 </div>
 
-                <div id="view-image" v-if="$store.state.ui.view === 'image'">
+                <div v-if="$store.state.ui.view === 'image'" id="view-image">
                     <ImageView style="height: 100%"/>
                 </div>
 
-                <div id="view-map" v-show="$store.state.ui.view === 'map'">
+                <div v-show="$store.state.ui.view === 'map'" id="view-map">
                     <GoogleMap style="height: 100%"/>
                 </div>
 
-                <div id="view-gallery" v-show="$store.state.ui.view === 'gallery'">
+                <div v-show="$store.state.ui.view === 'gallery'" id="view-gallery">
                     <p align="right">
-                        <a @click="sortAllImages" href="#"><i class="fas fa-sort-amount-down"/> EXIF sort all</a>
+                        <a href="#" @click="sortAllImages"><i class="fas fa-sort-amount-down"/> EXIF sort all</a>
                     </p>
                     <div id="slides">
                         <Draggable
                             id="slideholder"
-                            :class="$store.getters.currentSlideType !== null ? 'small' : 'big'"
                             v-model="slides"
+                            :class="$store.getters.currentSlideType !== null ? 'small' : 'big'"
                             group="slides"
                             draggable=".draggable"
                         >

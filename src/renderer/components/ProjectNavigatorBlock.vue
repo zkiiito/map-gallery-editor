@@ -1,20 +1,20 @@
 <template>
     <div>
         <div v-if="!editMode" class="block block-map">
-            <p @click="openMap" class="header">
+            <p class="header" @click="openMap">
                 <span class="light">Section {{ block.id }}: </span>{{ block.mapslide.from }} to {{ block.mapslide.to }}
             </p>
 
-            <div v-for="(slide, idx) in block.slides.slice(0, 6)" :key="idx" @click="scrollToSection"
-                 :style="`background-image: url('${thumbnailUrl(slide)}')`"
+            <div v-for="(slide, idx) in block.slides.slice(0, 6)" :key="idx" :style="`background-image: url('${thumbnailUrl(slide)}')`"
                  class="img"
+                 @click="scrollToSection"
             >
                 <span v-if="idx === 0" class="count">{{ block.slides.length }}</span>
             </div>
             <BigButton v-if="block.slides.length === 0"
-                       @click="addImages"
                        style="width: 170px"
                        cssclass="small empty"
+                       @click="addImages"
             >
                 Add pictures!
             </BigButton>
@@ -23,12 +23,12 @@
 
         <div v-if="editMode" class="block block-map-form">
             <p class="header"><span class="light">Section {{ block.id }}</span></p>
-            <a @click="closeForm" href="#" class="close fas fa-times"/>
+            <a href="#" class="close fas fa-times" @click="closeForm"/>
 
             <GoogleMapForm ref="mapForm" :slide="block.mapslide"/>
 
             <!--BigButton class="big-button" cssclass="small empty">Add</BigButton-->
-            <BigButton @click="showRoute" class="big-button" cssclass="small empty">Run test!</BigButton>
+            <BigButton class="big-button" cssclass="small empty" @click="showRoute">Run test!</BigButton>
             <br style="clear: both">
         </div>
     </div>

@@ -17,14 +17,14 @@
                 <h2>Recent trips</h2>
 
                 <div v-for="(project, idx) in $store.state.app.projectHistory.slice(-6).reverse()"
-                     :key="idx" @click="openRecentProject(project)" class="trip-history"
+                     :key="idx" class="trip-history" @click="openRecentProject(project)"
                 >
                     <h5>{{ project.title }}</h5>
                     <p>{{ project.description || project.filename }}</p>
                 </div>
 
                 <div class="button-holder">
-                    <a @click="openProject" href="#">Open other trip</a>
+                    <a href="#" @click="openProject">Open other trip</a>
                 </div>
             </div>
         </template>

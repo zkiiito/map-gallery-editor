@@ -1,9 +1,9 @@
 <template>
-    <div @click="setCurrent" :class="classObject" class="slide">
+    <div :class="classObject" class="slide" @click="setCurrent">
         <template v-if="Object.prototype.hasOwnProperty.call(slide, 'from')">
             <div class="overlay overlay-top">
-                <a @click.stop="showMenu" href="#" class="fas fa-ellipsis-v"/>
-                <ul v-if="menuVisible" @mouseleave="hideMenu" class="menu">
+                <a href="#" class="fas fa-ellipsis-v" @click.stop="showMenu"/>
+                <ul v-if="menuVisible" class="menu" @mouseleave="hideMenu">
                     <li @click.stop="addImages">Add pictures after</li>
                     <li @click.stop="exifSort">EXIF sort</li>
                     <li @click.stop="deleteSlide">Delete section</li>
@@ -19,8 +19,8 @@
         </template>
         <template v-else>
             <div class="overlay overlay-top">
-                <a @click.stop="showMenu" href="#" class="fas fa-ellipsis-v"/>
-                <ul @mouseleave="hideMenu" v-if="menuVisible" class="menu">
+                <a href="#" class="fas fa-ellipsis-v" @click.stop="showMenu"/>
+                <ul v-if="menuVisible" class="menu" @mouseleave="hideMenu">
                     <li @click.stop="addImages">Add pictures after</li>
                     <li @click.stop="addMap">Add map section after</li>
                     <!--li @click.stop="setAsCover">Set as cover picture</li-->
@@ -32,9 +32,9 @@
                 <img :src="thumbnailUrl" :title="slide.filename" :alt="slide.filename" @click="showImage">
             </div>
             <div class="overlay overlay-bottom">
-                <a @click.stop="rotateSlide"
-                   v-if="(slide.source === 'web' && !slide.uploaded) || (!slide.source && !isWeb)"
-                   href="#" class="fas fa-undo"
+                <a v-if="(slide.source === 'web' && !slide.uploaded) || (!slide.source && !isWeb)"
+                   href="#"
+                   class="fas fa-undo" @click.stop="rotateSlide"
                 />
             </div>
         </template>

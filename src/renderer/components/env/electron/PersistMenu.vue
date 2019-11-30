@@ -1,11 +1,11 @@
 <template>
     <div id="persist-menu">
-        <a @click="exportProject" href="#"><i class="fas fa-download"/>Offline export</a>
-        <a @click="saveProject" href="#"><i class="fas fa-save"/>Save</a>
+        <a href="#" @click="exportProject"><i class="fas fa-download"/>Offline export</a>
+        <a href="#" @click="saveProject"><i class="fas fa-save"/>Save</a>
         <br>
         <BigButton :class="`${this.$store.state.user.googleUser === null ? 'disabled' : ''}`"
-                   @click="publishProject"
                    cssstyle="width: 300px"
+                   @click="publishProject"
         >
             <i class="fas fa-cloud-upload-alt"/>Publish
         </BigButton>

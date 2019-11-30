@@ -2,23 +2,23 @@
     <Modal>
         <template slot="header">
             <h2>Import pictures from flickr</h2>
-            <a @click="close" href="#" class="close fas fa-times"/>
+            <a href="#" class="close fas fa-times" @click="close"/>
         </template>
 
         <template slot="body">
-            <div id="flickr-photosets" v-if="this.$store.state.user.flickrUser !== null">
+            <div v-if="this.$store.state.user.flickrUser !== null" id="flickr-photosets">
                 <div v-if="photosets.length === 0"><FlickrLoader/></div>
 
                 <div id="flickr-photoset-list">
-                    <label v-for="photoset in photosets" class="album" :key="photoset.id" :style="`background-image: url('${ photoset.primary_photo }')`">
-                        <input :value="photoset.id" v-model="selectedPhotoset" type="radio" name="photoset">
+                    <label v-for="photoset in photosets" :key="photoset.id" class="album" :style="`background-image: url('${ photoset.primary_photo }')`">
+                        <input v-model="selectedPhotoset" :value="photoset.id" type="radio" name="photoset">
                         <div class="bottom">
                             <span class="title">{{ photoset.title }}</span><br>
                             <span class="count">{{ photoset.photos }} photos</span>
                         </div>
                     </label>
                 </div>
-                <BigButton cssstyle="width: 300px; margin: auto" v-show="selectedPhotoset !== null" @click="importPhotos">Import</BigButton>
+                <BigButton v-show="selectedPhotoset !== null" cssstyle="width: 300px; margin: auto" @click="importPhotos">Import</BigButton>
             </div>
         </template>
     </Modal>

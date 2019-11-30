@@ -1,12 +1,12 @@
 <template>
     <div class="holder">
         <div :style="styleObject" class="imageview"/>
-        <a @click="close" href="#" class="close fas fa-times"/>
+        <a href="#" class="close fas fa-times" @click="close"/>
         <div class="buttons">
-            <a @click="deleteImage" href="#"><i class="fas fa-trash"/> Delete</a>
-            <a @click="rotateImage"
-               v-if="(currentSlide.source === 'web' && !currentSlide.uploaded) || (!currentSlide.source && !isWeb)"
+            <a href="#" @click="deleteImage"><i class="fas fa-trash"/> Delete</a>
+            <a v-if="(currentSlide.source === 'web' && !currentSlide.uploaded) || (!currentSlide.source && !isWeb)"
                href="#"
+               @click="rotateImage"
             ><i class="fas fa-undo"/> Rotate</a>
         </div>
     </div>
