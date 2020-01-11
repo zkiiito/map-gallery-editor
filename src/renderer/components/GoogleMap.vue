@@ -87,7 +87,17 @@ export default {
         },
 
         displayAllRoutes(fit) {
-            MapAnimator.showAllRoutes(this.$store.state.gallery.slides.filter((slide) => slide.from), fit);
+            const routeSlides = this.$store.state.gallery.slides.filter((slide) => slide.from);
+            MapAnimator.showAllRoutes(routeSlides, fit, () => {
+                routeSlides.forEach((slide, idx) => {
+                    if (MapAnimator.allPolylines[idx]) {
+                        google.maps.event.addListener(MapAnimator.allPolylines[idx], 'click', () => {
+                            this.$store.commit('setCurrentSlide', slide);
+                            this.$store.commit('setSlideMapFormOpen', true);
+                        });
+                    }
+                });
+            });
         },
     },
 };
