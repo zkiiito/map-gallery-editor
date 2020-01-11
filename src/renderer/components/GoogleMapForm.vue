@@ -11,11 +11,17 @@
             </dd>
             <dt><label class="label">Via:</label></dt>
             <dd>
-                <textarea v-model.lazy="routeWaypoints" class="input" placeholder="One per line"/>
+                <ul id="waypoints" class="input">
+                    <li v-for="(routeWaypoint, idx) in routeWaypoints" class="waypoint">
+                        {{ routeWaypoint }}<a href="#" class="delete fas fa-times" @click="deleteWaypoint(idx)" title="delete"/>
+                    </li>
+                    <li><input ref="routeWaypoint" type="text" placeholder="Add waypoint"></li>
+                </ul>
+
             </dd>
             <dt><label class="label">Speed:</label></dt>
             <dd>
-                <LogarithmicSlider v-model="routeSpeed"/>
+                <logarithmic-slider v-model="routeSpeed"/>
             </dd>
         </dl>
 
@@ -64,15 +70,14 @@ export default {
             get() {
                 const { waypoints } = this.slide;
                 if (waypoints) {
-                    return waypoints.map((waypoint) => waypoint.location).join('\n');
+                    return waypoints.map((waypoint) => waypoint.location);
                 }
 
-                return '';
+                return [];
             },
             set(value) {
-                const waypoints = value.split('\n');
                 const res = [];
-                waypoints.forEach((waypoint) => {
+                value.forEach((waypoint) => {
                     if (waypoint.length) {
                         res.push({ location: waypoint });
                     }
@@ -106,6 +111,7 @@ export default {
         /* global google */
         const autocompleteFrom = new google.maps.places.Autocomplete(this.$refs.routeFrom, options);
         const autoCompleteTo = new google.maps.places.Autocomplete(this.$refs.routeTo, options);
+        const autoCompleteWaypoint = new google.maps.places.Autocomplete(this.$refs.routeWaypoint, options);
 
         google.maps.event.addListener(autocompleteFrom, 'place_changed', () => {
             this.routeFrom = autocompleteFrom.getPlace().formatted_address;
@@ -113,6 +119,14 @@ export default {
 
         google.maps.event.addListener(autoCompleteTo, 'place_changed', () => {
             this.routeTo = autoCompleteTo.getPlace().formatted_address;
+        });
+
+        google.maps.event.addListener(autoCompleteWaypoint, 'place_changed', () => {
+            const waypoints = this.routeWaypoints;
+            waypoints.push(autoCompleteWaypoint.getPlace().formatted_address);
+            this.routeWaypoints = waypoints;
+            this.$refs.routeWaypoint.value = '';
+            this.$refs.routeWaypoint.focus();
         });
     },
     methods: {
@@ -131,6 +145,11 @@ export default {
                 slide: this.slide,
                 newValues: data,
             });
+        },
+        deleteWaypoint(idx) {
+            const waypoints = this.routeWaypoints;
+            waypoints.splice(idx, 1);
+            this.routeWaypoints = waypoints;
         },
     },
 };
@@ -190,5 +209,21 @@ input, textarea {
 #map-route-mode label:nth-of-type(2) {
     border-left: 1px solid #dddddd;
     border-right: 1px solid #dddddd;
+}
+
+ul#waypoints {
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
+}
+
+ul#waypoints li.waypoint {
+    padding: 8px;
+}
+
+ul#waypoints li.waypoint a.delete {
+    float: right;
+    display: block;
+    color: #ff0000;
 }
 </style>
