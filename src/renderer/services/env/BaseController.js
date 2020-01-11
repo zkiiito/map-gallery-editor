@@ -20,7 +20,7 @@ const Controller = {
         store.commit('setFilename', filename);
         ProjectHandler.openProject(store.state.ui.filename)
             .then(() => {
-                store.commit('setView', 'gallery');
+                // store.commit('setView', 'gallery');
                 EventBus.$emit(EventBus.events.PROJECT_OPENED);
             })
             .catch((err) => {

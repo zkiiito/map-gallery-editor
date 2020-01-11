@@ -41,6 +41,7 @@ export default {
         initMap() {
             MapAnimator.tick = 40;
             MapAnimator.step = 1200;
+            MapAnimator.cacheServer = 'https://mapgallery.online';
             MapAnimator.animationTriggerEvent = 'center_changed';
             MapAnimator.initialize();
 
@@ -64,6 +65,7 @@ export default {
         },
 
         displayRoute(route) {
+            this.displayAllRoutes(false);
             const routeClone = { ...route };
             routeClone.displayOnly = true;
             this.showRoute(routeClone);
@@ -80,6 +82,12 @@ export default {
             if (actualBounds.getSouthWest().lng() === -180 && actualBounds.getNorthEast().lng() === 180) {
                 mapObj.setZoom(mapObj.getZoom() + 1);
             }
+
+            this.displayAllRoutes(true);
+        },
+
+        displayAllRoutes(fit) {
+            MapAnimator.showAllRoutes(this.$store.state.gallery.slides.filter((slide) => slide.from), fit);
         },
     },
 };
