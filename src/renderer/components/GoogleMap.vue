@@ -41,7 +41,7 @@ export default {
         initMap() {
             MapAnimator.tick = 40;
             MapAnimator.step = 1200;
-            MapAnimator.cacheServer = 'https://mapgallery.online';
+            MapAnimator.cacheServer = 'https://backend.mapgallery.online';
             MapAnimator.animationTriggerEvent = 'center_changed';
             MapAnimator.initialize();
 
@@ -88,16 +88,27 @@ export default {
 
         displayAllRoutes(fit) {
             const routeSlides = this.$store.state.gallery.slides.filter((slide) => slide.from);
-            MapAnimator.showAllRoutes(routeSlides, fit, () => {
-                routeSlides.forEach((slide, idx) => {
-                    if (MapAnimator.allPolylines[idx]) {
-                        google.maps.event.addListener(MapAnimator.allPolylines[idx], 'click', () => {
-                            this.$store.commit('setCurrentSlide', slide);
-                            this.$store.commit('setSlideMapFormOpen', true);
-                        });
-                    }
+            MapAnimator.showAllRoutes(routeSlides, fit)
+                .then(() => {
+                    routeSlides.forEach((slide, idx) => {
+                        if (MapAnimator.allPolylines[idx]) {
+                            const widePath = new google.maps.Polyline({
+                                path: MapAnimator.allPolylines[idx].getPath(),
+                                strokeColor: '#0000FF',
+                                strokeOpacity: 0.01,
+                                strokeWeight: 25,
+                            });
+
+                            widePath.setMap(MapAnimator.allPolylines[idx].getMap());
+                            MapAnimator.allPolylines.push(widePath);
+
+                            google.maps.event.addListener(widePath, 'click', () => {
+                                this.$store.commit('setCurrentSlide', slide);
+                                this.$store.commit('setSlideMapFormOpen', true);
+                            });
+                        }
+                    });
                 });
-            });
         },
     },
 };
