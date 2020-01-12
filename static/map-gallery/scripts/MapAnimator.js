@@ -135,7 +135,8 @@ const MapAnimator = {
             const hash = JSON.stringify(request);
 
             if (this.directionsCache[hash]) {
-                return resolve(this.directionsCache[hash]);
+                resolve(this.directionsCache[hash]);
+                return;
             }
 
             if (this.cacheServer) {
@@ -213,11 +214,12 @@ const MapAnimator = {
             const hash = JSON.stringify(address);
 
             if (this.geocodeCache[hash]) {
-                return resolve(this.geocodeCache[hash]);
+                resolve(this.geocodeCache[hash]);
+                return;
             }
 
             if (this.cacheServer) {
-                return fetch(`${this.cacheServer}/geocode/location/${address}`)
+                fetch(`${this.cacheServer}/geocode/location/${address}`)
                     .then((results) => results.json())
                     .then((results) => {
                         if (results.status) {
