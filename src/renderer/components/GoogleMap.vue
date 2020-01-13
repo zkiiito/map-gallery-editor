@@ -51,6 +51,7 @@ export default {
         },
 
         showRoute(route) {
+            this.displayAllRoutes(false);
             MapAnimator.showRoute(route, (error) => {
                 if (error) {
                     if (error === 'NOT_FOUND') {
@@ -65,7 +66,6 @@ export default {
         },
 
         displayRoute(route) {
-            this.displayAllRoutes(false);
             const routeClone = { ...route };
             routeClone.displayOnly = true;
             this.showRoute(routeClone);
@@ -88,6 +88,10 @@ export default {
 
         displayAllRoutes(fit) {
             const routeSlides = this.$store.state.gallery.slides.filter((slide) => slide.from);
+            if (routeSlides.length === 0) {
+                return;
+            }
+
             MapAnimator.showAllRoutes(routeSlides, fit)
                 .then(() => {
                     routeSlides.forEach((slide, idx) => {
