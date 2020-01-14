@@ -9,6 +9,7 @@
             <div class="centered">
                 <BigButton cssstyle="width: 300px" cssclass="add-image-from-computer" @click="addFromComputer">Upload from computer</BigButton><br>
                 <BigButton cssstyle="width: 300px" cssclass="add-image-from-flickr" @click="addFromFlickr">Import from flickr</BigButton>
+                <BigButton cssstyle="width: 300px" cssclass="add-image-from-flickr" @click="addFromGoogle">Import from Google Photos</BigButton>
             </div>
         </template>
     </Modal>
@@ -35,6 +36,10 @@ export default {
         addFromFlickr() {
             this.close();
             Controller.openFlickr();
+        },
+        addFromGoogle() {
+            this.close();
+            Controller.openGooglePhotos();
         },
         close() {
             this.$store.commit('closePopup', 'addImage');

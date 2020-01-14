@@ -3,6 +3,7 @@
         <AuthPopup v-if="$store.getters.isPopupOpen('auth')"/>
         <AddImagePopup v-if="$store.getters.isPopupOpen('addImage')"/>
         <FlickrPopup v-if="$store.getters.isPopupOpen('flickr')"/>
+        <google-photos-popup v-if="$store.getters.isPopupOpen('googlePhotos')"/>
         <ProjectDataPopup v-if="$store.getters.isPopupOpen('projectData')"/>
         <SplashPopup v-if="$store.getters.isPopupOpen('splash')"/>
         <ErrorBar/>
@@ -86,10 +87,12 @@ import ImageView from './components/ImageView';
 import ToasterUndo from './components/ToasterUndo';
 import EventBus from '@/services/EventBus';
 import AddImagePopup from '@/components/AddImagePopup';
+import GooglePhotosPopup from '@/components/GooglePhotosPopup';
 
 export default {
     name: 'App',
     components: {
+        GooglePhotosPopup,
         AddImagePopup,
         ToasterUndo,
         ImageView,
