@@ -49,17 +49,16 @@ export default {
             default: () => {},
         },
     },
-    data: () => ({
-        editMode: false,
-    }),
     computed: {
         currentSlide() {
             return this.$store.state.gallery.currentSlide;
         },
+        editMode() {
+            return this.$store.state.gallery.slideMapFormOpen && this.block.mapslide === this.$store.state.gallery.currentSlide;
+        },
     },
     watch: {
         currentSlide(newSlide) {
-            this.editMode = false;
             if (newSlide === this.block.mapslide) {
                 this.$nextTick(() => this.$el.scrollIntoViewIfNeeded());
             }
@@ -76,14 +75,14 @@ export default {
         },
         openMap() {
             this.$store.commit('setCurrentSlide', this.block.mapslide);
+            this.$store.commit('setSlideMapFormOpen', true);
             this.$store.commit('setView', 'map');
-            this.editMode = true;
         },
         showRoute() {
             this.$refs.mapForm.animateRoute();
         },
         closeForm() {
-            this.editMode = false;
+            this.$store.commit('setSlideMapFormOpen', false);
         },
         scrollToSection() {
             this.$store.commit('setCurrentSlide', this.block.mapslide);

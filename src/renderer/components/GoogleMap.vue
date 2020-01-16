@@ -41,6 +41,7 @@ export default {
         initMap() {
             MapAnimator.tick = 40;
             MapAnimator.step = 1200;
+            MapAnimator.cacheServer = 'https://backend.mapgallery.online';
             MapAnimator.animationTriggerEvent = 'center_changed';
             MapAnimator.initialize();
 
@@ -50,6 +51,7 @@ export default {
         },
 
         showRoute(route) {
+            this.displayAllRoutes(false);
             MapAnimator.showRoute(route, (error) => {
                 if (error) {
                     if (error === 'NOT_FOUND') {
@@ -80,6 +82,37 @@ export default {
             if (actualBounds.getSouthWest().lng() === -180 && actualBounds.getNorthEast().lng() === 180) {
                 mapObj.setZoom(mapObj.getZoom() + 1);
             }
+
+            this.displayAllRoutes(true);
+        },
+
+        displayAllRoutes(fit) {
+            const routeSlides = this.$store.state.gallery.slides.filter((slide) => slide.from);
+            if (routeSlides.length === 0) {
+                return;
+            }
+
+            MapAnimator.showAllRoutes(routeSlides, fit)
+                .then(() => {
+                    routeSlides.forEach((slide, idx) => {
+                        if (MapAnimator.allPolylines[idx]) {
+                            const widePath = new google.maps.Polyline({
+                                path: MapAnimator.allPolylines[idx].getPath(),
+                                strokeColor: '#0000FF',
+                                strokeOpacity: 0.01,
+                                strokeWeight: 25,
+                            });
+
+                            widePath.setMap(MapAnimator.allPolylines[idx].getMap());
+                            MapAnimator.allPolylines.push(widePath);
+
+                            google.maps.event.addListener(widePath, 'click', () => {
+                                this.$store.commit('setCurrentSlide', slide);
+                                this.$store.commit('setSlideMapFormOpen', true);
+                            });
+                        }
+                    });
+                });
         },
     },
 };

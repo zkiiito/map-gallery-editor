@@ -1,0 +1,14 @@
+env:
+  browser: true
+extends: 'airbnb-base'
+rules:
+  indent:
+    - error
+    - 4
+  linebreak-style:
+    - 0
+  max-len:
+    - warn
+    - 140
+globals:
+  google: true

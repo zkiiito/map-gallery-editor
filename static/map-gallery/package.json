@@ -1,0 +1,54 @@
+{
+  "_from": "github:zkiiito/MapGallery#53d4c392b995f590b36c714580ebd355fd577217",
+  "_id": "map-gallery@2.0.0",
+  "_inBundle": false,
+  "_integrity": "",
+  "_location": "/map-gallery",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "git",
+    "raw": "github:zkiiito/MapGallery#53d4c392b995f590b36c714580ebd355fd577217",
+    "rawSpec": "github:zkiiito/MapGallery#53d4c392b995f590b36c714580ebd355fd577217",
+    "saveSpec": "github:zkiiito/MapGallery#53d4c392b995f590b36c714580ebd355fd577217",
+    "fetchSpec": null,
+    "gitCommittish": "53d4c392b995f590b36c714580ebd355fd577217"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "github:zkiiito/MapGallery#53d4c392b995f590b36c714580ebd355fd577217",
+  "_spec": "github:zkiiito/MapGallery#53d4c392b995f590b36c714580ebd355fd577217",
+  "_where": "D:\\work\\map-gallery-editor",
+  "author": {
+    "name": "zooli"
+  },
+  "bugs": {
+    "url": "https://github.com/zkiiito/MapGallery/issues"
+  },
+  "bundleDependencies": false,
+  "dependencies": {},
+  "deprecated": false,
+  "description": "Slideshows with maps",
+  "devDependencies": {
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-friendly-formatter": "^4.0.1",
+    "eslint-plugin-import": "^2.19.1",
+    "terser": "^4.6.2"
+  },
+  "homepage": "https://github.com/zkiiito/MapGallery",
+  "license": "MIT",
+  "main": "index.js",
+  "name": "map-gallery",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zkiiito/MapGallery.git"
+  },
+  "scripts": {
+    "lint": "eslint --ext .js -f ./node_modules/eslint-friendly-formatter scripts",
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "version": "2.0.0"
+}

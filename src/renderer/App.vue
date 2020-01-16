@@ -175,7 +175,7 @@ export default {
       color: #1d8c8e;
   }
 
-  input, textarea {
+  input, textarea, .input {
       border-radius: 5px;
       background-color: #f6f6f6;
       color: #404041;

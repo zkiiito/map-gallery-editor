@@ -27,6 +27,7 @@ export default new Vuex.Store({
                 deletedSlide: null,
                 deletedSlideIdx: null,
                 addAfterSlide: null,
+                slideMapFormOpen: false,
             },
             mutations: {
                 setSlides(state, slides) {
@@ -35,6 +36,7 @@ export default new Vuex.Store({
                 },
                 setCurrentSlide(state, slide) {
                     state.currentSlide = slide;
+                    state.slideMapFormOpen = false;
                     EventBus.$emit(EventBus.events.CURRENT_SLIDE_CHANGED, slide);
                 },
                 updateOrder(state, ids) {
@@ -163,6 +165,9 @@ export default new Vuex.Store({
                 },
                 setAddAfterSlide(state, slide) {
                     state.addAfterSlide = slide;
+                },
+                setSlideMapFormOpen(state, open) {
+                    state.slideMapFormOpen = open;
                 },
             },
             actions: {
