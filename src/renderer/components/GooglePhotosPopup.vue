@@ -10,7 +10,12 @@
                 <div v-if="photos.length === 0">Loading</div>
 
                 <div id="google-photo-list" v-infinite-scroll="getPhotos" infinite-scroll-disabled="busy" infinite-scroll-distance="10">
-                    <label v-for="photo in photos" :key="photo.id" class="photo" :style="`background-image: url('${ photo.baseUrl }=w180-h110-c')`">
+                    <label
+                        v-for="photo in photos"
+                        :key="photo.id"
+                        class="photo"
+                        :style="`background-image: url('${ photo.baseUrl }=w180-h110-c')`"
+                    >
                         <input v-model="selectedPhotos" :value="photo.id" type="checkbox" name="mediaitem">
                     </label>
                 </div>

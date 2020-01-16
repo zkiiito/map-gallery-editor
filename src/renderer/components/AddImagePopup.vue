@@ -7,9 +7,9 @@
 
         <template slot="body">
             <div class="centered">
-                <BigButton cssstyle="width: 300px" cssclass="add-image-from-computer" @click="addFromComputer">Upload from computer</BigButton><br>
-                <BigButton cssstyle="width: 300px" cssclass="add-image-from-flickr" @click="addFromFlickr">Import from flickr</BigButton>
-                <BigButton cssstyle="width: 300px" cssclass="add-image-from-flickr" @click="addFromGoogle">Import from Google Photos</BigButton>
+                <BigButton cssstyle="width: 300px" @click="addFromComputer">Upload from computer</BigButton>
+                <BigButton cssstyle="width: 300px" @click="addFromFlickr">Import from flickr</BigButton>
+                <BigButton cssstyle="width: 300px" @click="addFromGoogle">Import from Google Photos</BigButton>
             </div>
         </template>
     </Modal>

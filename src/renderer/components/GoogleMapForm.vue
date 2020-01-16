@@ -12,16 +12,15 @@
             <dt><label class="label">Via:</label></dt>
             <dd>
                 <ul id="waypoints" class="input">
-                    <li v-for="(routeWaypoint, idx) in routeWaypoints" class="waypoint">
-                        {{ routeWaypoint }}<a href="#" class="delete fas fa-times" @click="deleteWaypoint(idx)" title="delete"/>
+                    <li v-for="(routeWaypoint, idx) in routeWaypoints" :key="idx" class="waypoint">
+                        {{ routeWaypoint }}<a href="#" class="delete fas fa-times" title="delete" @click="deleteWaypoint(idx)"/>
                     </li>
                     <li><input ref="routeWaypoint" type="text" placeholder="Add waypoint"></li>
                 </ul>
-
             </dd>
             <dt><label class="label">Speed:</label></dt>
             <dd>
-                <logarithmic-slider v-model="routeSpeed"/>
+                <LogarithmicSlider v-model="routeSpeed"/>
             </dd>
         </dl>
 

@@ -3,7 +3,7 @@
         <AuthPopup v-if="$store.getters.isPopupOpen('auth')"/>
         <AddImagePopup v-if="$store.getters.isPopupOpen('addImage')"/>
         <FlickrPopup v-if="$store.getters.isPopupOpen('flickr')"/>
-        <google-photos-popup v-if="$store.getters.isPopupOpen('googlePhotos')"/>
+        <GooglePhotosPopup v-if="$store.getters.isPopupOpen('googlePhotos')"/>
         <ProjectDataPopup v-if="$store.getters.isPopupOpen('projectData')"/>
         <SplashPopup v-if="$store.getters.isPopupOpen('splash')"/>
         <ErrorBar/>
