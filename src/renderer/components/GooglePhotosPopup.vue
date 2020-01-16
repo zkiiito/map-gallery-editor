@@ -6,19 +6,15 @@
         </template>
 
         <template slot="body">
-            <div v-if="this.$store.state.user.flickrUser !== null" id="flickr-photosets">
-                <div v-if="photosets.length === 0">Loading</div>
+            <div id="google-photos">
+                <div v-if="photos.length === 0">Loading</div>
 
-                <div id="flickr-photoset-list">
-                    <label v-for="photoset in photosets" :key="photoset.id" class="album" :style="`background-image: url('${ photoset.primary_photo }')`">
-                        <input v-model="selectedPhotoset" :value="photoset.id" type="radio" name="photoset">
-                        <div class="bottom">
-                            <span class="title">{{ photoset.title }}</span><br>
-                            <span class="count">{{ photoset.photos }} photos</span>
-                        </div>
+                <div id="google-photo-list">
+                    <label v-for="photo in photos" :key="photo.id" class="photo" :style="`background-image: url('${ photo.baseUrl }=w180-h110-c')`">
+                        <input v-model="selectedPhotos" :value="photo.id" type="checkbox" name="mediaitem">
                     </label>
                 </div>
-                <BigButton v-show="selectedPhotoset !== null" cssstyle="width: 300px; margin: auto" @click="importPhotos">Import</BigButton>
+                <BigButton v-show="selectedPhotos.length > 0" cssstyle="width: 300px; margin: auto" @click="importPhotos">Import</BigButton>
             </div>
         </template>
     </Modal>
@@ -27,7 +23,6 @@
 <script>
 import Modal from '@/components/Modal';
 import BigButton from '@/components/BigButton';
-import AppServer from '@/services/AppServer';
 import GooglePhotosServer from '@/services/GooglePhotosServer';
 
 export default {
@@ -38,18 +33,17 @@ export default {
     },
     data() {
         return {
-            photosets: [],
-            selectedPhotoset: null,
+            photos: [],
+            selectedPhotos: [],
         };
     },
     mounted() {
-        if (!GooglePhotosServer.isAuthenticated()) {
-            AppServer.loginWithPhotosAccess();
-        } else {
-            GooglePhotosServer.getPhotos().then((photos) => {
-                console.log(photos);
-            });
-        }
+        GooglePhotosServer.getPhotos().then((photos) => {
+            console.log(photos);
+            if (photos) {
+                this.photos = photos;
+            }
+        });
     },
     methods: {
         close() {
@@ -64,14 +58,14 @@ export default {
 </script>
 
 <style scoped>
-    div#flickr-photosets {
+    div#google-photos {
         height: 580px;
         align-items: center;
         display: flex;
         flex-direction: column;
     }
 
-    #flickr-photoset-list {
+    #google-photo-list {
         max-height: 90%;
         overflow-y: scroll;
     }
@@ -84,7 +78,7 @@ export default {
         float: left;
     }
 
-    .album {
+    .photo {
         width: 180px;
         height: 110px;
         float: left;

@@ -1,28 +1,38 @@
-import EventBus from './EventBus';
+import AppServer from '@/services/AppServer';
 
 let token = null;
+let nextPageToken = null;
 
-function setToken(pToken) {
-    token = pToken;
-    EventBus.$emit(EventBus.events.GOOGLE_PHOTOS_USER_READY);
+function auth() {
+    if (token !== null) {
+        return Promise.resolve();
+    }
+
+    return AppServer.loginWithPhotosAccess().then((_token) => {
+        token = _token;
+    });
 }
 
-function isAuthenticated() {
-    return token !== null;
-}
+function getPhotos(nextPage) {
+    return auth().then(() => {
+        let url = 'https://photoslibrary.googleapis.com/v1/mediaItems?pageSize=100';
+        if (nextPage && nextPageToken !== null) {
+            url += `&pageToken=${nextPageToken}`;
+        }
 
-function getPhotos() {
-    return fetch('https://photoslibrary.googleapis.com/v1/mediaItems', {
-        headers: {
-            Authorization: `Bearer ${token}`,
-        },
+        return fetch(url, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
     })
         .then((result) => result.json())
-        .then((result) => result.mediaItems);
+        .then((result) => {
+            nextPageToken = result.nextPageToken;
+            return result.mediaItems;
+        });
 }
 
 export default {
-    setToken,
-    isAuthenticated,
     getPhotos,
 };
