@@ -164,7 +164,7 @@ module.exports = {
                     examples: [
                         'flickr',
                     ],
-                    pattern: '^([a-z]+)$',
+                    pattern: '^([a-z-]+)$',
                 },
             },
         },

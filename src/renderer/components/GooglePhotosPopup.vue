@@ -9,7 +9,7 @@
             <div id="google-photos">
                 <div v-if="photos.length === 0">Loading</div>
 
-                <div id="google-photo-list">
+                <div id="google-photo-list" v-infinite-scroll="getPhotos" infinite-scroll-disabled="busy" infinite-scroll-distance="10">
                     <label v-for="photo in photos" :key="photo.id" class="photo" :style="`background-image: url('${ photo.baseUrl }=w180-h110-c')`">
                         <input v-model="selectedPhotos" :value="photo.id" type="checkbox" name="mediaitem">
                     </label>
@@ -35,23 +35,41 @@ export default {
         return {
             photos: [],
             selectedPhotos: [],
+            busy: true,
         };
     },
     mounted() {
-        GooglePhotosServer.getPhotos().then((photos) => {
-            console.log(photos);
-            if (photos) {
-                this.photos = photos;
-            }
-        });
+        this.getPhotos();
     },
     methods: {
         close() {
             this.$store.commit('closePopup', 'googlePhotos');
         },
-        getPhotosets() {
+        getPhotos() {
+            this.busy = true;
+            GooglePhotosServer.getPhotos(true).then((photos) => {
+                this.photos = this.photos.concat(photos);
+                this.busy = false;
+            });
         },
         importPhotos() {
+            if (this.selectedPhotos.length) {
+                const photosToImport = this.photos.filter((photo) => this.selectedPhotos.indexOf(photo.id) > -1);
+
+                this.$store.commit('addSlides', photosToImport.map((photo) => ({
+                    id: photo.id,
+                    filename: photo.filename,
+                    path: `${photo.baseUrl}=w1920-h1080`,
+                    exif_date: new Date(photo.mediaMetadata.creationTime),
+                    modified_at: new Date(photo.mediaMetadata.creationTime),
+                    visible: true,
+                    source: 'google-photos',
+                    thumbnail: `${photo.baseUrl}=w150-h150`,
+                })));
+
+                this.$store.commit('setView', 'gallery');
+                this.close();
+            }
         },
     },
 };

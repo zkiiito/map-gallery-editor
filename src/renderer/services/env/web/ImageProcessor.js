@@ -183,7 +183,7 @@ function generateExport(slide, dir) {
 
 function updateSlide(slide) {
     return new Promise((resolve) => {
-        if (slide.path === undefined || slide.source === 'flickr') {
+        if (slide.path === undefined || slide.source === 'flickr' || slide.source === 'google-photos') {
             resolve(slide);
             return;
         }

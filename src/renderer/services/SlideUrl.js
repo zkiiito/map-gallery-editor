@@ -8,14 +8,14 @@ if (!process.env.IS_WEB) {
 }
 
 function getExportedFilename(slide) {
-    if (slide.source === 'flickr') {
+    if (slide.source === 'flickr' || slide.source === 'google-photos') {
         return slide.path;
     }
     return `export_${slide.id}_${slide.filename}`;
 }
 
 function getExportedThumbnailFilename(slide) {
-    if (slide.source === 'flickr') {
+    if (slide.source === 'flickr' || slide.source === 'google-photos') {
         return slide.thumbnail;
     }
 
@@ -28,6 +28,7 @@ function getExportedThumbnailFilename(slide) {
 function getThumbnailUrl(slide) {
     switch (slide.source) {
     case 'flickr':
+    case 'google-photos':
         return slide.thumbnail;
     case 'web':
         return slide.uploaded ? AppServer.getSlideThumbnailUrl(slide, store.state.gallery.id) : slide.path;
@@ -40,6 +41,7 @@ function getThumbnailUrl(slide) {
 function getFullsizeUrl(slide) {
     switch (slide.source) {
     case 'flickr':
+    case 'google-photos':
         return slide.path;
     case 'web':
         return slide.uploaded ? AppServer.getSlideUrl(slide, store.state.gallery.id) : slide.path;
