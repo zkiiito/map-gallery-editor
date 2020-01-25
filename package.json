@@ -135,7 +135,7 @@
     "chai": "^4.2.0",
     "chalk": "^3.0.0",
     "copy-webpack-plugin": "^5.1.1",
-    "cross-env": "^6.0.3",
+    "cross-env": "^7.0.0",
     "css-loader": "^3.4.2",
     "devtron": "^1.4.0",
     "dotenv": "^8.2.0",
