@@ -5,6 +5,7 @@ import App from './App';
 import store from './store';
 import EventBus from './services/EventBus';
 import 'EnvServices/FileMenu';
+const infiniteScroll = require('vue-infinite-scroll');
 
 if (!process.env.IS_WEB) {
     const unhandled = require('electron-unhandled');
@@ -31,6 +32,7 @@ const progressBarOptions = {
 
 Vue.use(VueProgressBar, progressBarOptions);
 Vue.use(AsyncComputed);
+Vue.use(infiniteScroll);
 
 new Vue({
     components: { App },

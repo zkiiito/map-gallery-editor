@@ -10,7 +10,12 @@
                 <div v-if="photosets.length === 0"><FlickrLoader/></div>
 
                 <div id="flickr-photoset-list">
-                    <label v-for="photoset in photosets" :key="photoset.id" class="album" :style="`background-image: url('${ photoset.primary_photo }')`">
+                    <label
+                        v-for="photoset in photosets"
+                        :key="photoset.id"
+                        class="album"
+                        :style="`background-image: url('${ photoset.primary_photo }')`"
+                    >
                         <input v-model="selectedPhotoset" :value="photoset.id" type="radio" name="photoset">
                         <div class="bottom">
                             <span class="title">{{ photoset.title }}</span><br>

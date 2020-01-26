@@ -114,6 +114,9 @@ const Controller = {
     openFlickr() {
         store.commit('openPopup', 'flickr');
     },
+    openGooglePhotos() {
+        store.commit('openPopup', 'googlePhotos');
+    },
     openProjectData() {
         store.commit('openPopup', 'projectData');
     },

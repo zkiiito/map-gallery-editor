@@ -34,6 +34,7 @@ function publishProject() {
             slides.forEach((slide) => {
                 if (slide.from
                     || slide.source === 'flickr'
+                    || slide.source === 'google-photos'
                     || (slide.source === 'web' && slide.uploaded)
                     || (slide.source === undefined && process.env.IS_WEB)
                 ) {

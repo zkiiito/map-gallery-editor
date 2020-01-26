@@ -22,12 +22,18 @@ function init() {
 
 function login() {
     const provider = new firebaseApp.auth.GoogleAuthProvider();
-    firebaseApp.auth().signInWithPopup(provider);
+    return firebaseApp.auth().signInWithPopup(provider);
+}
+
+function loginWithPhotosAccess() {
+    const provider = new firebaseApp.auth.GoogleAuthProvider();
+    provider.addScope('https://www.googleapis.com/auth/photoslibrary.readonly');
+    return firebaseApp.auth().signInWithPopup(provider).then((result) => result.credential.accessToken);
 }
 
 function loginByToken(token) {
     const credential = firebaseApp.auth.GoogleAuthProvider.credential(null, token);
-    firebaseApp.auth().signInWithCredential(credential)
+    return firebaseApp.auth().signInWithCredential(credential)
         .catch((error) => {
             EventBus.$emit('error', error);
         });
@@ -154,6 +160,7 @@ init();
 export default {
     loginByToken,
     login,
+    loginWithPhotosAccess,
     logout,
     uploadFile,
     uploadGalleryData,
