@@ -13,6 +13,8 @@
             <div id="main-left">
                 <div id="main-logo">
                     <img src="static/ui/logo.png" alt="logo">
+                    <MainMenuBars/>
+                    <MainMenu v-if="$store.getters.isMenuOpen('main')"/>
                     <vue-progress-bar/>
                 </div>
 
@@ -34,6 +36,7 @@
                 <div v-show="$store.state.ui.view !== 'image'">
                     <ViewSwitch/>
                     <UserCircle/>
+                    <UserMenu v-if="$store.getters.isMenuOpen('user')"/>
                 </div>
 
                 <div v-if="$store.state.ui.view === 'image'" id="view-image">
@@ -88,10 +91,16 @@ import ToasterUndo from './components/ToasterUndo';
 import EventBus from '@/services/EventBus';
 import AddImagePopup from '@/components/AddImagePopup';
 import GooglePhotosPopup from '@/components/GooglePhotosPopup';
+import MainMenu from '@/components/MainMenu';
+import UserMenu from '@/components/UserMenu';
+import MainMenuBars from '@/components/MainMenuBars';
 
 export default {
     name: 'App',
     components: {
+        MainMenuBars,
+        UserMenu,
+        MainMenu,
         GooglePhotosPopup,
         AddImagePopup,
         ToasterUndo,

@@ -204,6 +204,7 @@ export default new Vuex.Store({
         ui: {
             state: {
                 popups: [],
+                menus: [],
                 splashMode: true,
                 returnToSplash: false,
                 view: 'map', // map, gallery, image
@@ -237,9 +238,28 @@ export default new Vuex.Store({
                 setView(state, view) {
                     state.view = view;
                 },
+                openMenu(state, popup) {
+                    state.menus.push(popup);
+                },
+                closeMenu(state, menu) {
+                    state.menus = state.menus.filter((openmenu) => menu !== openmenu);
+                },
+                closeMenus(state) {
+                    state.menus = [];
+                },
             },
             getters: {
                 isPopupOpen: (state) => ((popup) => state.popups.indexOf(popup) >= 0),
+                isMenuOpen: (state) => ((menu) => state.menus.indexOf(menu) >= 0),
+            },
+            actions: {
+                toggleMenu({ commit, state }, menu) {
+                    if (state.menus.indexOf(menu) > -1) {
+                        commit('closeMenu', menu);
+                    } else {
+                        commit('openMenu', menu);
+                    }
+                },
             },
         },
         user: {
