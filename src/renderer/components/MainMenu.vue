@@ -1,20 +1,17 @@
 <template>
     <div id="main-menu" @mouseleave="closeMenu">
-        <div id="main-menu-rectangle"></div>
-        <dl>
+        <div id="main-menu-rectangle"/>
+        <div class="main-menu-list">
             <a href="#" @click="newProject">
-                <dt>New</dt>
-                <dd>Ctrl + N</dd>
+                <dl><dt>New</dt><dd>Ctrl + N</dd></dl>
             </a>
             <a href="#" @click="openProject">
-                <dt>Open</dt>
-                <dd>Ctrl + O</dd>
+                <dl><dt>Open</dt><dd>Ctrl + O</dd></dl>
             </a>
             <a href="#" @click="undo">
-                <dt>Undo</dt>
-                <dd>Ctrl + Z</dd>
+                <dl><dt>Undo</dt><dd>Ctrl + Z</dd></dl>
             </a>
-        </dl>
+        </div>
     </div>
 </template>
 
@@ -70,10 +67,14 @@ export default {
     font-size: 12px;
 }
 
-dl {
+div.main-menu-list {
     color: #ffffff;
     margin: 12px;
     overflow: hidden;
+}
+
+dl {
+    margin: 0;
 }
 
 dt, dd {
