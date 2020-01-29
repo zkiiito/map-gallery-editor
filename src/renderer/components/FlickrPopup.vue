@@ -120,6 +120,7 @@ export default {
 
     h2 {
         float: left;
+        margin-top: 0;
     }
 
     .album {
