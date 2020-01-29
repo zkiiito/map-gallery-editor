@@ -123,6 +123,9 @@ const Controller = {
     openSplash() {
         store.commit('openPopup', 'splash');
     },
+    openProjectManager() {
+        store.commit('openPopup', 'projectmanager');
+    },
     init() {
         throw new Error('implement');
     },

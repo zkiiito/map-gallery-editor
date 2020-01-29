@@ -30,7 +30,7 @@ export default {
         },
         openProject() {
             this.closeMenu();
-            // Controller.openProject();
+            Controller.openProjectManager();
         },
         undo() {
             this.closeMenu();
