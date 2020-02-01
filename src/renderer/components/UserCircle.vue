@@ -4,9 +4,8 @@
             <i class="fas fa-user"/>
         </a>
         <a v-if="this.$store.state.user.googleUser !== null"
-           :title="`Log out ${this.$store.state.user.googleUser.email}`"
            href="#"
-           @click="logout"
+           @click="toggleMenu"
         >
             <img :src="this.$store.state.user.googleUser.photoURL" alt="profile">
         </a>
@@ -19,10 +18,8 @@ import Controller from 'EnvServices/Controller';
 export default {
     name: 'UserCircle',
     methods: {
-        logout() {
-            if (confirm('Are you sure you want to log out?')) {
-                Controller.logout();
-            }
+        toggleMenu() {
+            this.$store.dispatch('toggleMenu', 'user');
         },
         login() {
             Controller.login();

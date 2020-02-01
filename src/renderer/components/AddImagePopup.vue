@@ -53,6 +53,7 @@ export default {
 <style scoped>
 h2 {
     float: left;
+    margin-top: 0;
 }
 
 div.centered {

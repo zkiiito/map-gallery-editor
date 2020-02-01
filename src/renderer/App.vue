@@ -5,6 +5,7 @@
         <FlickrPopup v-if="$store.getters.isPopupOpen('flickr')"/>
         <GooglePhotosPopup v-if="$store.getters.isPopupOpen('googlePhotos')"/>
         <ProjectDataPopup v-if="$store.getters.isPopupOpen('projectData')"/>
+        <ProjectManagerPopup v-if="$store.getters.isPopupOpen('projectmanager')"/>
         <SplashPopup v-if="$store.getters.isPopupOpen('splash')"/>
         <ErrorBar/>
         <WindowProgressbar/>
@@ -13,6 +14,8 @@
             <div id="main-left">
                 <div id="main-logo">
                     <img src="static/ui/logo.png" alt="logo">
+                    <MainMenuBars v-if="isWeb"/>
+                    <MainMenu v-if="$store.getters.isMenuOpen('main')"/>
                     <vue-progress-bar/>
                 </div>
 
@@ -34,6 +37,7 @@
                 <div v-show="$store.state.ui.view !== 'image'">
                     <ViewSwitch/>
                     <UserCircle/>
+                    <UserMenu v-if="$store.getters.isMenuOpen('user')"/>
                 </div>
 
                 <div v-if="$store.state.ui.view === 'image'" id="view-image">
@@ -45,7 +49,7 @@
                 </div>
 
                 <div v-show="$store.state.ui.view === 'gallery'" id="view-gallery">
-                    <p align="right">
+                    <p style="text-align: right">
                         <a href="#" @click="sortAllImages"><i class="fas fa-sort-amount-down"/> EXIF sort all</a>
                     </p>
                     <div id="slides">
@@ -88,10 +92,18 @@ import ToasterUndo from './components/ToasterUndo';
 import EventBus from '@/services/EventBus';
 import AddImagePopup from '@/components/AddImagePopup';
 import GooglePhotosPopup from '@/components/GooglePhotosPopup';
+import MainMenu from '@/components/MainMenu';
+import UserMenu from '@/components/UserMenu';
+import MainMenuBars from '@/components/MainMenuBars';
+import ProjectManagerPopup from '@/components/ProjectManagerPopup';
 
 export default {
     name: 'App',
     components: {
+        ProjectManagerPopup,
+        MainMenuBars,
+        UserMenu,
+        MainMenu,
         GooglePhotosPopup,
         AddImagePopup,
         ToasterUndo,
@@ -119,6 +131,9 @@ export default {
             set(value) {
                 this.$store.commit('updateOrder', value.map((el) => el.id));
             },
+        },
+        isWeb() {
+            return process.env.IS_WEB;
         },
     },
     mounted() {
