@@ -11,6 +11,7 @@ const Controller = {
         store.commit('setFilename', null);
         store.dispatch('resetProject', []);
         EventBus.$emit('clearErrors');
+        EventBus.$emit(EventBus.events.CLEAR_MAP);
         Controller.openProjectData();
     },
     openProject() {

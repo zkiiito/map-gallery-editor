@@ -36,6 +36,9 @@ export default {
         that.$bus.$on(that.$bus.events.PROJECT_OPENED, () => {
             that.worldViewFit();
         });
+        that.$bus.$on(that.$bus.events.CLEAR_MAP, () => {
+            that.clearMap();
+        });
     },
     methods: {
         initMap() {
@@ -113,6 +116,11 @@ export default {
                         }
                     });
                 });
+        },
+
+        clearMap() {
+            MapAnimator.showAllRoutes([], false);
+            this.worldViewFit();
         },
     },
 };
