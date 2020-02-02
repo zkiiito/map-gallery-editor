@@ -153,13 +153,6 @@ if (process.env.NODE_ENV !== 'production') {
       '__static': `"${path.join(__dirname, '../static').replace(/\\/g, '\\\\')}"`
     }),
     new WriteFilePlugin(), //needed for CopyWebpackPlugin in webpack-dev-server
-    new CopyWebpackPlugin([
-        {
-            from: path.join(__dirname, '../node_modules/MapGallery'),
-            to: path.join(__dirname, '../static/MapGallery'),
-            ignore: ['*.jpg']
-        },
-    ]),
   )
 }
 
@@ -176,11 +169,6 @@ if (process.env.NODE_ENV === 'production') {
         from: path.join(__dirname, '../static'),
         to: path.join(__dirname, '../dist/electron/static'),
         ignore: ['.*']
-      },
-      {
-        from: path.join(__dirname, '../node_modules/MapGallery'),
-        to: path.join(__dirname, '../dist/electron/static/MapGallery'),
-        ignore: ['*.jpg']
       },
     ]),
     new webpack.DefinePlugin({
