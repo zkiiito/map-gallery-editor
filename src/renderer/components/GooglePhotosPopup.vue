@@ -29,6 +29,7 @@
 import Modal from '@/components/Modal';
 import BigButton from '@/components/BigButton';
 import GooglePhotosServer from '@/services/GooglePhotosServer';
+const uuidv4 = require('uuid/v4');
 
 export default {
     name: 'GooglePhotosPopup',
@@ -62,7 +63,8 @@ export default {
                 const photosToImport = this.photos.filter((photo) => this.selectedPhotos.indexOf(photo.id) > -1);
 
                 this.$store.commit('addSlides', photosToImport.map((photo) => ({
-                    id: photo.id,
+                    id: uuidv4(),
+                    photo_id: photo.id,
                     filename: photo.filename,
                     path: `${photo.baseUrl}=w1920-h1080`,
                     exif_date: new Date(photo.mediaMetadata.creationTime),
@@ -111,20 +113,5 @@ export default {
         position: relative;
         overflow: hidden;
         color: #ffffff;
-    }
-
-    .album div.bottom {
-        position: absolute;
-        bottom: 10px;
-        left: 10px;
-    }
-
-    .album span.title, .album span.count {
-        overflow: hidden;
-        text-shadow: 1px 1px 2px black;
-    }
-
-    .album span.count {
-        font-size: 14px;
     }
 </style>

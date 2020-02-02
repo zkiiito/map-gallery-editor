@@ -3,6 +3,7 @@ import BaseProjectHandler from '@/services/env/BaseProjectHandler';
 import Validator from '@/services/SchemaValidator';
 import store from '@/store';
 import AppServer from '@/services/AppServer';
+import GooglePhotosServer from '@/services/GooglePhotosServer';
 
 async function openProject(id) {
     const data = await AppServer.getGalleries().then((galleries) => galleries.find((gallery) => gallery.id === id));
@@ -28,6 +29,7 @@ async function openProject(id) {
     });
 
     slides = await ImageProcessor.updateSlides(slides);
+    slides = await GooglePhotosServer.updateSlides(slides);
 
     store.commit('setId', data.id);
     store.commit('setTitle', data.title);

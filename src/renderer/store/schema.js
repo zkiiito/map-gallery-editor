@@ -97,6 +97,16 @@ module.exports = {
                     ],
                     pattern: '^(.*)$',
                 },
+                photo_id: {
+                    $id: '#/properties/slides/items/properties/photo_id',
+                    type: 'string',
+                    title: 'The Id Schema',
+                    default: '',
+                    examples: [
+                        '7bdcf94e-42cf-4155-b7f8-924f5346c8b2',
+                    ],
+                    pattern: '^(.*)$',
+                },
                 filename: {
                     $id: '#/items/properties/filename',
                     type: 'string',

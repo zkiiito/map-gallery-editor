@@ -3,6 +3,7 @@ import EventBus from '@/services/EventBus';
 import store from '@/store';
 import AppServer from '@/services/AppServer';
 import SlideUrl from '@/services/SlideUrl';
+import GooglePhotosServer from '@/services/GooglePhotosServer';
 
 const Queue = require('promise-queue');
 
@@ -24,7 +25,11 @@ async function exportProject(dir) {
 function publishProject() {
     const data = store.getters.fileData;
 
-    return AppServer.uploadGalleryData(data)
+    GooglePhotosServer.updateSlides(data.slides)
+        .then((slides) => {
+            data.slides = slides;
+            return AppServer.uploadGalleryData(data);
+        })
         .then(() => new Promise((resolve) => {
             const { slides } = store.state.gallery;
             const queue = new Queue(5, Infinity);

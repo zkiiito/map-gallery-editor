@@ -3,6 +3,7 @@ import store from '@/store';
 import Validator from '@/services/SchemaValidator';
 import BaseProjectHandler from '@/services/env/BaseProjectHandler';
 import SlideUrl from '@/services/SlideUrl';
+import GooglePhotosServer from '@/services/GooglePhotosServer';
 
 const fileUrl = require('file-url');
 const fse = require('fs-extra');
@@ -33,6 +34,7 @@ async function openProject(path) {
     });
 
     slides = await ImageProcessor.updateSlides(slides);
+    slides = await GooglePhotosServer.updateSlides(slides);
 
     store.commit('setId', data.id);
     store.commit('setTitle', data.title);
