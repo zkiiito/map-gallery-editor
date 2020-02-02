@@ -34,7 +34,7 @@
     ],
     "extraResources": [
       {
-        "from": "./node_modules/MapGallery/",
+        "from": "./static/MapGallery/",
         "to": "MapGallery",
         "filter": [
           "**/*.js",
@@ -84,7 +84,6 @@
     }
   },
   "dependencies": {
-    "MapGallery": "github:zkiiito/MapGallery#d00665df2fea6db0dacf79e40c06de8f7822aa0e",
     "ajv": "^6.11.0",
     "del": "^5.1.0",
     "electron-unhandled": "^3.0.2",
@@ -92,7 +91,6 @@
     "exif-reader": "^1.0.3",
     "file-url": "^3.0.0",
     "fs-extra": "^8.1.0",
-    "map-gallery": "github:zkiiito/MapGallery#53d4c392b995f590b36c714580ebd355fd577217",
     "pica": "^5.1.0",
     "promise-queue": "^2.2.5",
     "sharp": "^0.24.0",

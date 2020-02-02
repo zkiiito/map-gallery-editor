@@ -51,7 +51,9 @@ async function exportProject(dir) {
 
     const mapGalleryRoot = process.env.NODE_ENV !== 'development' ? process.resourcesPath : __static;
 
-    await fse.copy(path.join(mapGalleryRoot, 'MapGallery'), dir);
+    fse.copySync(path.join(mapGalleryRoot, 'MapGallery', 'css'), path.join(dir, 'css'));
+    fse.copySync(path.join(mapGalleryRoot, 'MapGallery', 'scripts'), path.join(dir, 'scripts'));
+    fse.copySync(path.join(mapGalleryRoot, 'MapGallery', 'index.html'), path.join(dir, 'index.html'));
 
     const data = slides.map((slide) => {
         if (slide.from) {
