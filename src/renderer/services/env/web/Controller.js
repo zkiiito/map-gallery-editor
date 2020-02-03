@@ -47,13 +47,16 @@ const Controller = Object.assign(BaseController, {
     login() {
         AppServer.login();
     },
+    refreshProjects() {
+        return AppServer.getGalleries()
+            .then((galleries) => {
+                store.commit('setHistory', galleries);
+            });
+    },
     init() {
         EventBus.$on(EventBus.events.USER_CHANGED, (user) => {
             if (user) {
-                AppServer.getGalleries()
-                    .then((galleries) => {
-                        store.commit('setHistory', galleries);
-                    });
+                this.refreshProjects();
             }
         });
 

@@ -49,7 +49,11 @@ export default {
         },
         deleteProject() {
             if (confirm(`Are you sure that you want to delete ${this.project.title}?`)) {
-                console.log('deleted');
+                AppServer.deleteGallery(this.project)
+                    .then(() => Controller.refreshProjects())
+                    .catch((err) => {
+                        this.$bus.$emit('error', err);
+                    });
             }
         },
     },

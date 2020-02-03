@@ -86,6 +86,14 @@ function uploadGalleryData(galleryData) {
             .set(galleryData));
 }
 
+function deleteGallery(galleryData) {
+    const { uid } = firebaseApp.auth().currentUser;
+    const db = firebaseApp.firestore();
+
+    return db.collection('users').doc(uid).collection('galleries').doc(galleryData.id)
+        .delete();
+}
+
 function getPublishedUrl(galleryData) {
     const { uid } = firebaseApp.auth().currentUser;
 
@@ -168,4 +176,5 @@ export default {
     getGalleries,
     getSlideUrl,
     getSlideThumbnailUrl,
+    deleteGallery,
 };
