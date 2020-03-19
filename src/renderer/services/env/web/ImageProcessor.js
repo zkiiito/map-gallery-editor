@@ -1,6 +1,6 @@
 import EventBus from '@/services/EventBus';
+import { v4 as uuidv4 } from 'uuid';
 const exifReader = require('exif-js');
-const uuidv4 = require('uuid/v4');
 const Queue = require('promise-queue');
 
 const imageSlideTemplate = {

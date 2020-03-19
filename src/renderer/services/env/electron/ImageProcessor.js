@@ -1,9 +1,9 @@
 import EventBus from '@/services/EventBus';
 import SlideUrl from '@/services/SlideUrl';
+import { v4 as uuidv4 } from 'uuid';
 const fse = require('fs-extra');
 const sharp = require('sharp');
 const exifReader = require('exif-reader');
-const uuidv4 = require('uuid/v4');
 const path = require('path');
 const Queue = require('promise-queue');
 // eslint-disable-next-line import/no-extraneous-dependencies

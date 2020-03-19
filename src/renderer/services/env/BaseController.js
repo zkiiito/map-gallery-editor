@@ -3,8 +3,7 @@ import ImageProcessor from 'EnvServices/ImageProcessor';
 import store from '@/store';
 import EventBus from '@/services/EventBus';
 import AppServer from '@/services/AppServer';
-
-const uuidv4 = require('uuid/v4');
+import { v4 as uuidv4 } from 'uuid';
 
 const Controller = {
     newProject() {

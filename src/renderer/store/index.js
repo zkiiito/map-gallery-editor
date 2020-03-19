@@ -1,8 +1,8 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import createPersistedState from 'vuex-persistedstate';
+import { v4 as uuidv4 } from 'uuid';
 import EventBus from '../services/EventBus';
-const uuidv4 = require('uuid/v4');
 
 Vue.use(Vuex);
 
