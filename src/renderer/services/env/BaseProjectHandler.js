@@ -25,7 +25,7 @@ async function exportProject(dir) {
 function publishProject() {
     const data = store.getters.fileData;
 
-    GooglePhotosServer.updateSlides(data.slides)
+    return GooglePhotosServer.updateSlides(data.slides)
         .then((slides) => {
             data.slides = slides;
             return AppServer.uploadGalleryData(data);

@@ -82,7 +82,7 @@ function updateSlides(slides) {
                 return slide;
             }));
     }
-    return slides;
+    return Promise.resolve(slides);
 }
 
 export default {
