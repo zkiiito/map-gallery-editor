@@ -41,6 +41,9 @@ function createWindow() {
     });
 }
 
+app.allowRendererProcessReuse = false;
+app.userAgentFallback = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) old-airport-include/1.0.0 Chrome Electron/7.1.7 Safari/537.36';
+
 app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') {
         app.quit();
