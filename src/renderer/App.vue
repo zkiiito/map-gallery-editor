@@ -1,6 +1,7 @@
 <template>
     <div id="app">
-        <AuthPopup v-if="$store.getters.isPopupOpen('auth')"/>
+        <GoogleAuthPopup v-if="$store.getters.isPopupOpen('auth')"/>
+        <GooglePhotosAuthPopup v-if="$store.getters.isPopupOpen('authPhotos')"/>
         <AddImagePopup v-if="$store.getters.isPopupOpen('addImage')"/>
         <FlickrPopup v-if="$store.getters.isPopupOpen('flickr')"/>
         <GooglePhotosPopup v-if="$store.getters.isPopupOpen('googlePhotos')"/>
@@ -79,7 +80,7 @@ import WindowProgressbar from '@/components/WindowProgressbar';
 import GoogleMap from '@/components/GoogleMap.vue';
 import SlidePreview from './components/SlidePreview.vue';
 import ErrorBar from './components/ErrorBar';
-import AuthPopup from './components/AuthPopup';
+import GoogleAuthPopup from './components/GoogleAuthPopup';
 import FlickrPopup from './components/FlickrPopup';
 import ProjectDataPopup from './components/ProjectDataPopup';
 import SplashPopup from './components/SplashPopup';
@@ -96,10 +97,12 @@ import MainMenu from '@/components/MainMenu';
 import UserMenu from '@/components/UserMenu';
 import MainMenuBars from '@/components/MainMenuBars';
 import ProjectManagerPopup from '@/components/ProjectManagerPopup';
+import GooglePhotosAuthPopup from '@/components/GooglePhotosAuthPopup';
 
 export default {
     name: 'App',
     components: {
+        GooglePhotosAuthPopup,
         ProjectManagerPopup,
         MainMenuBars,
         UserMenu,
@@ -116,7 +119,7 @@ export default {
         SlidePreview,
         Draggable,
         ErrorBar,
-        AuthPopup,
+        GoogleAuthPopup,
         FlickrPopup,
         ProjectDataPopup,
         SplashPopup,

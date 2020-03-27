@@ -1,5 +1,5 @@
 <template>
-    <div id="user-menu" @mouseleave="closeMenu">
+    <div id="user-menu" v-if="this.$store.state.user.googleUser" @mouseleave="closeMenu">
         <div id="user-menu-rectangle"/>
 
         <span class="name"><strong>{{ this.$store.state.user.googleUser.displayName }}</strong></span><br>

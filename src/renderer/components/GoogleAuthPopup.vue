@@ -13,12 +13,12 @@
 </template>
 
 <script>
-import Modal from './Modal';
-import AppServer from '../services/AppServer';
+import AppServer from '@/services/AppServer';
 import EventBus from '@/services/EventBus';
+import Modal from './Modal';
 
 export default {
-    name: 'AuthPopup',
+    name: 'GoogleAuthPopup',
     components: {
         Modal,
     },

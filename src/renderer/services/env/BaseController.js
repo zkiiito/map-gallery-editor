@@ -115,7 +115,7 @@ const Controller = {
         store.commit('openPopup', 'flickr');
     },
     openGooglePhotos() {
-        store.commit('openPopup', 'googlePhotos');
+        throw new Error('implement');
     },
     openProjectData() {
         store.commit('openPopup', 'projectData');

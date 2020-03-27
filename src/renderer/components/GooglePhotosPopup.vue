@@ -54,8 +54,10 @@ export default {
         getPhotos() {
             this.busy = true;
             GooglePhotosServer.getPhotos(true).then((photos) => {
-                this.photos = this.photos.concat(photos);
-                this.busy = false;
+                if (photos && photos.length) {
+                    this.photos = this.photos.concat(photos);
+                    this.busy = false;
+                }
             });
         },
         importPhotos() {

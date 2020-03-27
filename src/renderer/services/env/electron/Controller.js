@@ -6,6 +6,7 @@ import store from '@/store';
 import EventBus from '@/services/EventBus';
 import BaseController from '@/services/env/BaseController';
 import AppServer from '@/services/AppServer';
+import GooglePhotosServer from '@/services/GooglePhotosServer';
 
 const { dialog, shell } = remote;
 
@@ -97,6 +98,13 @@ const Controller = Object.assign(BaseController, {
         store.commit('setSplashMode', false);
         store.commit('closePopups');
         this.openProjectFile(fileName);
+    },
+    openGooglePhotos() {
+        if (GooglePhotosServer.authReady()) {
+            store.commit('openPopup', 'googlePhotos');
+        } else {
+            store.commit('openPopup', 'authPhotos');
+        }
     },
 });
 

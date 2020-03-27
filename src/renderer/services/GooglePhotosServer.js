@@ -85,7 +85,17 @@ function updateSlides(slides) {
     return Promise.resolve(slides);
 }
 
+function setToken(_token) {
+    token = _token;
+}
+
+function authReady() {
+    return token !== null;
+}
+
 export default {
     getPhotos,
     updateSlides,
+    setToken,
+    authReady,
 };

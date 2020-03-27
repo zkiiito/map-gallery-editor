@@ -62,6 +62,9 @@ const Controller = Object.assign(BaseController, {
 
         this.openSplash();
     },
+    openGooglePhotos() {
+        store.commit('openPopup', 'googlePhotos');
+    },
 });
 
 export default Controller;
