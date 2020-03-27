@@ -1,11 +1,17 @@
 <template>
-    <div id="user-menu" v-if="this.$store.state.user.googleUser" @mouseleave="closeMenu">
+    <div v-if="this.$store.state.user.googleUser" id="user-menu" @mouseleave="closeMenu">
         <div id="user-menu-rectangle"/>
 
         <span class="name"><strong>{{ this.$store.state.user.googleUser.displayName }}</strong></span><br>
         <span class="email">{{ this.$store.state.user.googleUser.email }}</span><br>
         <BigButton class="big-button" cssclass="small empty" @click="disconnectGooglePhotos">Disconnect from Google Photos</BigButton><br>
-        <BigButton v-if="this.$store.state.user.flickrUser !== null" class="big-button" cssclass="small empty" @click="disconnectFlickr">Disconnect from flickr</BigButton>
+        <BigButton
+            v-if="this.$store.state.user.flickrUser !== null"
+            class="big-button" cssclass="small empty"
+            @click="disconnectFlickr"
+        >
+            Disconnect from flickr
+        </BigButton>
         <hr>
         <BigButton class="big-button" cssclass="small empty" @click="logout">Sign out</BigButton>
     </div>

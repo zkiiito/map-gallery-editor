@@ -19,8 +19,8 @@
 
 <script>
 import Controller from 'EnvServices/Controller';
-import Modal from './Modal';
 import BigButton from '@/components/BigButton';
+import Modal from './Modal';
 
 export default {
     name: 'AddImagePopup',

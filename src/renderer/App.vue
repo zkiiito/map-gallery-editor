@@ -78,18 +78,6 @@ import Controller from 'EnvServices/Controller';
 import PersistMenu from 'EnvComponents/PersistMenu';
 import WindowProgressbar from '@/components/WindowProgressbar';
 import GoogleMap from '@/components/GoogleMap.vue';
-import SlidePreview from './components/SlidePreview.vue';
-import ErrorBar from './components/ErrorBar';
-import GoogleAuthPopup from './components/GoogleAuthPopup';
-import FlickrPopup from './components/FlickrPopup';
-import ProjectDataPopup from './components/ProjectDataPopup';
-import SplashPopup from './components/SplashPopup';
-import ViewSwitch from './components/ViewSwitch';
-import ProjectNavigator from './components/ProjectNavigator';
-import AddButtons from './components/AddButtons';
-import UserCircle from './components/UserCircle';
-import ImageView from './components/ImageView';
-import ToasterUndo from './components/ToasterUndo';
 import EventBus from '@/services/EventBus';
 import AddImagePopup from '@/components/AddImagePopup';
 import GooglePhotosPopup from '@/components/GooglePhotosPopup';
@@ -98,6 +86,18 @@ import UserMenu from '@/components/UserMenu';
 import MainMenuBars from '@/components/MainMenuBars';
 import ProjectManagerPopup from '@/components/ProjectManagerPopup';
 import GooglePhotosAuthPopup from '@/components/GooglePhotosAuthPopup';
+import SlidePreview from '@/components/SlidePreview.vue';
+import ErrorBar from '@/components/ErrorBar';
+import GoogleAuthPopup from '@/components/GoogleAuthPopup';
+import FlickrPopup from '@/components/FlickrPopup';
+import ProjectDataPopup from '@/components/ProjectDataPopup';
+import SplashPopup from '@/components/SplashPopup';
+import ViewSwitch from '@/components/ViewSwitch';
+import ProjectNavigator from '@/components/ProjectNavigator';
+import AddButtons from '@/components/AddButtons';
+import UserCircle from '@/components/UserCircle';
+import ImageView from '@/components/ImageView';
+import ToasterUndo from '@/components/ToasterUndo';
 
 export default {
     name: 'App',

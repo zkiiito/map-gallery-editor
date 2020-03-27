@@ -1,5 +1,5 @@
-import EventBus from './EventBus';
 import SlideUrl from '@/services/SlideUrl';
+import EventBus from './EventBus';
 
 /* global firebase */
 const firebaseApp = firebase;

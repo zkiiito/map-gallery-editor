@@ -2,7 +2,7 @@
     <div id="errorHolder">
         <div v-for="(error, idx) in errors" :key="idx" class="error">
             {{ error ? error.toString() : 'Error' }}
-            <a @click="closeError(idx)" href="#" class="close fas fa-times"/>
+            <a href="#" class="close fas fa-times" @click="closeError(idx)"/>
         </div>
     </div>
 </template>
@@ -19,6 +19,7 @@ export default {
         this.$bus.$on('error', (err) => {
             const that = this;
             this.errors.push(err);
+            console.error(err);
 
             setTimeout(() => {
                 const idx = this.errors.indexOf(err);
