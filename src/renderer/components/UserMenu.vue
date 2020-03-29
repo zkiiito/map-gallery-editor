@@ -4,7 +4,7 @@
 
         <span class="name"><strong>{{ this.$store.state.user.googleUser.displayName }}</strong></span><br>
         <span class="email">{{ this.$store.state.user.googleUser.email }}</span><br>
-        <BigButton class="big-button" cssclass="small empty" @click="disconnectGooglePhotos">Disconnect from Google Photos</BigButton><br>
+        <!--BigButton class="big-button" cssclass="small empty" @click="disconnectGooglePhotos">Disconnect from Google Photos</BigButton><br-->
         <BigButton
             v-if="this.$store.state.user.flickrUser !== null"
             class="big-button" cssclass="small empty"
@@ -13,7 +13,7 @@
             Disconnect from flickr
         </BigButton>
         <hr>
-        <BigButton class="big-button" cssclass="small empty" @click="logout">Sign out</BigButton>
+        <BigButton class="big-button" cssclass="small empty" @click="logout">Sign out from Google</BigButton>
     </div>
 </template>
 
