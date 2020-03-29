@@ -14,6 +14,10 @@ function auth() {
 }
 
 function getPhotos(nextPage) {
+    if (nextPage && nextPageToken === undefined) {
+        return Promise.reject(new Error('No more photos'));
+    }
+
     return auth().then(() => {
         let url = 'https://photoslibrary.googleapis.com/v1/mediaItems?pageSize=100';
         if (nextPage && nextPageToken !== null) {

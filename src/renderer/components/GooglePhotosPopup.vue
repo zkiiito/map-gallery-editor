@@ -9,7 +9,7 @@
             <div id="google-photos">
                 <div v-if="photos.length === 0">Loading</div>
 
-                <div id="google-photo-list" v-infinite-scroll="getPhotos" infinite-scroll-disabled="busy" infinite-scroll-distance="10">
+                <div id="google-photo-list" v-infinite-scroll="getPhotosScrolling" infinite-scroll-disabled="busy" infinite-scroll-distance="10">
                     <label
                         v-for="photo in photos"
                         :key="photo.id"
@@ -45,20 +45,27 @@ export default {
         };
     },
     mounted() {
-        this.getPhotos();
+        this.getPhotos(false);
     },
     methods: {
         close() {
             this.$store.commit('closePopup', 'googlePhotos');
         },
-        getPhotos() {
+        getPhotos(nextPage) {
             this.busy = true;
-            GooglePhotosServer.getPhotos(true).then((photos) => {
-                if (photos && photos.length) {
-                    this.photos = this.photos.concat(photos);
-                    this.busy = false;
-                }
-            });
+            GooglePhotosServer.getPhotos(nextPage)
+                .then((photos) => {
+                    if (photos && photos.length) {
+                        this.photos = this.photos.concat(photos);
+                        this.busy = false;
+                    }
+                })
+                .catch(() => {
+                    this.busy = true;
+                });
+        },
+        getPhotosScrolling() {
+            this.getPhotos(true);
         },
         importPhotos() {
             if (this.selectedPhotos.length) {
