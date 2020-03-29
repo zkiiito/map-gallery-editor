@@ -1,7 +1,7 @@
 <template>
     <Modal>
         <template slot="header">
-            <h2>Open project</h2>
+            <h2>Your trips</h2>
             <a href="#" class="close fas fa-times" @click="close"/>
         </template>
 
