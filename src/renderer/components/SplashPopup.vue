@@ -22,7 +22,7 @@
             <div id="splash-history">
                 <h2>Recent trips</h2>
 
-                <div v-for="(project, idx) in $store.state.app.projectHistory.slice(-6).reverse()"
+                <div v-for="(project, idx) in $store.state.app.projectHistory.slice(-5).reverse()"
                      :key="idx" class="trip-history" @click="openRecentProject(project)"
                 >
                     <h5>{{ project.title }}</h5>
@@ -56,12 +56,18 @@ export default {
     },
     mounted() {
         this.getLatestVersion();
+
+        this.$bus.$on(this.$bus.events.PROJECT_OPENED, () => {
+            this.close();
+        });
     },
     methods: {
         openProject() {
-            Controller.openProject().then(() => {
-                this.close();
-            }).catch(() => {});
+            if (process.env.IS_WEB) {
+                Controller.openProjectManager();
+            } else {
+                Controller.openProject().catch(() => {});
+            }
         },
         newProject() {
             this.$store.commit('closePopup', 'splash');

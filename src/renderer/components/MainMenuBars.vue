@@ -15,9 +15,9 @@ export default {
 
 <style scoped>
     #main-menu-btn {
-        position: absolute;
-        top: 23px;
-        left: 329px;
+        position: relative;
+        top: -29px;
+        left: 29px;
         font-size: 24px;
         cursor: pointer;
     }

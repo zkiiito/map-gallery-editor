@@ -6,8 +6,8 @@
         <FlickrPopup v-if="$store.getters.isPopupOpen('flickr')"/>
         <GooglePhotosPopup v-if="$store.getters.isPopupOpen('googlePhotos')"/>
         <ProjectDataPopup v-if="$store.getters.isPopupOpen('projectData')"/>
-        <ProjectManagerPopup v-if="$store.getters.isPopupOpen('projectmanager')"/>
         <SplashPopup v-if="$store.getters.isPopupOpen('splash')"/>
+        <ProjectManagerPopup v-if="$store.getters.isPopupOpen('projectmanager')"/>
         <ErrorBar/>
         <WindowProgressbar/>
 
