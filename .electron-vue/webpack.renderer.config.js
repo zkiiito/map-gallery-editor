@@ -122,6 +122,7 @@ let rendererConfig = {
     }),
     new webpack.NoEmitOnErrorsPlugin(),
     new webpack.DefinePlugin({
+      'process.env.IS_WEB': 'false',
       'process.app.version': `"${require('../package.json').version}"`,
       'process.env.GOOGLE_MAPS_API_KEY': `"${process.env.GOOGLE_MAPS_API_KEY}"`,
     }),
