@@ -152,7 +152,7 @@
     "eslint-plugin-import": "^2.20.2",
     "eslint-plugin-vue": "^6.2.2",
     "html-loader": "^1.0.0",
-    "html-webpack-plugin": "^4.0.3",
+    "html-webpack-plugin": "^4.2.0",
     "inject-loader": "^4.0.1",
     "karma": "^4.4.1",
     "karma-chai": "^0.1.0",
