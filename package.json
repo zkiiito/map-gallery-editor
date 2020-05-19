@@ -154,7 +154,7 @@
     "html-loader": "^1.1.0",
     "html-webpack-plugin": "^4.3.0",
     "inject-loader": "^4.0.1",
-    "karma": "^5.0.5",
+    "karma": "^5.0.8",
     "karma-chai": "^0.1.0",
     "karma-coverage": "^2.0.2",
     "karma-electron": "^6.3.0",
