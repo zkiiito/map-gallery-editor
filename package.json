@@ -167,7 +167,7 @@
     "multispinner": "^0.2.1",
     "node-loader": "^0.6.0",
     "require-dir": "^1.2.0",
-    "spectron": "^10.0.1",
+    "spectron": "^11.0.0",
     "spectron-dialog-addon": "^1.0.1",
     "style-loader": "^1.2.1",
     "url-loader": "^4.1.0",
