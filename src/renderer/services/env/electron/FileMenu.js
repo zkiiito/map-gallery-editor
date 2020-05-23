@@ -145,7 +145,13 @@ EventBus.$on(EventBus.events.PROJECT_TITLE_CHANGED, (value) => {
 });
 
 EventBus.$on(EventBus.events.POPUP_OPENED, () => {
-    Menu.setApplicationMenu(new Menu());
+    Menu.setApplicationMenu(Menu.buildFromTemplate([
+        { label: 'File', enabled: false },
+        { label: 'Project', enabled: false },
+        { label: 'Slide', enabled: false },
+        { label: 'Publish', enabled: false },
+        { label: 'Help', enabled: false },
+    ]));
 });
 
 EventBus.$on(EventBus.events.POPUP_CLOSED, (value, num) => {
