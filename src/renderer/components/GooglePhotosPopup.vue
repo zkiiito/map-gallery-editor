@@ -46,6 +46,10 @@ export default {
     },
     mounted() {
         this.getPhotos(false);
+        this.$bus.$on(this.$bus.events.MODAL_CLOSE, this.close);
+    },
+    beforeDestroy() {
+        this.$bus.$off(this.$bus.events.MODAL_CLOSE, this.close);
     },
     methods: {
         close() {

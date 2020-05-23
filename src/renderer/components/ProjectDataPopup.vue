@@ -1,5 +1,10 @@
 <template>
     <Modal>
+        <template slot="header">
+            <h2>Trip details</h2>
+            <a v-if="!$store.state.ui.splashMode" href="#" class="close fas fa-times" @click="close"/>
+        </template>
+
         <template slot="body">
             <form ref="project-data-form" @submit.prevent="close">
                 <p>
@@ -56,10 +61,19 @@ export default {
             return this.$store.state.ui.splashMode ? 'Create' : 'Save';
         },
     },
+    beforeDestroy() {
+        this.$bus.$off(this.$bus.events.MODAL_CLOSE, this.closeOnEvent);
+    },
     mounted() {
         this.$refs.inputTitle.focus();
+        this.$bus.$on(this.$bus.events.MODAL_CLOSE, this.closeOnEvent);
     },
     methods: {
+        closeOnEvent() {
+            if (!this.$store.state.ui.splashMode) {
+                this.close();
+            }
+        },
         close() {
             if (this.$refs['project-data-form'].reportValidity()) {
                 this.$store.commit('setSplashMode', false);
@@ -94,5 +108,14 @@ export default {
 
     textarea {
         height: 190px;
+    }
+
+    h2 {
+        float: left;
+        margin-top: 0;
+    }
+
+    a.close {
+        float: right;
     }
 </style>

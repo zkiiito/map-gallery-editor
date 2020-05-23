@@ -15,6 +15,7 @@ EventBus.events = {
     SLIDE_DELETED_UNDO: 'slide_deleted_undo',
     USER_CHANGED: 'user_changed',
     CLEAR_MAP: 'clear_map',
+    MODAL_CLOSE: 'modal_close',
 };
 
 export default EventBus;

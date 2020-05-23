@@ -48,7 +48,11 @@ export default {
             selectedPhotoset: null,
         };
     },
+    beforeDestroy() {
+        this.$bus.$off(this.$bus.events.MODAL_CLOSE, this.close);
+    },
     mounted() {
+        this.$bus.$on(this.$bus.events.MODAL_CLOSE, this.close);
         if (this.$store.state.user.flickrUser === null) {
             window.open('https://mapgallery.online/flickr/auth', 'flickr', 'width=400,height=600');
 

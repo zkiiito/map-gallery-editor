@@ -24,6 +24,7 @@ export default {
         Modal,
     },
     mounted() {
+        this.$bus.$on(this.$bus.events.MODAL_CLOSE, this.close);
         this.$refs.webview.setAttribute('preload', `file://${__static}/auth-preload.js`);
 
         this.$refs.webview.addEventListener('ipc-message', (msg) => {
@@ -42,6 +43,9 @@ export default {
                 this.$store.commit('openPopup', 'googlePhotos');
             }
         });
+    },
+    beforeDestroy() {
+        this.$bus.$off(this.$bus.events.MODAL_CLOSE, this.close);
     },
     methods: {
         close() {

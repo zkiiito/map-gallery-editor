@@ -13,6 +13,13 @@ function close(e) {
     }
 }
 
+function closeModal(e) {
+    if (e.key === 'Escape') {
+        e.preventDefault();
+        EventBus.$emit(EventBus.events.MODAL_CLOSE);
+    }
+}
+
 function move(e) {
     if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
         e.preventDefault();
@@ -80,11 +87,13 @@ EventBus.$on(EventBus.events.PROJECT_TITLE_CHANGED, (value) => {
 
 EventBus.$on(EventBus.events.POPUP_OPENED, () => {
     removeAll();
+    window.addEventListener('keydown', closeModal);
 });
 
 EventBus.$on(EventBus.events.POPUP_CLOSED, (value, num) => {
     if (num === 0) {
         addAll();
+        window.removeEventListener('keydown', closeModal);
     }
 });
 

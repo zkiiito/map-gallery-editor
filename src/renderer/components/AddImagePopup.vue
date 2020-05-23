@@ -28,6 +28,12 @@ export default {
         BigButton,
         Modal,
     },
+    beforeDestroy() {
+        this.$bus.$off(this.$bus.events.MODAL_CLOSE, this.close);
+    },
+    mounted() {
+        this.$bus.$on(this.$bus.events.MODAL_CLOSE, this.close);
+    },
     methods: {
         addFromComputer() {
             this.close();

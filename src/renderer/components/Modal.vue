@@ -1,7 +1,7 @@
 <template>
     <Transition name="modal">
         <div class="modal-mask">
-            <div class="modal-wrapper">
+            <div class="modal-wrapper" @click.self="emitCloseModal">
                 <div :style="style" class="modal-container">
                     <div class="modal-header">
                         <slot name="header"/>
@@ -36,6 +36,11 @@ export default {
     computed: {
         style() {
             return `width: ${this.width - 2 * this.padding}px; padding: ${this.padding}px`;
+        },
+    },
+    methods: {
+        emitCloseModal() {
+            this.$bus.$emit(this.$bus.events.MODAL_CLOSE);
         },
     },
 };

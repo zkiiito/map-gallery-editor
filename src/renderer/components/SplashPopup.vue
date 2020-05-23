@@ -22,6 +22,10 @@
             <div id="splash-history">
                 <h2>Recent trips</h2>
 
+                <div v-if="$store.state.app.projectHistory.length === 0" class="trip-history inactive">
+                    <h5>Your trips will show up here</h5>
+                </div>
+
                 <div v-for="(project, idx) in $store.state.app.projectHistory.slice(-5).reverse()"
                      :key="idx" class="trip-history" @click="openRecentProject(project)"
                 >
@@ -29,7 +33,7 @@
                     <p>{{ project.description || project.filename }}</p>
                 </div>
 
-                <div class="button-holder">
+                <div v-if="isOpenProjectVisible" class="button-holder">
                     <a href="#" @click="openProject">Open other trip</a>
                 </div>
             </div>
@@ -53,6 +57,11 @@ export default {
             newVersion: null,
             newVersionUrl: null,
         };
+    },
+    computed: {
+        isOpenProjectVisible() {
+            return !process.env.IS_WEB || this.$store.state.user.googleUser;
+        },
     },
     mounted() {
         this.getLatestVersion();
@@ -167,6 +176,11 @@ div.trip-history h5 {
     margin-bottom: 4px;
     font-size: 16px;
     font-weight: normal;
+}
+
+div.trip-history.inactive {
+    color: #b0b0b0;
+    cursor: default;
 }
 
 div.trip-history p {

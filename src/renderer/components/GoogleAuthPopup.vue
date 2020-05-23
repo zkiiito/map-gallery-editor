@@ -29,9 +29,12 @@ export default {
             AppServer.loginByToken(msg.channel);
         });
 
-        this.$bus.$on(EventBus.events.USER_CHANGED, () => {
-            this.$store.commit('closePopup', 'auth');
-        });
+        this.$bus.$on(EventBus.events.USER_CHANGED, this.close);
+        this.$bus.$on(this.$bus.events.MODAL_CLOSE, this.close);
+    },
+    beforeDestroy() {
+        this.$bus.$off(this.$bus.events.MODAL_CLOSE, this.close);
+        this.$bus.$off(EventBus.events.USER_CHANGED, this.close);
     },
     methods: {
         close() {
