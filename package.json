@@ -101,7 +101,7 @@
     "vue-infinite-scroll": "^2.0.2",
     "vue-progressbar": "^0.7.5",
     "vuedraggable": "^2.24.0",
-    "vuex": "^3.4.0",
+    "vuex": "^3.5.1",
     "vuex-persistedstate": "^3.0.1"
   },
   "devDependencies": {
