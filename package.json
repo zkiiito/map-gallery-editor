@@ -91,7 +91,7 @@
     "exif-reader": "^1.0.3",
     "file-url": "^3.0.0",
     "fs-extra": "^9.0.1",
-    "pica": "^5.2.0",
+    "pica": "^6.1.1",
     "promise-queue": "^2.2.5",
     "sharp": "^0.23.4",
     "uuid": "^8.2.0",
