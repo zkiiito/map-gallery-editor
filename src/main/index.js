@@ -30,6 +30,7 @@ function createWindow() {
             webSecurity: process.env.NODE_ENV !== 'development',
             nodeIntegration: true,
             webviewTag: true,
+            enableRemoteModule: true,
         },
     });
 
