@@ -84,7 +84,7 @@
     }
   },
   "dependencies": {
-    "ajv": "^6.12.4",
+    "ajv": "^6.12.5",
     "del": "^5.1.0",
     "electron-unhandled": "^3.0.2",
     "exif-js": "^2.3.0",
