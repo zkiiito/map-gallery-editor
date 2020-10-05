@@ -94,7 +94,7 @@
     "pica": "^6.1.1",
     "promise-queue": "^2.2.5",
     "sharp": "^0.23.4",
-    "uuid": "^8.3.0",
+    "uuid": "^8.3.1",
     "vue": "^2.6.12",
     "vue-async-computed": "^3.9.0",
     "vue-electron": "^1.0.6",
