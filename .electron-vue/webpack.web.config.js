@@ -5,28 +5,42 @@ process.env.BABEL_ENV = 'web'
 const path = require('path')
 const webpack = require('webpack')
 
-const MinifyPlugin = require("babel-minify-webpack-plugin")
+const TerserPlugin = require('terser-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { VueLoaderPlugin } = require('vue-loader')
+const rendererConfig = require('./webpack.renderer.config')
 
 require('dotenv').config();
 
 let webConfig = {
-  devtool: '#cheap-module-eval-source-map',
+  devtool: 'eval-cheap-module-source-map',
   entry: {
     web: path.join(__dirname, '../src/renderer/main.js')
   },
   module: {
     rules: [
       {
-        test: /\.less$/,
-        use: ['vue-style-loader', 'css-loader', 'less-loader']
+        test: /\.vue$/,
+        use: {
+          loader: 'vue-loader',
+          options: {
+            extractCSS: true,
+          }
+        }
       },
       {
         test: /\.css$/,
-        use: ['vue-style-loader', 'css-loader']
+        use: [
+          'vue-style-loader', 
+          {
+            loader: 'css-loader',
+            options: {
+              esModule: false
+            }
+          },
+        ]
       },
       {
         test: /\.html$/,
@@ -39,37 +53,19 @@ let webConfig = {
         exclude: /node_modules/
       },
       {
-        test: /\.vue$/,
-        use: {
-          loader: 'vue-loader',
-          options: {
-            extractCSS: true,
-            loaders: {
-              sass: 'vue-style-loader!css-loader!sass-loader?indentedSyntax=1',
-              scss: 'vue-style-loader!css-loader!sass-loader',
-              less: 'vue-style-loader!css-loader!less-loader'
-            }
-          }
-        }
-      },
-      {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
-        use: {
-          loader: 'url-loader',
-          query: {
-            limit: 10000,
-            name: 'imgs/[name].[ext]'
-          }
+        loader: 'url-loader',
+        options: {
+          limit: 10000,
+          name: 'imgs/[name].[ext]'
         }
       },
       {
         test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
-        use: {
-          loader: 'url-loader',
-          query: {
-            limit: 10000,
-            name: 'fonts/[name].[ext]'
-          }
+        loader: 'url-loader',
+        options: {
+          limit: 10000,
+          name: 'fonts/[name].[ext]'
         }
       }
     ]
@@ -91,6 +87,7 @@ let webConfig = {
       'process.env.IS_WEB': 'true',
       'process.app.version': `"${require('../package.json').version}"`,
       'process.env.GOOGLE_MAPS_API_KEY': `"${process.env.GOOGLE_MAPS_API_KEY}"`,
+      'process.env.PROMISE_QUEUE_COVERAGE': 'false'
     }),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoEmitOnErrorsPlugin()
@@ -115,10 +112,11 @@ let webConfig = {
  * Adjust webConfig for production settings
  */
 if (process.env.NODE_ENV === 'production') {
-  webConfig.devtool = ''
+  if (rendererConfig) {
+    delete rendererConfig.devtool
+  }
 
   webConfig.plugins.push(
-    new MinifyPlugin(),
     new CopyWebpackPlugin({ patterns: [{
         from: path.join(__dirname, '../static'),
         to: path.join(__dirname, '../dist/web/static'),
@@ -134,6 +132,11 @@ if (process.env.NODE_ENV === 'production') {
       minimize: true
     })
   )
+
+  webConfig.optimization = {
+    minimize: true,
+    minimizer: [new TerserPlugin()],
+  };
 }
 
 module.exports = webConfig

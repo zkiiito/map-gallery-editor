@@ -65,6 +65,7 @@ function startRenderer () {
         contentBase: path.join(__dirname, '../'),
         quiet: true,
         open: true,
+        writeToDisk: true,
         before (app, ctx) {
           app.use(hotMiddleware)
           ctx.middleware.waitUntilValid(() => {
