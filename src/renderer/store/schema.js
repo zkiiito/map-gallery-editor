@@ -11,7 +11,7 @@ module.exports = {
             ],
             properties: {
                 id: {
-                    $id: '#/properties/slides/items/properties/id',
+                    $id: '#/items/properties/id',
                     type: 'string',
                     title: 'The Id Schema',
                     default: '',
