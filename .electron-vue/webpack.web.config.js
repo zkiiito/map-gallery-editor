@@ -106,6 +106,10 @@ let webConfig = {
  * Adjust webConfig for production settings
  */
 if (process.env.NODE_ENV === 'production') {
+  if (webConfig) {
+    delete webConfig.devtool
+  }
+
   webConfig.plugins.push(
     new CopyWebpackPlugin({ patterns: [{
         from: path.join(__dirname, '../static'),
