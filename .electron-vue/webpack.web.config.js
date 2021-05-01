@@ -10,7 +10,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { VueLoaderPlugin } = require('vue-loader')
-const rendererConfig = require('./webpack.renderer.config')
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 require('dotenv').config();
 
@@ -54,19 +54,11 @@ let webConfig = {
       },
       {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
-        loader: 'url-loader',
-        options: {
-          limit: 10000,
-          name: 'imgs/[name].[ext]'
-        }
+        type: 'asset/inline'
       },
       {
         test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
-        loader: 'url-loader',
-        options: {
-          limit: 10000,
-          name: 'fonts/[name].[ext]'
-        }
+        type: 'asset/inline'
       }
     ]
   },
@@ -90,7 +82,8 @@ let webConfig = {
       'process.env.PROMISE_QUEUE_COVERAGE': 'false'
     }),
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoEmitOnErrorsPlugin()
+    new webpack.NoEmitOnErrorsPlugin(),
+    new BundleAnalyzerPlugin({ analyzerMode: 'static' }),
   ],
   output: {
     filename: '[name].js',
@@ -105,6 +98,7 @@ let webConfig = {
     },
     extensions: ['.js', '.vue', '.json', '.css']
   },
+  cache: false,
   target: 'web'
 }
 
@@ -112,16 +106,12 @@ let webConfig = {
  * Adjust webConfig for production settings
  */
 if (process.env.NODE_ENV === 'production') {
-  if (rendererConfig) {
-    delete rendererConfig.devtool
-  }
-
   webConfig.plugins.push(
     new CopyWebpackPlugin({ patterns: [{
         from: path.join(__dirname, '../static'),
         to: path.join(__dirname, '../dist/web/static'),
         globOptions: {
-          ignore: ['.*'],
+          ignore: ['.*', 'MapGallery/images/*.jpg'],
         }
       }]
     }),
