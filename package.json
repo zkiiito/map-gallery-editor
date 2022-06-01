@@ -93,7 +93,7 @@
     "fs-extra": "^9.1.0",
     "pica": "^6.1.1",
     "promise-queue": "^2.2.5",
-    "sharp": "^0.27.2",
+    "sharp": "^0.30.5",
     "uuid": "^8.3.2",
     "vue": "^2.6.12",
     "vue-async-computed": "^3.9.0",
