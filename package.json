@@ -137,7 +137,7 @@
     "css-loader": "^5.2.4",
     "devtron": "^1.4.0",
     "dotenv": "^8.2.0",
-    "electron": "^12.0.6",
+    "electron": "^15.5.5",
     "electron-builder": "^22.10.5",
     "electron-debug": "^3.2.0",
     "electron-icon-maker": "0.0.5",
