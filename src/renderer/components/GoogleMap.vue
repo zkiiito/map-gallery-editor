@@ -44,7 +44,7 @@ export default {
         initMap() {
             MapAnimator.tick = 40;
             MapAnimator.step = 1200;
-            MapAnimator.cacheServer = 'https://backend.mapgallery.online';
+            MapAnimator.cacheServer = 'https://mapgallery.online';
             MapAnimator.animationTriggerEvent = 'center_changed';
             MapAnimator.initialize();
 
