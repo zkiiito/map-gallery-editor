@@ -10,14 +10,17 @@
                 <div v-if="photos.length === 0">Loading</div>
 
                 <div id="google-photo-list" v-infinite-scroll="getPhotosScrolling" infinite-scroll-disabled="busy" infinite-scroll-distance="10">
-                    <label
-                        v-for="photo in photos"
-                        :key="photo.id"
-                        class="photo"
-                        :style="`background-image: url('${ photo.baseUrl }=w180-h110-c')`"
-                    >
-                        <input v-model="selectedPhotos" :value="photo.id" type="checkbox" name="mediaitem">
-                    </label>
+                    <div v-for="day in photoDays" :key="day">
+                        <div class="day-header" @click="selectDay(day)">{{ day }}</div>
+                        <label
+                            v-for="photo in photos.filter(photo => photo.mediaMetadata.creationTime.startsWith(day))"
+                            :key="photo.id"
+                            class="photo"
+                            :style="`background-image: url('${ photo.baseUrl }=w180-h110-c')`"
+                        >
+                            <input v-model="selectedPhotos" :value="photo.id" type="checkbox" name="mediaitem">
+                        </label>
+                    </div>
                 </div>
                 <BigButton v-show="selectedPhotos.length > 0" cssstyle="width: 300px; margin: auto" @click="importPhotos">Import</BigButton>
             </div>
@@ -43,6 +46,11 @@ export default {
             selectedPhotos: [],
             busy: true,
         };
+    },
+    computed: {
+        photoDays() {
+            return [...new Set(this.photos.map((photo) => photo.mediaMetadata.creationTime.substr(0, 10)))];
+        },
     },
     mounted() {
         this.getPhotos(false);
@@ -91,6 +99,17 @@ export default {
                 this.close();
             }
         },
+        selectDay(day) {
+            const photoIdsOfDay = this.photos.filter((photo) => photo.mediaMetadata.creationTime.startsWith(day)).map((photo) => photo.id);
+            photoIdsOfDay.forEach((photoId) => {
+                const idx = this.selectedPhotos.indexOf(photoId);
+                if (idx > -1) {
+                    this.selectedPhotos.splice(idx, 1);
+                } else {
+                    this.selectedPhotos.push(photoId);
+                }
+            });
+        },
     },
 };
 </script>
@@ -126,5 +145,11 @@ export default {
         position: relative;
         overflow: hidden;
         color: #ffffff;
+    }
+
+    .day-header {
+        width: 100%;
+        float: left;
+        cursor: pointer;
     }
 </style>
